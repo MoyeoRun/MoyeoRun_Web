@@ -1,0 +1,13 @@
+[build]
+  command = "yarn build"
+  publish = "build"
+
+[context.production.environment]
+  TOML_ENV_VAR = "From netlify.toml"
+  REACT_APP_TOML_ENV_VAR = "From netlify.toml (REACT_APP_)"
+
+  [[redirects]]
+  from = "/api/*"
+  to = "45.248.73.50:30007/api/:splat"
+  status = 200
+  force = true
