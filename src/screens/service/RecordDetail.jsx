@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { Box } from '@mui/material';
-import RecordDetailTable from '../components/RecordDetailTable';
-import Text from '../components/Text';
-import CustomButton from '../components/CustomButton';
-import { getDistanceString, getPaceString, recordTimeString } from '../lib/util/strFormat';
-import { ReactComponent as EditIcon } from '../assets/svgs/EditIcon.svg';
+import RecordDetailTable from '../../components/RecordDetailTable';
+import Text from '../../components/Text';
+import CustomButton from '../../components/CustomButton';
+import { getDistanceString, getPaceString, recordTimeString } from '../../lib/util/strFormat';
+import { ReactComponent as EditIcon } from '../../assets/svgs/EditIcon.svg';
 import { useEffect } from 'react';
 
 const recordData = {
