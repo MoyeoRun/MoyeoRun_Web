@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { Box } from '@mui/material';
-import { ReactComponent as LogoBlue } from '../assets/svgs/LogoBlue.svg';
-import { ReactComponent as GoogleIcon } from '../assets/svgs/GoogleIcon.svg';
-import { ReactComponent as NaverIcon } from '../assets/svgs/NaverIcon.svg';
-import { ReactComponent as KakaoIcon } from '../assets/svgs/KakaoIcon.svg';
-import { ReactComponent as AppleIcon } from '../assets/svgs/AppleIcon.svg';
+import { ReactComponent as LogoBlue } from '../../assets/svgs/LogoBlue.svg';
+import { ReactComponent as GoogleIcon } from '../../assets/svgs/GoogleIcon.svg';
+import { ReactComponent as NaverIcon } from '../../assets/svgs/NaverIcon.svg';
+import { ReactComponent as KakaoIcon } from '../../assets/svgs/KakaoIcon.svg';
+import { ReactComponent as AppleIcon } from '../../assets/svgs/AppleIcon.svg';
 import KakaoLogin from 'react-kakao-login';
 import GoogleLogin from 'react-google-login';
 
