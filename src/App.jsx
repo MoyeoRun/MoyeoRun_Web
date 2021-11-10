@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Login from './screens/service/Login';
+import RecordAnalysis from './screens/service/RecordAnalysis';
 import RecordDetail from './screens/service/RecordDetail';
 import TestMain from './screens/test/TestMain';
 
@@ -16,7 +17,7 @@ function App() {
           <Route index element={<Login />} />
           <Route path="login" element={<Login />} />
           <Route path="recordDetail" element={<RecordDetail />} />
-          <Route path="recordAnalysis " element={<Login />} />
+          <Route path="recordAnalysis" element={<RecordAnalysis />} />
         </Route>
       ))}
     </Routes>

@@ -13,6 +13,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router';
 const index = [
   { url: '/test/login', title: '로그인 스크린' },
   { url: '/test/recordDetail', title: '기록 상세 스크린' },
+  { url: '/test/recordAnalysis', title: '기록 분석 스크린' },
 ];
 
 const TestMain = () => {

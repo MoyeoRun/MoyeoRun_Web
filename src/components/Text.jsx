@@ -7,7 +7,7 @@ const Text = (props) => {
 
 const defaultStyle = css`
   margin: 0;
-  font-family: text-300;
+  font-family: text-500;
 `;
 
 export default Text;

@@ -23,17 +23,28 @@ const OAuthButton = ({ OauthIcon, title, fontColor, bgColor, ...props }) => {
 };
 
 const LoginScreen = () => {
-  const onOauth = async ({ mode, access_token }) => {
-    switch (mode) {
-      case 'kakao': {
-        return await window.kakaoOauth(access_token);
+  const onOauth = ({ mode, access_token }) => {
+    console.log(access_token);
+
+    if (window.ReactNativeWebView) {
+      switch (mode) {
+        case 'kakao':
+          return window.ReactNativeWebView.postMessage(
+            JSON.stringify({ key: 'kakaoOauth', value: access_token }),
+          );
+        case 'google':
+          return window.ReactNativeWebView.postMessage(
+            JSON.stringify({ key: 'googleOauth', value: access_token }),
+          );
+        case 'naver':
+          return window.ReactNativeWebView.postMessage(
+            JSON.stringify({ key: 'naverOauth', value: access_token }),
+          );
+        default:
+          break;
       }
-      case 'google': {
-        return await window.googleOauth(access_token);
-      }
-      case 'naver': {
-        return await window.naverOauth(access_token);
-      }
+    } else {
+      alert('모바일이 아닙니다.');
     }
   };
 
