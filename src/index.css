@@ -3,11 +3,16 @@ body {
   overflow-x: hidden;
   margin: 0;
   box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#root,
+body,
+html {
+  height: 100%;
 }
 
 a {
@@ -16,75 +21,75 @@ a {
 }
 
 @font-face {
-  font-family: "text-100";
-  src: url("./assets/fonts/AppleSDGothicNeoL.ttf");
+  font-family: 'text-100';
+  src: url('./assets/fonts/AppleSDGothicNeoL.ttf');
 }
 @font-face {
-  font-family: "text-200";
-  src: url("./assets/fonts/AppleSDGothicNeoL.ttf");
+  font-family: 'text-200';
+  src: url('./assets/fonts/AppleSDGothicNeoL.ttf');
 }
 @font-face {
-  font-family: "text-300";
-  src: url("./assets/fonts/AppleSDGothicNeoL.ttf");
+  font-family: 'text-300';
+  src: url('./assets/fonts/AppleSDGothicNeoL.ttf');
 }
 @font-face {
-  font-family: "text-400";
-  src: url("./assets/fonts/AppleSDGothicNeoM.ttf");
+  font-family: 'text-400';
+  src: url('./assets/fonts/AppleSDGothicNeoM.ttf');
 }
 @font-face {
-  font-family: "text-500";
-  src: url("./assets/fonts/AppleSDGothicNeoM.ttf");
+  font-family: 'text-500';
+  src: url('./assets/fonts/AppleSDGothicNeoM.ttf');
 }
 @font-face {
-  font-family: "text-600";
-  src: url("./assets/fonts/AppleSDGothicNeoM.ttf");
+  font-family: 'text-600';
+  src: url('./assets/fonts/AppleSDGothicNeoM.ttf');
 }
 @font-face {
-  font-family: "text-700";
-  src: url("./assets/fonts/AppleSDGothicNeoB.ttf");
+  font-family: 'text-700';
+  src: url('./assets/fonts/AppleSDGothicNeoB.ttf');
 }
 @font-face {
-  font-family: "text-800";
-  src: url("./assets/fonts/AppleSDGothicNeoB.ttf");
+  font-family: 'text-800';
+  src: url('./assets/fonts/AppleSDGothicNeoB.ttf');
 }
 @font-face {
-  font-family: "text-900";
-  src: url("./assets/fonts/AppleSDGothicNeoB.ttf");
+  font-family: 'text-900';
+  src: url('./assets/fonts/AppleSDGothicNeoB.ttf');
 }
 
 @font-face {
-  font-family: "number-100";
-  src: url("./assets/fonts/SfCompactDisplay-light.otf");
+  font-family: 'number-100';
+  src: url('./assets/fonts/SfCompactDisplay-light.otf');
 }
 @font-face {
-  font-family: "number-200";
-  src: url("./assets/fonts/SfCompactDisplay-light.otf");
+  font-family: 'number-200';
+  src: url('./assets/fonts/SfCompactDisplay-light.otf');
 }
 @font-face {
-  font-family: "number-300";
-  src: url("./assets/fonts/SfCompactDisplay-light.otf");
+  font-family: 'number-300';
+  src: url('./assets/fonts/SfCompactDisplay-light.otf');
 }
 @font-face {
-  font-family: "number-400";
-  src: url("./assets/fonts/SfCompactDisplay.otf");
+  font-family: 'number-400';
+  src: url('./assets/fonts/SfCompactDisplay.otf');
 }
 @font-face {
-  font-family: "number-500";
-  src: url("./assets/fonts/SfCompactDisplay.otf");
+  font-family: 'number-500';
+  src: url('./assets/fonts/SfCompactDisplay.otf');
 }
 @font-face {
-  font-family: "number-600";
-  src: url("./assets/fonts/SfCompactDisplay.otf");
+  font-family: 'number-600';
+  src: url('./assets/fonts/SfCompactDisplay.otf');
 }
 @font-face {
-  font-family: "number-700";
-  src: url("./assets/fonts/SfCompactDisplay-bold.ttf");
+  font-family: 'number-700';
+  src: url('./assets/fonts/SfCompactDisplay-bold.ttf');
 }
 @font-face {
-  font-family: "number-800";
-  src: url("./assets/fonts/SfCompactDisplay-bold.ttf");
+  font-family: 'number-800';
+  src: url('./assets/fonts/SfCompactDisplay-bold.ttf');
 }
 @font-face {
-  font-family: "number-900";
-  src: url("./assets/fonts/SfCompactDisplay-bold.ttf");
+  font-family: 'number-900';
+  src: url('./assets/fonts/SfCompactDisplay-bold.ttf');
 }
