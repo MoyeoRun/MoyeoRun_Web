@@ -5,6 +5,7 @@ import Chart from 'chart.js/auto';
 import React, { useEffect, useState } from 'react';
 import runData from '../../testData/recordDetailServerData.json';
 import { useLocation } from 'react-router';
+import externalTooltipHandler from '../../components/BarGraphToolTip';
 
 const RecordBarGraph = () => {
   const [data, setData] = useState(null);
@@ -77,6 +78,10 @@ const RecordBarGraph = () => {
           legend: {
             display: false,
           },
+          tooltip: {
+            enabled: false,
+            external: externalTooltipHandler,
+          },
         },
         responsive: true,
         title: {
@@ -84,18 +89,7 @@ const RecordBarGraph = () => {
           text: '막대 차트 테스트',
         },
         hoverBackgroundColor: '#1162FF',
-        barThickness: '5',
-        xAxisID: '일',
-        yAxisID: 'km',
-        // tooltips: {
-        //   mode: 'index',
-        //   intersect: true,
-        //   callbacks: {
-        //     title: function (tooltipItems, data) {
-        //       return data.labels[tooltipItems[0].datasetIndex];
-        //     },
-        //   },
-        // },
+        barThickness: '8',
       },
     });
     return () => {
@@ -106,7 +100,9 @@ const RecordBarGraph = () => {
   return (
     <>
       <Box css={barGraphWrapper(375)}>
-        <canvas css={barGraph()} id="barGraph"></canvas>
+        <div>
+          <canvas css={barGraph()} id="barGraph"></canvas>
+        </div>
         <Box css={axis()}>
           <Box>km</Box>
           <Box>일</Box>
