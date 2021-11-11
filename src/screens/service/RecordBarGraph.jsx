@@ -7,12 +7,24 @@ import runData from '../../testData/recordDetailServerData.json';
 import { useLocation } from 'react-router';
 import externalTooltipHandler from '../../components/BarGraphToolTip';
 
+const initData = {
+  labels: [1, 2, 3, 4, 5, 7],
+  datasets: [
+    {
+      label: '',
+      data: [10, 3, 10, 23, 10, 5, 15, 20, 13, 5, 9],
+      backgroundColor: '#C4C4C4',
+      fill: true,
+    },
+  ],
+};
+
 const RecordBarGraph = () => {
   const [data, setData] = useState(null);
   const [buffer, setBuffer] = useState(null);
 
   useEffect(() => {
-    setData();
+    setData(initData);
     document.addEventListener('message', (e) => {
       const { latitude, longitude } = JSON.parse(e.data);
       alert(latitude, longitude);
@@ -99,28 +111,28 @@ const RecordBarGraph = () => {
 
   return (
     <>
-      <Box css={barGraphWrapper(375)}>
-        <div>
-          <canvas css={barGraph()} id="barGraph"></canvas>
-        </div>
-        <Box css={axis()}>
-          <Box>km</Box>
-          <Box>일</Box>
-        </Box>
+      {/* <Box css={barGraphWrapper(375)}> */}
+      <div>
+        <canvas css={barGraph()} id="barGraph"></canvas>
+      </div>
+      <Box css={axis()}>
+        <Box>km</Box>
+        <Box>일</Box>
       </Box>
+      {/* </Box> */}
     </>
   );
 };
 
 export default RecordBarGraph;
 
-const barGraphWrapper = (width) => css`
-  /* border: 1px solid black; */
-  box-sizing: border-box;
-  width: ${width}px;
-  height: ${width / 2}px;
-  margin: auto;
-`;
+// const barGraphWrapper = (width) => css`
+//   /* border: 1px solid black; */
+//   box-sizing: border-box;
+//   width: ${width}px;
+//   height: ${width / 2}px;
+//   margin: auto;
+// `;
 
 const barGraph = () => css`
   box-sizing: border-box;

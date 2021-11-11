@@ -96,11 +96,12 @@ const externalTooltipHandler = (context) => {
     tableRoot.appendChild(tableBody);
   }
 
+  // 여기서 툴팁 위치 조정 가능한데 지금 안함
+
   const { offsetLeft: positionX, offsetTop: positionY } = chart.canvas;
 
   // Display, position, and set styles for font
   tooltipEl.style.opacity = 1;
-
   tooltipEl.style.left = positionX + tooltip.caretX + 'px';
   tooltipEl.style.top = positionY + tooltip.caretY + 'px';
   console.log(positionX, positionY, tooltip.caretX, tooltip.caretY);
