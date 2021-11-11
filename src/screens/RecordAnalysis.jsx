@@ -3,9 +3,9 @@ import { css } from '@emotion/react';
 import { Box } from '@mui/material';
 import Chart from 'chart.js/auto';
 import React, { useEffect } from 'react';
-import Text from '../../components/Text';
-import { getPaceString } from '../../lib/util/strFormat';
-import runData from '../../testData/recordDetailServerData.json';
+import Text from '../components/Text';
+import { getPaceString } from '../lib/util/strFormat';
+import runData from '../testData/recordDetailServerData.json';
 
 const RecordAnalysis = (props) => {
   useEffect(() => {

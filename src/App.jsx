@@ -1,9 +1,10 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import Login from './screens/service/Login';
-import RecordAnalysis from './screens/service/RecordAnalysis';
-import RecordDetail from './screens/service/RecordDetail';
-import TestMain from './screens/test/TestMain';
+import Login from './screens/Login';
+import RecordAnalysis from './screens/RecordAnalysis';
+import RecordDetail from './screens/RecordDetail';
+import SingleRunStatus from './screens/SingleRunStatus';
+import TestMain from './screens/TestMain';
 
 function App() {
   return (
@@ -13,9 +14,10 @@ function App() {
         { path: '/service', element: undefined },
         { path: '/test', element: <TestMain /> },
       ].map((route) => (
-        <Route path={route.path} element={route.element}>
+        <Route key={route.path} path={route.path} element={route.element}>
           <Route index element={<Login />} />
           <Route path="login" element={<Login />} />
+          <Route path="singleRunStatus" element={<SingleRunStatus />} />
           <Route path="recordDetail" element={<RecordDetail />} />
           <Route path="recordAnalysis" element={<RecordAnalysis />} />
         </Route>

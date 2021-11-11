@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { Box, Button, TextField } from '@mui/material';
-import RecordDetailTable from '../../components/RecordDetailTable';
-import Text from '../../components/Text';
-import CustomButton from '../../components/CustomButton';
-import { getDistanceString, getPaceString, recordTimeString } from '../../lib/util/strFormat';
-import { ReactComponent as EditIcon } from '../../assets/svgs/EditIcon.svg';
+import RecordDetailTable from '../components/RecordDetailTable';
+import Text from '../components/Text';
+import CustomButton from '../components/CustomButton';
+import { getDistanceString, getPaceString, recordTimeString } from '../lib/util/strFormat';
+import { ReactComponent as EditIcon } from '../assets/svgs/EditIcon.svg';
 import { useEffect, useRef, useState } from 'react';
-import recordDetailData from '../../testData/recordDetailData.json';
+import recordDetailData from '../testData/recordDetailData.json';
 import { useLocation } from 'react-router';
 
 const data = {
@@ -57,17 +57,17 @@ const RecordDetail = () => {
   const [buffer, setBuffer] = useState(null);
 
   useEffect(() => {
+    const listener = ({ data }) => {
+      const { latitude, longitude } = JSON.parse(data);
+      setBuffer({ latitude, longitude });
+    };
     setData(recordDetailData);
-    document.addEventListener('message', (e) => {
-      const { latitude, longitude } = JSON.parse(e.data);
-      alert(latitude, longitude);
-      setBuffer({ latitude, longitude });
-    });
-    window.addEventListener('message', (e) => {
-      const { latitude, longitude } = JSON.parse(e.data);
-      alert(latitude, longitude);
-      setBuffer({ latitude, longitude });
-    });
+    document.addEventListener('message', listener);
+    window.addEventListener('message', listener);
+    return () => {
+      document.removeEventListener('message', listener);
+      window.removeEventListener('message', listener);
+    };
   }, []);
 
   useEffect(() => {
