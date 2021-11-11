@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Login from './screens/service/Login';
 import RecordAnalysis from './screens/service/RecordAnalysis';
+import RecordBarGraph from './screens/service/RecordBarGraph';
 import RecordDetail from './screens/service/RecordDetail';
 import TestMain from './screens/test/TestMain';
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="recordDetail" element={<RecordDetail />} />
           <Route path="recordAnalysis" element={<RecordAnalysis />} />
+          <Route path="recordBarGraph" element={<RecordBarGraph />} />
         </Route>
       ))}
     </Routes>
