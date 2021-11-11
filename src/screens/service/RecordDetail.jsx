@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Box } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
 import RecordDetailTable from '../../components/RecordDetailTable';
 import Text from '../../components/Text';
 import CustomButton from '../../components/CustomButton';
 import { getDistanceString, getPaceString, recordTimeString } from '../../lib/util/strFormat';
 import { ReactComponent as EditIcon } from '../../assets/svgs/EditIcon.svg';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import recordDetailData from '../../testData/recordDetailData.json';
 import { useLocation } from 'react-router';
 
@@ -54,11 +54,33 @@ const data = {
 
 const RecordDetail = () => {
   const [data, setData] = useState(null);
-  const { pathname } = useLocation();
+  const [buffer, setBuffer] = useState(null);
 
   useEffect(() => {
     setData(recordDetailData);
+    document.addEventListener('message', (e) => {
+      const { latitude, longitude } = JSON.parse(e.data);
+      alert(latitude, longitude);
+      setBuffer({ latitude, longitude });
+    });
+    window.addEventListener('message', (e) => {
+      const { latitude, longitude } = JSON.parse(e.data);
+      alert(latitude, longitude);
+      setBuffer({ latitude, longitude });
+    });
   }, []);
+
+  useEffect(() => {
+    if (buffer) {
+      setData({
+        ...data,
+        runData: data.runData.concat({
+          latitude: buffer.latitude,
+          longitude: buffer.longitude,
+        }),
+      });
+    }
+  }, [buffer]);
 
   useEffect(() => {
     if (data) {
@@ -93,6 +115,9 @@ const RecordDetail = () => {
     }
   }, [data]);
 
+  const latitude = useRef();
+  const longitude = useRef();
+
   if (!data) return null;
 
   return (
@@ -102,6 +127,21 @@ const RecordDetail = () => {
         <Text>{data.title}</Text>
         <EditIcon />
       </Box>
+      <TextField ref={latitude} />
+      <TextField ref={longitude} />
+      <Button
+        onClick={() => {
+          setData({
+            ...data,
+            runData: data.runData.concat({
+              latitude: latitude.current.value,
+              longitude: longitude.current.value,
+            }),
+          });
+        }}
+      >
+        추가ㅋㅋ
+      </Button>
       <div id="map" style={{ width: '100%', height: '430px' }}></div>
       <Box css={recordStatusWrapper}>
         <Box css={recordStatusItem}>
