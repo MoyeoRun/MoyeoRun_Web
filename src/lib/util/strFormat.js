@@ -10,16 +10,13 @@ export const getPaceString = (pace) => {
 };
 
 export const secondToTimeString = (secondNumber) => {
-  const hour = parseInt(secondNumber / 60 / 60 + '', 10)
-    .toString()
-    .padStart(2, '0');
   const minute = parseInt(((secondNumber / 60) % 60) + '', 10)
     .toString()
     .padStart(2, '0');
   const second = parseInt((secondNumber % 60) + '', 10)
     .toString()
     .padStart(2, '0');
-  return hour + ':' + minute + ':' + second;
+  return minute + ':' + second;
 };
 
 export const recordTimeString = (secondNumber) => {

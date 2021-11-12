@@ -19,7 +19,7 @@ const initData = {
   ],
 };
 
-const RecordBarGraph = () => {
+const RecordTab = () => {
   const [data, setData] = useState(null);
   const [buffer, setBuffer] = useState(null);
 
@@ -124,7 +124,7 @@ const RecordBarGraph = () => {
   );
 };
 
-export default RecordBarGraph;
+export default RecordTab;
 
 // const barGraphWrapper = (width) => css`
 //   /* border: 1px solid black; */
