@@ -3,12 +3,12 @@ import { css } from '@emotion/react';
 import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-const Mypage = () => {
+const Room = () => {
   const [props, setProps] = useState(null);
 
   const listener = (data) => {
     const propsData = JSON.parse(data);
-    if (propsData.type === 'mypage') {
+    if (propsData.type === 'room') {
       setProps(propsData.value);
     }
   };
@@ -28,8 +28,8 @@ const Mypage = () => {
     };
   }, []);
 
-  return <Box css={mypageWrapper}></Box>;
+  return <Box css={roomWrapper}></Box>;
 };
-const mypageWrapper = css``;
+const roomWrapper = css``;
 
-export default Mypage;
+export default Room;
