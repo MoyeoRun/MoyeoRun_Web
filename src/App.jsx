@@ -1,12 +1,22 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import BodyInfo from './screens/BodyInfo';
-import MyPage from './screens/MyPage';
-import Login from './screens/Login';
-import RecordAnalysis from './screens/RecordAnalysis';
-import RecordDetail from './screens/RecordDetail';
-import SingleRunStatus from './screens/SingleRunStatus';
-import TestMain from './screens/TestMain';
+import {
+  BodyInfo,
+  MyPage,
+  Login,
+  RecordAnalysis,
+  RecordDetail,
+  SingleRunStatus,
+  TestMain,
+  Home,
+  Record,
+  Running,
+  Mission,
+  Friend,
+  ReadySingleRun,
+  SingleRunMap,
+  Room,
+} from './screens';
 
 function App() {
   return (
@@ -21,6 +31,7 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="singleRunStatus" element={<SingleRunStatus />} />
           <Route path="recordDetail" element={<RecordDetail />} />
+          <Route path="recordAnalysis" element={<RecordAnalysis />} />
           <Route path="bodyInfo" element={<BodyInfo />} />
           <Route path="home" element={<Home />} />
           <Route path="record" element={<Record />} />
