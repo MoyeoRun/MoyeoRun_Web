@@ -11,10 +11,13 @@ import { useState } from 'react';
 
 const SingleRunStatus = (props) => {
   const [runStatus, setRunStatus] = useState({ isRunning: false, pace: 8.42, time: 12341 });
-  const onLongPress = () => {
-    setRunStatus({ ...runStatus, isRunning: !runStatus.isRunning });
-  };
-  const lonePressEvent = useLongPress(onLongPress, () => {}, { delay: 800 });
+  const onStatusChange = useLongPress(
+    () => {
+      setRunStatus({ ...runStatus, isRunning: !runStatus.isRunning });
+    },
+    () => {},
+    { delay: 800 },
+  );
 
   return (
     <Box css={singleRunStatusWrapper}>
@@ -31,7 +34,7 @@ const SingleRunStatus = (props) => {
       <Text css={distanceData}>{Math.floor(runData.runDistance * 100) / 100}</Text>
       <Text css={distancetitle}>킬로미터</Text>
       <Box css={{ flex: 1 }}></Box>
-      <IconButton {...lonePressEvent} css={operationButton}>
+      <IconButton {...onStatusChange} css={operationButton}>
         {runStatus.isRunning ? <PauseIcon /> : <StartIcon />}
       </IconButton>
       <Box css={{ flex: 1 }}></Box>

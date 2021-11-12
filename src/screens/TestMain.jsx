@@ -15,6 +15,7 @@ import Text from '../components/Text';
 const index = [
   { url: '/test/login', title: '로그인 스크린' },
   { url: '/test/singleRunStatus', title: '개인런 상태 스크린' },
+  { url: '/test/singleRunMap', title: '개인런 맵 스크린' },
   { url: '/test/recordDetail', title: '기록 상세 스크린' },
   { url: '/test/recordAnalysis', title: '기록 분석 스크린' },
 ];

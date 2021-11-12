@@ -115,9 +115,6 @@ const RecordDetail = () => {
     }
   }, [data]);
 
-  const latitude = useRef();
-  const longitude = useRef();
-
   if (!data) return null;
 
   return (
@@ -127,21 +124,6 @@ const RecordDetail = () => {
         <Text>{data.title}</Text>
         <EditIcon />
       </Box>
-      <TextField ref={latitude} />
-      <TextField ref={longitude} />
-      <Button
-        onClick={() => {
-          setData({
-            ...data,
-            runData: data.runData.concat({
-              latitude: latitude.current.value,
-              longitude: longitude.current.value,
-            }),
-          });
-        }}
-      >
-        추가ㅋㅋ
-      </Button>
       <div id="map" style={{ width: '100%', height: '430px' }}></div>
       <Box css={recordStatusWrapper}>
         <Box css={recordStatusItem}>
