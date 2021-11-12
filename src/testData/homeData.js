@@ -1,4 +1,4 @@
-const tempProps = {
+const homeData = {
   user: {
     name: '황인서',
   },
@@ -81,4 +81,4 @@ const tempProps = {
   ],
 };
 
-export default tempProps;
+export default homeData;
