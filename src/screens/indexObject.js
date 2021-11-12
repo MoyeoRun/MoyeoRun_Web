@@ -16,7 +16,7 @@ import {
   MakeRoom,
 } from './index';
 
-const index = [
+const indexObject = [
   { url: '/test/bodyInfo', title: '신체정보 입력 스크린', component: <BodyInfo /> },
   { url: '/test/myPage', title: '마이페이지 스크린', component: <MyPage /> },
   { url: '/test/login', title: '로그인', component: <Login /> },
@@ -34,4 +34,4 @@ const index = [
   { url: '/test/room', title: '모여런 방 스크린', component: <Room /> },
 ];
 
-export default index;
+export default indexObject;
