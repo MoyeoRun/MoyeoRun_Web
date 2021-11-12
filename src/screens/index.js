@@ -1,0 +1,16 @@
+export { default as BodyInfo } from './BodyInfo';
+export { default as MyPage } from './MyPage';
+export { default as Login } from './Login';
+export { default as RecordAnalysis } from './RecordAnalysis';
+export { default as RecordDetail } from './RecordDetail';
+export { default as SingleRunStatus } from './SingleRunStatus';
+export { default as TestMain } from './TestMain';
+export { default as Home } from './Home';
+export { default as Record } from './Record';
+export { default as Running } from './Running';
+export { default as Mission } from './Mission';
+export { default as Friend } from './Friend';
+export { default as ReadySingleRun } from './ReadySingleRun';
+export { default as SingleRunMap } from './SingleRunMap';
+export { default as MakeRoom } from './MakeRoom';
+export { default as Room } from './Room';

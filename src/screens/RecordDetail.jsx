@@ -1,73 +1,39 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Box, Button, TextField } from '@mui/material';
-import RecordDetailTable from '../../components/RecordDetailTable';
-import Text from '../../components/Text';
-import CustomButton from '../../components/CustomButton';
-import { getDistanceString, getPaceString, recordTimeString } from '../../lib/util/strFormat';
-import { ReactComponent as EditIcon } from '../../assets/svgs/EditIcon.svg';
-import { useEffect, useRef, useState } from 'react';
-import recordDetailData from '../../testData/recordDetailData.json';
-import { useLocation } from 'react-router';
+import { Box } from '@mui/material';
+import RecordDetailTable from '../components/RecordDetailTable';
+import Text from '../components/Text';
+import CustomButton from '../components/CustomButton';
+import { getDistanceString, getPaceString, recordTimeString } from '../lib/util/strFormat';
+import { ReactComponent as EditIcon } from '../assets/svgs/EditIcon.svg';
+import { useEffect, useState } from 'react';
+import recordDetailData from '../testData/recordDetailData.json';
 
-const data = {
-  date: new Date().toString(),
-  title: '바람부는 날 5Km 함께 뛰어요',
-  distance: 5,
-  pace: 5.36,
-  time: 1700,
-  runData: [
-    { latitude: 37.659187827620975, longitude: 127.0514252126567 },
-    { latitude: 37.65703042721502, longitude: 127.05266975756653 },
-    { latitude: 37.653191118834805, longitude: 127.0534422337102 },
-    { latitude: 37.65312316468623, longitude: 127.0548155246323 },
-    { latitude: 37.65599417327399, longitude: 127.05449365957243 },
-    { latitude: 37.66012211532027, longitude: 127.052326434836 },
-    { latitude: 37.66441968764726, longitude: 127.05174707772825 },
-    { latitude: 37.66779131629595, longitude: 127.0497408063072 },
-    { latitude: 37.66776583850865, longitude: 127.04826022703183 },
-    { latitude: 37.666118256361884, longitude: 127.04911853385815 },
-    { latitude: 37.66453008843758, longitude: 127.05060984196885 },
-    { latitude: 37.66149803713027, longitude: 127.05093170702871 },
-    { latitude: 37.659553042638635, longitude: 127.05138231811692 },
-    { latitude: 37.6556629007224, longitude: 127.05346371235336 },
-  ],
-  runSummaryData: [
-    {
-      pace: 5.0,
-      altitude: -2,
-    },
-    {
-      pace: 5.3,
-      altitude: -3,
-    },
-    {
-      pace: 5.22,
-      altitude: -4,
-    },
-    {
-      pace: 5.1,
-      altitude: -1,
-    },
-  ],
-};
+let map = null;
 
 const RecordDetail = () => {
   const [data, setData] = useState(null);
   const [buffer, setBuffer] = useState(null);
 
   useEffect(() => {
+    const listener = ({ data }) => {
+      const { latitude, longitude } = JSON.parse(data);
+      setBuffer({ latitude, longitude });
+    };
     setData(recordDetailData);
-    document.addEventListener('message', (e) => {
-      const { latitude, longitude } = JSON.parse(e.data);
-      alert(latitude, longitude);
-      setBuffer({ latitude, longitude });
-    });
-    window.addEventListener('message', (e) => {
-      const { latitude, longitude } = JSON.parse(e.data);
-      alert(latitude, longitude);
-      setBuffer({ latitude, longitude });
-    });
+    document.addEventListener('message', listener);
+    window.addEventListener('message', listener);
+
+    var container = document.getElementById('map');
+    var options = {
+      center: new window.kakao.maps.LatLng(37.659187827620975, 127.0514252126567),
+      level: 5,
+    };
+    map = new window.kakao.maps.Map(container, options);
+    return () => {
+      document.removeEventListener('message', listener);
+      window.removeEventListener('message', listener);
+    };
   }, []);
 
   useEffect(() => {
@@ -83,13 +49,7 @@ const RecordDetail = () => {
   }, [buffer]);
 
   useEffect(() => {
-    if (data) {
-      var container = document.getElementById('map');
-      var options = {
-        center: new window.kakao.maps.LatLng(37.659187827620975, 127.0514252126567),
-        level: 5,
-      };
-      var map = new window.kakao.maps.Map(container, options);
+    if (data && map) {
       new window.kakao.maps.Polyline({
         map: map,
         path: [
@@ -115,9 +75,6 @@ const RecordDetail = () => {
     }
   }, [data]);
 
-  const latitude = useRef();
-  const longitude = useRef();
-
   if (!data) return null;
 
   return (
@@ -127,21 +84,6 @@ const RecordDetail = () => {
         <Text>{data.title}</Text>
         <EditIcon />
       </Box>
-      <TextField ref={latitude} />
-      <TextField ref={longitude} />
-      <Button
-        onClick={() => {
-          setData({
-            ...data,
-            runData: data.runData.concat({
-              latitude: latitude.current.value,
-              longitude: longitude.current.value,
-            }),
-          });
-        }}
-      >
-        추가ㅋㅋ
-      </Button>
       <div id="map" style={{ width: '100%', height: '430px' }}></div>
       <Box css={recordStatusWrapper}>
         <Box css={recordStatusItem}>
