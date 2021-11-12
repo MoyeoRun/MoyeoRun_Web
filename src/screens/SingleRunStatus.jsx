@@ -8,9 +8,6 @@ import { ReactComponent as StartIcon } from '../assets/svgs/StartIcon.svg';
 import runData from '../testData/recordDetailServerData.json';
 import useLongPress from '../lib/util/useLongPress';
 import { useState } from 'react';
-import { useDrag } from 'react-dnd';
-import { Dustbin } from '../components/Dustbin';
-import { Item } from '../components/Item';
 
 const SingleRunStatus = (props) => {
   const [runStatus, setRunStatus] = useState({ isRunning: false, pace: 8.42, time: 12341 });
@@ -44,14 +41,6 @@ const SingleRunStatus = (props) => {
         {runStatus.isRunning ? <PauseIcon /> : <StartIcon />}
       </IconButton>
       <Box css={{ flex: 1 }}></Box>
-      <div style={{ overflow: 'hidden', clear: 'both' }}>
-        <Dustbin allowedDropEffect="any" />
-      </div>
-      <div style={{ overflow: 'hidden', clear: 'both' }}>
-        <Item name="Glass" />
-        <Item name="Banana" />
-        <Item name="Paper" />
-      </div>
     </Box>
   );
 };
