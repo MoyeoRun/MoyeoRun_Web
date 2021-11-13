@@ -13,7 +13,6 @@ import { NaverMap, Polyline, Marker } from 'react-naver-maps';
 const RecordDetail = () => {
   const [data, setData] = useState(null);
   const [buffer, setBuffer] = useState(null);
-  const mapRef = useRef();
 
   const listener = ({ data }) => {
     if (typeof data !== 'string') return;
@@ -55,7 +54,6 @@ const RecordDetail = () => {
       </Box>
       <NaverMap
         mapDivId={'maps-getting-started-uncontrolled'}
-        ref={mapRef}
         css={css`
           width: 100%;
           height: 430px;

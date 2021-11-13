@@ -14,13 +14,7 @@ const SingleRunStatus = (props) => {
   const onLongPress = () => {
     setRunStatus({ ...runStatus, isRunning: !runStatus.isRunning });
   };
-  const lonePressEvent = useLongPress(onLongPress, () => {}, { delay: 800 });
-  const [collected, drag, dragPreview] = useDrag(() => ({
-    type: 'actionButton',
-    collect: (monitor) => ({
-      isDragging: !!monitor.isDragging(),
-    }),
-  }));
+  const lonePressEvent = useLongPress(onLongPress, () => {}, { delay: 500 });
 
   return (
     <Box css={singleRunStatusWrapper}>
@@ -113,12 +107,12 @@ const operationButton = css`
   }
   &:active {
     background-color: #1162ff;
-    transition: all 0.75s ease;
+    transition: all 0.5s ease;
     transform: scale(1.15, 1.15);
   }
   &:not(:active) {
     background-color: #1162ff;
-    transition: all 0.43s ease;
+    transition: all 0.2s ease;
     transform: scale(1, 1);
   }
 `;

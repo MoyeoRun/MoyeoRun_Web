@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Box, Dialog, IconButton, MenuItem, MenuList, Slide } from '@mui/material';
+import { Box, Dialog, IconButton, MenuItem, MenuList, Slide, TextField } from '@mui/material';
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { ReactComponent as LeftIcon } from '../assets/svgs/LeftIcon.svg';
 import { ReactComponent as BottomArrowIcon } from '../assets/svgs/BottomArrowIcon.svg';
@@ -8,7 +8,8 @@ import { ReactComponent as CheckIcon } from '../assets/svgs/CheckIcon.svg';
 import CustomButton from '../components/CustomButton';
 import Text from '../components/Text';
 import { secondToTimeString } from '../lib/util/strFormat';
-import GoogleMap from 'google-map-react';
+import { NaverMap } from 'react-naver-maps';
+import Picker from 'rmc-picker';
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -53,6 +54,28 @@ const ReadySingleRun = () => {
 
   return (
     <Box css={readySingleRunWrapper}>
+      <NaverMap
+        mapDivId={'maps-getting-started-uncontrolled'}
+        css={css`
+          width: 100%;
+          height: 100%;
+          position: absolute !important;
+          z-index: -1;
+          &:focus-visible {
+            outline: none;
+          }
+        `}
+        mapTypes={
+          new window.naver.maps.MapTypeRegistry({
+            normal: naver.maps.NaverStyleMapTypeOptions.getVectorMap(),
+          })
+        }
+        defaultZoom={15}
+        defaultCenter={{
+          lat: 37.51977586326575,
+          lng: 127.06283169005788,
+        }}
+      ></NaverMap>
       <Box css={topWrapper}>
         <LeftIcon className="icon" />
         <Text className="text">자유 달리기</Text>
@@ -126,18 +149,13 @@ const ReadySingleRun = () => {
         </MenuList>
       </Dialog>
       <Box css={{ flex: 1 }}></Box>
-      <IconButton css={operationButton}>시간</IconButton>
+      <IconButton css={operationButton}>시작</IconButton>
       <Box css={{ flex: 1 }}></Box>
     </Box>
   );
 };
 
 export default ReadySingleRun;
-
-const mapWrapper = css`
-  width: 100%;
-  height: 100%;
-`;
 
 const readySingleRunWrapper = css`
   width: 100%;
@@ -192,6 +210,9 @@ const selectButton = css`
   background: white;
   border-radius: 32px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+  &:hover {
+    background: white;
+  }
   .icon {
     margin-left: 9px;
   }
