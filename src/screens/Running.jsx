@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Box, Dialog, IconButton, Skeleton, Tab, Tabs } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Box, Dialog, IconButton, Skeleton, Slide, Tab, Tabs } from '@mui/material';
+import { forwardRef, useEffect, useState } from 'react';
 import Text from '../components/Text';
 import tempProps from '../testData/runningData';
 import GuideCard from '../components/RunCard/GuideCard';
@@ -10,6 +10,10 @@ import MoyeoRunCard from '../components/RunCard/HotRunCard';
 import { ReactComponent as PlusIcon } from '../assets/svgs/PlusIcon.svg';
 import { ReactComponent as CancleIcon } from '../assets/svgs/CancleIcon.svg';
 import CustomButton from '../components/CustomButton';
+
+const Transition = forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const Running = () => {
   const [props, setProps] = useState(null);
@@ -62,7 +66,7 @@ const Running = () => {
               <PlusIcon />
             </IconButton>
           )}
-          <Dialog open={open} onClose={handleClose}>
+          <Dialog TransitionComponent={Transition} open={open} onClose={handleClose}>
             <Box css={makeRoomWrapper}>
               <Box className="header">
                 <Text className="title">방 만들기</Text>
@@ -155,7 +159,7 @@ const makeRoomWrapper = css`
   position: fixed;
   width: calc(100% - 40px);
   height: 317px;
-  bottom: 0;
+  bottom: 0px;
   left: 0;
   background: white;
   border-radius: 12px 12px 0 0;
