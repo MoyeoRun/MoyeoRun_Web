@@ -17,7 +17,7 @@ const SingleRunStatus = (props) => {
       setRunStatus({ ...runStatus, isRunning: !runStatus.isRunning });
     },
     () => {},
-    { delay: 800 },
+    { delay: 300 },
   );
 
   return (
@@ -111,12 +111,12 @@ const operationButton = css`
   }
   &:active {
     background-color: #1162ff;
-    transition: all 0.5s ease;
+    transition: all 0.3s ease;
     transform: scale(1.15, 1.15);
   }
   &:not(:active) {
     background-color: #1162ff;
-    transition: all 0.2s ease;
+    transition: all 0.1s ease;
     transform: scale(1, 1);
   }
 `;

@@ -26,6 +26,7 @@ import ReadySingleRun from './ReadySingleRun';
 import SingleRunMap from './SingleRunMap';
 import MakeRoom from './MakeRoom';
 import Room from './Room';
+import SingleRunOnlyMap from './SingleRunOnlyMap';
 
 const device = [
   { name: 'iPhone6, 7, 8 (9:16)', width: 375, height: 667 },
@@ -48,6 +49,7 @@ const index = [
   { url: '/test/singleRunStatus', title: '개인런 상태 스크린', component: <SingleRunStatus /> },
   { url: '/test/readySingleRun', title: '개인런 준비 스크린', component: <ReadySingleRun /> },
   { url: '/test/singleRunMap', title: '개인런 맵 스크린', component: <SingleRunMap /> },
+  { url: '/test/singleRunOnlyMap', title: '개인런 맵만', component: <SingleRunOnlyMap /> },
   { url: '/test/makeRoom', title: '모여런 만들기 스크린', component: <MakeRoom /> },
   { url: '/test/room', title: '모여런 방 스크린', component: <Room /> },
 ];
