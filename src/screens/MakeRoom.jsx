@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 const MakeRoom = () => {
   const [props, setProps] = useState(null);
 
-  const listener = (data) => {
+  const listener = ({ data }) => {
     const propsData = JSON.parse(data);
     if (propsData.type === 'makeRoom') {
       setProps(propsData.value);

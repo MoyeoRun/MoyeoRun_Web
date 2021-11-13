@@ -28,7 +28,7 @@ const ReadySingleRun = () => {
     setOpen(false);
   };
 
-  const listener = (data) => {
+  const listener = ({ data }) => {
     if (typeof data !== 'string') return;
     const propsData = JSON.parse(data);
     if (propsData.type === 'readySingleRun') {

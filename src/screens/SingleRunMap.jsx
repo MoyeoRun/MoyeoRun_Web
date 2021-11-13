@@ -30,7 +30,7 @@ const SingleRunMap = () => {
     { delay: 500 },
   );
 
-  const listener = (data) => {
+  const listener = ({ data }) => {
     if (typeof data !== 'string') return;
     const propsData = JSON.parse(data);
     if (propsData.type === 'singleRunMap') {

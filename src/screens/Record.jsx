@@ -10,7 +10,7 @@ import Summary from '../components/RecordComponents/Summary';
 const Record = () => {
   const [props, setProps] = useState(null);
 
-  const listener = (data) => {
+  const listener = ({ data }) => {
     const propsData = JSON.parse(data);
     if (propsData.type === 'record') {
       setProps(propsData.value);
