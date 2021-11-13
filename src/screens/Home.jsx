@@ -181,6 +181,11 @@ const runListWraper = css`
   width: 100%;
   height: 196px;
   overflow-x: hidden;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const runList = css`
@@ -189,6 +194,8 @@ const runList = css`
 `;
 
 const runItem = css`
+  width: 335px;
+  height: 196px;
   margin-right: 10px;
 `;
 
