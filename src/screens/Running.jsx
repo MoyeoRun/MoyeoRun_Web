@@ -64,9 +64,11 @@ const Running = () => {
             <Box css={makeRoomWrapper}>
               <Box className="header">
                 <Text className="title">방 만들기</Text>
-                <IconButton className="icon" onClick={handleClose}>
-                  <CancleIcon />
-                </IconButton>
+                {menu === 0 && (
+                  <IconButton className="icon" onClick={handleClose}>
+                    <CancleIcon />
+                  </IconButton>
+                )}
               </Box>
               <Text className="description">목표를 설정하고 함께 뛸 수 있어요!</Text>
               <CustomButton className="button">방 만들기</CustomButton>
