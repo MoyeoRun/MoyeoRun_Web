@@ -2,21 +2,27 @@
 import { css } from '@emotion/react';
 import { ButtonUnstyled } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { ReactComponent as CalendarIcon } from '../../assets/svgs/CalendarIcon.svg';
+import CalenderPicker from './CalenderPicker';
 
 const Filtering = ({ startDate, endDate }) => {
+  const [modalOpen, setModalOpen] = useState();
+  const handleClose = () => {
+    setModalOpen(false);
+  };
+
   return (
     <>
-      <ButtonUnstyled css={Button} onClick={() => console.log(123)}>
+      <ButtonUnstyled css={Button} onClick={() => setModalOpen(true)}>
         <Box css={flexWrap}>
           <CalendarIcon />
           <Box css={Typo}>{`2021년 11월 8 - 19일`}</Box>
-
           {/* {`${startYear}년 ${startMonth}월 ${startDay} - ${endDay}일`} */}
         </Box>
       </ButtonUnstyled>
+      <CalenderPicker open={modalOpen} handleClose={handleClose} />
     </>
   );
 };
