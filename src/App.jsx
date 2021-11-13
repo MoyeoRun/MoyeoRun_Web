@@ -1,11 +1,22 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import Login from './screens/Login';
-import RecordAnalysis from './screens/RecordAnalysis';
-import RecordDetail from './screens/RecordDetail';
-import SingleRunMap from './screens/SingleRunMap';
-import SingleRunStatus from './screens/SingleRunStatus';
-import TestMain from './screens/TestMain';
+import {
+  BodyInfo,
+  MyPage,
+  Login,
+  RecordAnalysis,
+  RecordDetail,
+  SingleRunStatus,
+  TestMain,
+  Home,
+  Record,
+  Running,
+  Mission,
+  Friend,
+  ReadySingleRun,
+  SingleRunMap,
+  Room,
+} from './screens';
 
 function App() {
   return (
@@ -22,6 +33,19 @@ function App() {
           <Route path="singleRunMap" element={<SingleRunMap />} />
           <Route path="recordDetail" element={<RecordDetail />} />
           <Route path="recordAnalysis" element={<RecordAnalysis />} />
+          <Route path="bodyInfo" element={<BodyInfo />} />
+          <Route path="home" element={<Home />} />
+          <Route path="record" element={<Record />} />
+          <Route path="recordDetail" element={<RecordDetail />} />
+          <Route path="running" element={<Running />} />
+          <Route path="mission" element={<Mission />} />
+          <Route path="friend" element={<Friend />} />
+          <Route path="myPage" element={<MyPage />} />
+          <Route path="readySingleRun" element={<ReadySingleRun />} />
+          <Route path="singleRunMap" element={<SingleRunMap />} />
+          <Route path="makeRoom" element={<makeRoom />} />
+          <Route path="room" element={<Room />} />
+          <Route path="moyeoRun" element={<moyeoRun />} />
         </Route>
       ))}
     </Routes>

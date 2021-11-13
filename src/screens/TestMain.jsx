@@ -11,14 +11,7 @@ import { useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Text from '../components/Text';
-
-const index = [
-  { url: '/test/login', title: '로그인 스크린' },
-  { url: '/test/singleRunStatus', title: '개인런 상태 스크린' },
-  { url: '/test/singleRunMap', title: '개인런 맵 스크린' },
-  { url: '/test/recordDetail', title: '기록 상세 스크린' },
-  { url: '/test/recordAnalysis', title: '기록 분석 스크린' },
-];
+import indexObject from '../screens/indexObject';
 
 const device = [
   { name: 'iPhone6, 7, 8 (9:16)', width: 375, height: 667 },
@@ -65,7 +58,7 @@ const TestMain = () => {
             <MenuIcon />
           </IconButton>
           <Menu anchorEl={screenAnchorEl} open={screenMenuOpen} onClose={handleScreenMenuClose}>
-            {index.map((item) => (
+            {indexObject.map((item) => (
               <MenuItem
                 key={item.url}
                 onClick={() => {
@@ -80,7 +73,7 @@ const TestMain = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {pathname === '/test'
               ? '로그인 스크린'
-              : index.filter((item) => item.url === pathname)[0].title}
+              : indexObject.filter((item) => item.url === pathname)[0].title}
           </Typography>
           <Button
             variant="contained"

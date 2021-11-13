@@ -9,6 +9,30 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+body,
+body * {
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  -webkit-user-callout: none !important;
+  -webkit-touch-callout: none !important;
+  scrollbar-width: none;
+}
+body::-webkit-scrollbar {
+  display: none;
+}
+
+input,
+textarea {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+  -webkit-user-callout: default !important;
+  -webkit-touch-callout: default !important;
+}
+
 #root,
 body,
 html {
