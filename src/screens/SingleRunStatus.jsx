@@ -110,12 +110,12 @@ const operationButton = css`
   }
   &:active {
     background-color: #1162ff;
-    transition: all 0.75s ease;
+    transition: all 0.5s ease;
     transform: scale(1.15, 1.15);
   }
   &:not(:active) {
     background-color: #1162ff;
-    transition: all 0.43s ease;
+    transition: all 0.2s ease;
     transform: scale(1, 1);
   }
 `;

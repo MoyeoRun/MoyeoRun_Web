@@ -34,43 +34,30 @@ const SingleRunMap = (props) => {
   }, []);
 
   useEffect(() => {
-    if (data) {
-      var container = document.getElementById('map');
-      var options = {
-        center: new window.kakao.maps.LatLng(37.659187827620975, 127.0514252126567),
-        level: 5,
-      };
-      var map = new window.kakao.maps.Map(container, options);
-      new window.kakao.maps.Polyline({
-        map: map,
-        path: [
-          data.runData.map((point) => {
-            return new window.kakao.maps.LatLng(point.latitude, point.longitude);
-          }),
-        ],
-        strokeWeight: 7,
-        strokeColor: '#1162FF',
-        strokeOpacity: 0.8,
-      }).setMap(map);
-      new window.kakao.maps.Marker({
-        map: map,
-        position: new window.kakao.maps.LatLng(data.runData[0].latitude, data.runData[0].longitude),
-      }).setMap(map);
-      new window.kakao.maps.Marker({
-        map: map,
-        position: new window.kakao.maps.LatLng(
-          data.runData[data.runData.length - 1].latitude,
-          data.runData[data.runData.length - 1].longitude,
-        ),
-      }).setMap(map);
-    }
-  }, [data]);
+    console.log(recordDetailData);
+    setProps(recordDetailData);
+    document.addEventListener('message', listener);
+    window.addEventListener('message', listener);
+  }, []);
 
   if (!data) return null;
 
   return (
     <Box css={singleRunMapWrapper}>
-      <div id="map" style={{ width: '100%', flex: 1 }}></div>
+      <NaverMap
+        mapDivId={'maps-getting-started-uncontrolled'}
+        css={mapStyle}
+        mapTypes={
+          new window.naver.maps.MapTypeRegistry({
+            normal: naver.maps.NaverStyleMapTypeOptions.getVectorMap(),
+          })
+        }
+        defaultZoom={15}
+        defaultCenter={{
+          lat: 37.659187827620975,
+          lng: 127.0514252126567,
+        }}
+      ></NaverMap>
       <Box css={bottomSection}>
         <Box css={recordStatusWrapper}>
           <Box css={recordStatusItem}>
@@ -110,9 +97,14 @@ const SingleRunMap = (props) => {
 export default SingleRunMap;
 
 const singleRunMapWrapper = css`
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
+`;
+
+const mapStyle = css`
+  flex: 1;
 `;
 
 const bottomSection = css`
