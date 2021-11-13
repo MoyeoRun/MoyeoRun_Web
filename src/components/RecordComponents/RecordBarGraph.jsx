@@ -3,9 +3,8 @@ import { css } from '@emotion/react';
 import { Box } from '@mui/material';
 import Chart from 'chart.js/auto';
 import React, { useEffect, useState } from 'react';
-import runData from '../../testData/recordDetailServerData.json';
 import { useLocation } from 'react-router';
-import externalTooltipHandler from '../../components/BarGraphToolTip';
+import externalTooltipHandler from '../BarGraphToolTip';
 
 const initData = {
   labels: [1, 2, 3, 4, 5, 7],
@@ -19,7 +18,7 @@ const initData = {
   ],
 };
 
-const RecordTab = () => {
+const RecordBarGraph = () => {
   const [data, setData] = useState(null);
   const [buffer, setBuffer] = useState(null);
 
@@ -110,8 +109,8 @@ const RecordTab = () => {
   }, []);
 
   return (
-    <>
-      {/* <Box css={barGraphWrapper(375)}> */}
+    <Box css={barGraphWrapper}>
+      <Box css={graphBorder} />
       <div>
         <canvas css={barGraph()} id="barGraph"></canvas>
       </div>
@@ -119,26 +118,22 @@ const RecordTab = () => {
         <Box>km</Box>
         <Box>일</Box>
       </Box>
-      {/* </Box> */}
-    </>
+    </Box>
   );
 };
 
-export default RecordTab;
+export default RecordBarGraph;
 
-// const barGraphWrapper = (width) => css`
-//   /* border: 1px solid black; */
-//   box-sizing: border-box;
-//   width: ${width}px;
-//   height: ${width / 2}px;
-//   margin: auto;
-// `;
+const barGraphWrapper = css`
+  box-sizing: border-box;
+  margin: auto;
+  padding: 0px 9px 0px 9px;
+`;
 
 const barGraph = () => css`
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  padding: 0px 0px 0px 5px;
 `;
 
 const axis = () => css`
@@ -149,8 +144,12 @@ const axis = () => css`
   line-height: 12px;
   position: relative;
   flex-direction: row;
-  padding: 0px 0px 0px 5px;
   top: -16px;
   font-size: 12px;
   color: #848484;
+`;
+const graphBorder = css`
+  width: 100%;
+  border: 1px solid #dddddd;
+  margin-bottom: 32px;
 `;
