@@ -56,10 +56,13 @@ const RecordDetail = () => {
       <NaverMap
         mapDivId={'maps-getting-started-uncontrolled'}
         ref={mapRef}
-        style={{
-          width: '100%',
-          height: '430px',
-        }}
+        css={css`
+          width: 100%;
+          height: 430px;
+          &:focus-visible {
+            outline: none;
+          }
+        `}
         mapTypes={
           new window.naver.maps.MapTypeRegistry({
             normal: naver.maps.NaverStyleMapTypeOptions.getVectorMap(),
@@ -80,6 +83,9 @@ const RecordDetail = () => {
               }))}
               strokeColor={'#1162FF'}
               strokeStyle={'solid'}
+              strokeLineCap={'round'}
+              strokeLineJoin={'round'}
+              line
               strokeOpacity={0.8}
               strokeWeight={7}
             />
