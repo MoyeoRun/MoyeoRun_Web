@@ -11,13 +11,45 @@ import { useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Text from '../components/Text';
-import indexObject from '../screens/indexObject';
+import BodyInfo from './BodyInfo';
+import MyPage from './MyPage';
+import Login from './Login';
+import RecordAnalysis from './RecordAnalysis';
+import RecordDetail from './RecordDetail';
+import SingleRunStatus from './SingleRunStatus';
+import Home from './Home';
+import Record from './Record';
+import Running from './Running';
+import Mission from './Mission';
+import Friend from './Friend';
+import ReadySingleRun from './ReadySingleRun';
+import SingleRunMap from './SingleRunMap';
+import MakeRoom from './MakeRoom';
+import Room from './Room';
 
 const device = [
   { name: 'iPhone6, 7, 8 (9:16)', width: 375, height: 667 },
   { name: 'iPhoneX (9:9.15)', width: 375, height: 812 },
   { name: 'iPad Pro (3:4)', width: 1024, height: 1366 },
   { name: 'Galaxy S20 (9:20)', width: 480, height: 1066 },
+];
+
+const index = [
+  { url: '/test/bodyInfo', title: '신체정보 입력 스크린', component: <BodyInfo /> },
+  { url: '/test/myPage', title: '마이페이지 스크린', component: <MyPage /> },
+  { url: '/test/login', title: '로그인', component: <Login /> },
+  { url: '/test/recordAnalysis', title: '기록 상세 분석 스크린', component: <RecordAnalysis /> },
+  { url: '/test/recordDetail', title: '기록 상세 스크린', component: <RecordDetail /> },
+  { url: '/test/singleRunStatus', title: '개인런 상태 스크린', component: <SingleRunStatus /> },
+  { url: '/test/home', title: '홈 탭 스크린', component: <Home /> },
+  { url: '/test/record', title: '기록 탭 스크린', component: <Record /> },
+  { url: '/test/running', title: '러닝 탭 스크린', component: <Running /> },
+  { url: '/test/mission', title: '미션 탭 스크린', component: <Mission /> },
+  { url: '/test/friend', title: '친구 탭 스크린', component: <Friend /> },
+  { url: '/test/readySingleRun', title: '개인런 준비 스크린', component: <ReadySingleRun /> },
+  { url: '/test/singleRunMap', title: '개인런 맵 스크린', component: <SingleRunMap /> },
+  { url: '/test/makeRoom', title: '모여런 만들기 스크린', component: <MakeRoom /> },
+  { url: '/test/room', title: '모여런 방 스크린', component: <Room /> },
 ];
 
 const TestMain = () => {
@@ -58,7 +90,7 @@ const TestMain = () => {
             <MenuIcon />
           </IconButton>
           <Menu anchorEl={screenAnchorEl} open={screenMenuOpen} onClose={handleScreenMenuClose}>
-            {indexObject.map((item) => (
+            {index.map((item) => (
               <MenuItem
                 key={item.url}
                 onClick={() => {
@@ -73,7 +105,7 @@ const TestMain = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {pathname === '/test'
               ? '로그인 스크린'
-              : indexObject.filter((item) => item.url === pathname)[0].title}
+              : index.filter((item) => item.url === pathname)[0].title}
           </Typography>
           <Button
             variant="contained"

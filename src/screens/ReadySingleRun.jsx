@@ -1,13 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { Box, Dialog, IconButton, MenuItem, MenuList, Slide } from '@mui/material';
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { ReactComponent as LeftIcon } from '../assets/svgs/LeftIcon.svg';
 import { ReactComponent as BottomArrowIcon } from '../assets/svgs/BottomArrowIcon.svg';
 import { ReactComponent as CheckIcon } from '../assets/svgs/CheckIcon.svg';
 import CustomButton from '../components/CustomButton';
 import Text from '../components/Text';
 import { secondToTimeString } from '../lib/util/strFormat';
+import GoogleMap from 'google-map-react';
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -28,6 +29,7 @@ const ReadySingleRun = () => {
   };
 
   const listener = (data) => {
+    if (typeof data !== 'string') return;
     const propsData = JSON.parse(data);
     if (propsData.type === 'readySingleRun') {
       setProps(propsData.value);
@@ -132,12 +134,22 @@ const ReadySingleRun = () => {
 
 export default ReadySingleRun;
 
+const mapWrapper = css`
+  width: 100%;
+  height: 100%;
+`;
+
 const readySingleRunWrapper = css`
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: radial-gradient(
+    78.92% 37.59% at 50.13% 40.86%,
+    rgba(255, 255, 255, 0) 26.75%,
+    #ffffff 89.49%
+  );
 `;
 
 const topWrapper = css`

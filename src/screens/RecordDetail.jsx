@@ -6,30 +6,26 @@ import Text from '../components/Text';
 import CustomButton from '../components/CustomButton';
 import { getDistanceString, getPaceString, recordTimeString } from '../lib/util/strFormat';
 import { ReactComponent as EditIcon } from '../assets/svgs/EditIcon.svg';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import recordDetailData from '../testData/recordDetailData.json';
-
-let map = null;
+import { NaverMap, Polyline, Marker } from 'react-naver-maps';
 
 const RecordDetail = () => {
   const [data, setData] = useState(null);
   const [buffer, setBuffer] = useState(null);
+  const mapRef = useRef();
+
+  const listener = ({ data }) => {
+    if (typeof data !== 'string') return;
+    const { latitude, longitude } = JSON.parse(data);
+    setBuffer({ latitude, longitude });
+  };
 
   useEffect(() => {
-    const listener = ({ data }) => {
-      const { latitude, longitude } = JSON.parse(data);
-      setBuffer({ latitude, longitude });
-    };
     setData(recordDetailData);
     document.addEventListener('message', listener);
     window.addEventListener('message', listener);
 
-    var container = document.getElementById('map');
-    var options = {
-      center: new window.kakao.maps.LatLng(37.659187827620975, 127.0514252126567),
-      level: 5,
-    };
-    map = new window.kakao.maps.Map(container, options);
     return () => {
       document.removeEventListener('message', listener);
       window.removeEventListener('message', listener);
@@ -48,33 +44,6 @@ const RecordDetail = () => {
     }
   }, [buffer]);
 
-  useEffect(() => {
-    if (data && map) {
-      new window.kakao.maps.Polyline({
-        map: map,
-        path: [
-          data.runData.map((point) => {
-            return new window.kakao.maps.LatLng(point.latitude, point.longitude);
-          }),
-        ],
-        strokeWeight: 7,
-        strokeColor: '#1162FF',
-        strokeOpacity: 0.8,
-      }).setMap(map);
-      new window.kakao.maps.Marker({
-        map: map,
-        position: new window.kakao.maps.LatLng(data.runData[0].latitude, data.runData[0].longitude),
-      }).setMap(map);
-      new window.kakao.maps.Marker({
-        map: map,
-        position: new window.kakao.maps.LatLng(
-          data.runData[data.runData.length - 1].latitude,
-          data.runData[data.runData.length - 1].longitude,
-        ),
-      }).setMap(map);
-    }
-  }, [data]);
-
   if (!data) return null;
 
   return (
@@ -84,7 +53,47 @@ const RecordDetail = () => {
         <Text>{data.title}</Text>
         <EditIcon />
       </Box>
-      <div id="map" style={{ width: '100%', height: '430px' }}></div>
+      <NaverMap
+        mapDivId={'maps-getting-started-uncontrolled'}
+        ref={mapRef}
+        style={{
+          width: '100%',
+          height: '430px',
+        }}
+        mapTypes={
+          new window.naver.maps.MapTypeRegistry({
+            normal: naver.maps.NaverStyleMapTypeOptions.getVectorMap(),
+          })
+        }
+        defaultZoom={15}
+        defaultCenter={{
+          lat: 37.659187827620975,
+          lng: 127.0514252126567,
+        }}
+      >
+        {data && (
+          <>
+            <Polyline
+              path={data.runData.map((point) => ({
+                lat: point.latitude,
+                lng: point.longitude,
+              }))}
+              strokeColor={'#1162FF'}
+              strokeStyle={'solid'}
+              strokeOpacity={0.8}
+              strokeWeight={7}
+            />
+            <Marker position={{ lat: data.runData[0].latitude, lng: data.runData[0].longitude }} />
+            <Marker
+              position={{
+                lat: data.runData[data.runData.length - 1].latitude,
+                lng: data.runData[data.runData.length - 1].longitude,
+              }}
+            />
+          </>
+        )}
+      </NaverMap>
+
       <Box css={recordStatusWrapper}>
         <Box css={recordStatusItem}>
           <Text className="value">{getDistanceString(data.distance)}</Text>
