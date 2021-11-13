@@ -57,18 +57,18 @@ const Running = () => {
             {props.user.name}님,
             <br /> 달려 볼까요?
           </Text>
-          <IconButton onClick={handleClickOpen} css={{ flexShrink: 0 }}>
-            <PlusIcon />
-          </IconButton>
+          {menu === 0 && (
+            <IconButton onClick={handleClickOpen} css={{ flexShrink: 0 }}>
+              <PlusIcon />
+            </IconButton>
+          )}
           <Dialog open={open} onClose={handleClose}>
             <Box css={makeRoomWrapper}>
               <Box className="header">
                 <Text className="title">방 만들기</Text>
-                {menu === 0 && (
-                  <IconButton className="icon" onClick={handleClose}>
-                    <CancleIcon />
-                  </IconButton>
-                )}
+                <IconButton className="icon" onClick={handleClose}>
+                  <CancleIcon />
+                </IconButton>
               </Box>
               <Text className="description">목표를 설정하고 함께 뛸 수 있어요!</Text>
               <CustomButton className="button">방 만들기</CustomButton>
