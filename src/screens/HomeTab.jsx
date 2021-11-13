@@ -12,7 +12,7 @@ import MissionCard from '../components/RunCard/MissionCard';
 import RecordCard from '../components/RunCard/RecordCard';
 import { useLocation } from 'react-router';
 
-const Home = () => {
+const HomeTab = () => {
   const [props, setProps] = useState(null);
   const [scroll, setScroll] = useState(0);
   const { pathname } = useLocation();
@@ -29,13 +29,13 @@ const Home = () => {
   const listener = ({ data }) => {
     if (typeof data !== 'string') return;
     const propsData = JSON.parse(data);
-    if (propsData.type === 'home') {
+    if (propsData.type === 'homeTab') {
       setProps(propsData.value);
     }
   };
 
   useEffect(() => {
-    if (pathname === '/test/home') setProps(tempProps);
+    if (pathname === '/test/homeTab') setProps(tempProps);
     document.addEventListener('message', listener);
     window.addEventListener('message', listener);
     return () => {
@@ -45,7 +45,7 @@ const Home = () => {
   }, []);
 
   return (
-    <Box css={homeWrapper} ref={containerRef}>
+    <Box css={homeTabWrapper} ref={containerRef}>
       <Box css={header({ scrolled: scroll > 10 })}>
         <IconButton
           onClick={() => {
@@ -119,9 +119,9 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomeTab;
 
-const homeWrapper = css`
+const homeTabWrapper = css`
   width: calc(100% - 36px);
   height: fit-content;
   display: flex;

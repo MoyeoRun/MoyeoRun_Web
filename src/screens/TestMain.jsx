@@ -17,10 +17,10 @@ import Login from './Login';
 import RecordAnalysis from './RecordAnalysis';
 import RecordDetail from './RecordDetail';
 import SingleRunStatus from './SingleRunStatus';
-import Home from './Home';
-import Record from './Record';
-import Running from './Running';
-import Mission from './Mission';
+import HomeTab from './HomeTab';
+import RecordTab from './RecordTab';
+import RunningTab from './RunningTab';
+import MissionTab from './MissionTab';
 import Friend from './Friend';
 import ReadySingleRun from './ReadySingleRun';
 import SingleRunMap from './SingleRunMap';
@@ -38,12 +38,12 @@ const index = [
   { url: '/test/login', title: '로그인', component: <Login /> },
   { url: '/test/bodyInfo', title: '신체정보 입력 스크린', component: <BodyInfo /> },
   { url: '/test/myPage', title: '마이페이지 스크린', component: <MyPage /> },
-  { url: '/test/home', title: '홈 탭 스크린', component: <Home /> },
-  { url: '/test/record', title: '기록 탭 스크린', component: <Record /> },
+  { url: '/test/homeTab', title: '홈 탭 스크린', component: <HomeTab /> },
+  { url: '/test/recordTab', title: '기록 탭 스크린', component: <RecordTab /> },
   { url: '/test/recordAnalysis', title: '기록 상세 분석 스크린', component: <RecordAnalysis /> },
   { url: '/test/recordDetail', title: '기록 상세 스크린', component: <RecordDetail /> },
-  { url: '/test/running', title: '러닝 탭 스크린', component: <Running /> },
-  { url: '/test/mission', title: '미션 탭 스크린', component: <Mission /> },
+  { url: '/test/runningTab', title: '러닝 탭 스크린', component: <RunningTab /> },
+  { url: '/test/missionTab', title: '미션 탭 스크린', component: <MissionTab /> },
   { url: '/test/friend', title: '친구 탭 스크린', component: <Friend /> },
   { url: '/test/singleRunStatus', title: '개인런 상태 스크린', component: <SingleRunStatus /> },
   { url: '/test/readySingleRun', title: '개인런 준비 스크린', component: <ReadySingleRun /> },

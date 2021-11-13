@@ -15,7 +15,7 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const Running = () => {
+const RunningTab = () => {
   const [props, setProps] = useState(null);
   const [menu, setMenu] = useState(0);
   const [open, setOpen] = useState(false);
@@ -31,7 +31,7 @@ const Running = () => {
   const listener = ({ data }) => {
     if (typeof data !== 'string') return;
     const propsData = JSON.parse(data);
-    if (propsData.type === 'running') {
+    if (propsData.type === 'runningTab') {
       setProps(propsData.value);
     }
   };
@@ -54,7 +54,7 @@ const Running = () => {
   }, []);
 
   return (
-    <Box css={runningWrapper}>
+    <Box css={runningTabWrapper}>
       {props ? (
         <Box css={headWrapper}>
           <Text css={headTitle}>
@@ -127,7 +127,7 @@ const Running = () => {
   );
 };
 
-export default Running;
+export default RunningTab;
 
 const runningWrapper = css`
   width: calc(100% - 36px);
