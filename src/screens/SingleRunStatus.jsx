@@ -8,19 +8,17 @@ import { ReactComponent as StartIcon } from '../assets/svgs/StartIcon.svg';
 import runData from '../testData/recordDetailServerData.json';
 import useLongPress from '../lib/util/useLongPress';
 import { useState } from 'react';
+import { NaverMap, Polyline, Marker } from 'react-naver-maps';
 
 const SingleRunStatus = (props) => {
   const [runStatus, setRunStatus] = useState({ isRunning: false, pace: 8.42, time: 12341 });
-  const onLongPress = () => {
-    setRunStatus({ ...runStatus, isRunning: !runStatus.isRunning });
-  };
-  const lonePressEvent = useLongPress(onLongPress, () => {}, { delay: 800 });
-  const [collected, drag, dragPreview] = useDrag(() => ({
-    type: 'actionButton',
-    collect: (monitor) => ({
-      isDragging: !!monitor.isDragging(),
-    }),
-  }));
+  const onStatusChange = useLongPress(
+    () => {
+      setRunStatus({ ...runStatus, isRunning: !runStatus.isRunning });
+    },
+    () => {},
+    { delay: 800 },
+  );
 
   return (
     <Box css={singleRunStatusWrapper}>
@@ -37,7 +35,7 @@ const SingleRunStatus = (props) => {
       <Text css={distanceData}>{Math.floor(runData.runDistance * 100) / 100}</Text>
       <Text css={distancetitle}>킬로미터</Text>
       <Box css={{ flex: 1 }}></Box>
-      <IconButton {...lonePressEvent} css={operationButton}>
+      <IconButton {...onStatusChange} css={operationButton}>
         {runStatus.isRunning ? <PauseIcon /> : <StartIcon />}
       </IconButton>
       <Box css={{ flex: 1 }}></Box>
@@ -113,12 +111,12 @@ const operationButton = css`
   }
   &:active {
     background-color: #1162ff;
-    transition: all 0.75s ease;
+    transition: all 0.5s ease;
     transform: scale(1.15, 1.15);
   }
   &:not(:active) {
     background-color: #1162ff;
-    transition: all 0.43s ease;
+    transition: all 0.2s ease;
     transform: scale(1, 1);
   }
 `;

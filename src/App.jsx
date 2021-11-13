@@ -30,6 +30,7 @@ function App() {
           <Route index element={<Login />} />
           <Route path="login" element={<Login />} />
           <Route path="singleRunStatus" element={<SingleRunStatus />} />
+          <Route path="singleRunMap" element={<SingleRunMap />} />
           <Route path="recordDetail" element={<RecordDetail />} />
           <Route path="recordAnalysis" element={<RecordAnalysis />} />
           <Route path="bodyInfo" element={<BodyInfo />} />

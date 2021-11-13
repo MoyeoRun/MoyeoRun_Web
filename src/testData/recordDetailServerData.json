@@ -11,6 +11,11 @@
   "runPace": 8.425366501043683,
   "runTime": 219995,
   "runDistance": 0.4351838383385624,
+  "runStatus": {
+    "distance": 2.34,
+    "time": 12312,
+    "pace": 5.32
+  },
   "createdAt": "2021-11-08T06:47:03.094Z",
   "runData": [
     [
