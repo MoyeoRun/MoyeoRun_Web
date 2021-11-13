@@ -51,5 +51,23 @@
 			"export default ${1};",
 		],
 		"description": "Moyeo Run Component"
-	}
+	},
+	"functional component": {
+		"prefix": "fc",
+		"body": [
+		  "import React from 'react';",
+		  "${1}",
+		  "const Calender = (props) => {",
+		  "    ",
+		  "    return(",
+		  "        <>",
+		  "        ",
+		  "        </>  ",
+		  "    )};",
+		  "",
+		  "export default Calender;"
+		],
+		"description": "functional component"
+	  }
+
 }
