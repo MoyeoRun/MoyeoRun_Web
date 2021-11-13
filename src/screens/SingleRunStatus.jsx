@@ -8,6 +8,7 @@ import { ReactComponent as StartIcon } from '../assets/svgs/StartIcon.svg';
 import runData from '../testData/recordDetailServerData.json';
 import useLongPress from '../lib/util/useLongPress';
 import { useState } from 'react';
+import { NaverMap, Polyline, Marker } from 'react-naver-maps';
 
 const SingleRunStatus = (props) => {
   const [runStatus, setRunStatus] = useState({ isRunning: false, pace: 8.42, time: 12341 });

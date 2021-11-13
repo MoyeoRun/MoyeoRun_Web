@@ -9,7 +9,6 @@ import CustomButton from '../components/CustomButton';
 import Text from '../components/Text';
 import { secondToTimeString } from '../lib/util/strFormat';
 import { NaverMap } from 'react-naver-maps';
-import Picker from 'rmc-picker';
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;

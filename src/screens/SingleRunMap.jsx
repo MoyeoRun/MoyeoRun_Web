@@ -9,28 +9,37 @@ import { ReactComponent as FinishIcon } from '../assets/svgs/FinishIcon.svg';
 import { useEffect, useState } from 'react';
 import useLongPress from '../lib/util/useLongPress';
 import { getDistanceString, getPaceString, recordTimeString } from '../lib/util/strFormat';
+import { NaverMap } from 'react-naver-maps';
 
-const SingleRunMap = (props) => {
+const SingleRunMap = () => {
   const [runStatus, setRunStatus] = useState({ isRunning: false, pace: 8.42, time: 12341 });
-  const [data, setData] = useState(null);
+  const [props, setProps] = useState(null);
 
   const onIsRunningChange = useLongPress(
     () => {
       setRunStatus({ ...runStatus, isRunning: !runStatus.isRunning });
     },
     () => {},
-    { delay: 800 },
+    { delay: 500 },
   );
   const onFinishe = useLongPress(
     () => {
       alert('러닝 끝');
     },
     () => {},
-    { delay: 800 },
+    { delay: 500 },
   );
 
+  const listener = (data) => {
+    if (typeof data !== 'string') return;
+    const propsData = JSON.parse(data);
+    if (propsData.type === 'singleRunMap') {
+      setProps(propsData.value);
+    }
+  };
+
   useEffect(() => {
-    setData(recordDetailData);
+    setProps(recordDetailData);
   }, []);
 
   useEffect(() => {
@@ -40,7 +49,7 @@ const SingleRunMap = (props) => {
     window.addEventListener('message', listener);
   }, []);
 
-  if (!data) return null;
+  if (!props) return null;
 
   return (
     <Box css={singleRunMapWrapper}>
@@ -61,15 +70,15 @@ const SingleRunMap = (props) => {
       <Box css={bottomSection}>
         <Box css={recordStatusWrapper}>
           <Box css={recordStatusItem}>
-            <Text className="value">{getDistanceString(data.distance)}</Text>
+            <Text className="value">{getDistanceString(props.distance)}</Text>
             <Text className="key">거리</Text>
           </Box>
           <Box css={recordStatusItem}>
-            <Text className="value">{recordTimeString(data.time)}</Text>
+            <Text className="value">{recordTimeString(props.time)}</Text>
             <Text className="key">시간</Text>
           </Box>
           <Box css={recordStatusItem}>
-            <Text className="value">{getPaceString(data.pace)}</Text>
+            <Text className="value">{getPaceString(props.pace)}</Text>
             <Text className="key">평균 페이스</Text>
           </Box>
         </Box>
@@ -165,12 +174,12 @@ const operationButton = css`
   }
   &:active {
     background-color: #1162ff;
-    transition: all 0.75s ease;
+    transition: all 0.5s ease;
     transform: scale(1.15, 1.15);
   }
   &:not(:active) {
     background-color: #1162ff;
-    transition: all 0.43s ease;
+    transition: all 0.2s ease;
     transform: scale(1, 1);
   }
   & + & {
