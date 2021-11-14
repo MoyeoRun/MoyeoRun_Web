@@ -36,11 +36,6 @@ const ReadySingleRun = () => {
     }
   };
 
-  const on = () => {
-    const data = JSON.stringify({});
-    window.ReactNativeWebView.onMessage(data);
-  };
-
   useEffect(() => {
     document.addEventListener('message', listener);
     window.addEventListener('message', listener);
@@ -76,7 +71,12 @@ const ReadySingleRun = () => {
         }}
       ></NaverMap>
       <Box css={topWrapper}>
-        <LeftIcon className="icon" />
+        <LeftIcon
+          className="icon"
+          onClick={() => {
+            window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'goBack' }));
+          }}
+        />
         <Text className="text">자유 달리기</Text>
       </Box>
       {select === 0 && (
@@ -148,7 +148,14 @@ const ReadySingleRun = () => {
         </MenuList>
       </Dialog>
       <Box css={{ flex: 1 }}></Box>
-      <IconButton css={operationButton}>시작</IconButton>
+      <IconButton
+        css={operationButton}
+        onClick={() => {
+          window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'startFreeRun' }));
+        }}
+      >
+        시작
+      </IconButton>
       <Box css={{ flex: 1 }}></Box>
     </Box>
   );

@@ -12,5 +12,6 @@ export { default as MissionTab } from './MissionTab';
 export { default as Friend } from './Friend';
 export { default as ReadySingleRun } from './ReadySingleRun';
 export { default as SingleRunMap } from './SingleRunMap';
+export { default as SingleRunOnlyMap } from './SingleRunOnlyMap';
 export { default as MakeRoom } from './MakeRoom';
 export { default as Room } from './Room';
