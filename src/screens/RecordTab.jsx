@@ -7,12 +7,12 @@ import DetailRecordCard from '../components/RecordComponents/DetailRecordCard';
 import Filtering from '../components/RecordComponents/Filtering';
 import Summary from '../components/RecordComponents/Summary';
 
-const Record = () => {
+const RecordTab = () => {
   const [props, setProps] = useState(null);
 
   const listener = ({ data }) => {
     const propsData = JSON.parse(data);
-    if (propsData.type === 'record') {
+    if (propsData.type === 'recordTab') {
       setProps(propsData.value);
     }
   };
@@ -89,7 +89,7 @@ const Record = () => {
   );
 };
 
-export default Record;
+export default RecordTab;
 
 const recordWrapper = css`
   padding: 11px;

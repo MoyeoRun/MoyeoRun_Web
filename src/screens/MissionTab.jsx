@@ -3,12 +3,12 @@ import { css } from '@emotion/react';
 import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-const Mission = () => {
+const MissionTab = () => {
   const [props, setProps] = useState(null);
 
   const listener = ({ data }) => {
     const propsData = JSON.parse(data);
-    if (propsData.type === 'mission') {
+    if (propsData.type === 'missionTab') {
       setProps(propsData.value);
     }
   };
@@ -28,8 +28,8 @@ const Mission = () => {
     };
   }, []);
 
-  return <Box css={missionWrapper}></Box>;
+  return <Box css={missionTabWrapper}></Box>;
 };
-const missionWrapper = css``;
+const missionTabWrapper = css``;
 
-export default Mission;
+export default MissionTab;
