@@ -16,6 +16,7 @@ import {
   ReadySingleRun,
   SingleRunMap,
   Room,
+  MakeRoom,
   SingleRunOnlyMap,
 } from './screens';
 
@@ -45,7 +46,7 @@ function App() {
           <Route path="readySingleRun" element={<ReadySingleRun />} />
           <Route path="singleRunMap" element={<SingleRunMap />} />
           <Route path="singleRunOnlyMap" element={<SingleRunOnlyMap />} />
-          <Route path="makeRoom" element={<makeRoom />} />
+          <Route path="makeRoom" element={<MakeRoom />} />
           <Route path="room" element={<Room />} />
           <Route path="moyeoRun" element={<moyeoRun />} />
         </Route>
