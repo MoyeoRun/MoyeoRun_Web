@@ -31,7 +31,6 @@ const DialogSelect = ({ type, open, value, selectItems, setValue, handleClose })
     );
     setValue(updateValue);
   };
-  console.log(value);
   if (!selectItems) return null;
   if (selectItems) {
     return (
@@ -54,7 +53,6 @@ const DialogSelect = ({ type, open, value, selectItems, setValue, handleClose })
                     <Box>{item.head}</Box>
                     <select
                       id={item.id}
-                      native
                       value={item.value}
                       onChange={(e) => onChange(e, value, item.id)}
                       css={selectForm}

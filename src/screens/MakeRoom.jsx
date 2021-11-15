@@ -52,8 +52,6 @@ const getSelectItems = (pickOption) => {
   } else if (pickOption.numRange) {
     selectList = numberSelectItems(pickOption.numRange, pickOption.increProp);
   }
-  // console.log(selectList);
-
   return selectList;
 };
 
@@ -108,41 +106,34 @@ const SelectItems = {
 
 const MakeRoom = () => {
   const [props, setProps] = useState(null);
-  const [open, setOpen] = useState({
-    startTime: false,
-    distance: false,
-    timeLimit: false,
-    participants: false,
-  });
   const [roomName, setRoomName] = useState('');
   const [discription, setDiscription] = useState('');
   const [timeLimit, setTimeLimit] = useState(InitValue.timeLimit);
   const [distance, setDistance] = useState(InitValue.distance);
   const [startTime, setStartTime] = useState(InitValue.startTime);
   const [participants, setParticipants] = useState(InitValue.participants);
-
+  const [open, setOpen] = useState({
+    startTime: false,
+    distance: false,
+    timeLimit: false,
+    participants: false,
+  });
   const [selectItem, setSelectItem] = useState({
     startTime: [],
     distance: [],
     timeLimit: [],
     participants: [],
   });
-  const [formReady, setFormReady] = useState(false);
-
   const placeholder = {
     name: `방 이름을 입력해주세요.\n(ex. 자유롭게 5km 뛰어요)`,
     disc: `방을 설명할 정보를 입력해주세요.\n(ex. 30분 안에 5km 뛰기)`,
   };
   const listener = (data) => {
+    if (typeof data !== 'string') return;
     const propsData = JSON.parse(data);
-    if (propsData.type === 'makeroom') {
+    if (propsData.type === 'makeRoom') {
       setProps(propsData.value);
     }
-  };
-
-  const on = () => {
-    const data = JSON.stringify({});
-    window.ReactNativeWebView.onMessage(data);
   };
 
   useEffect(() => {
@@ -165,24 +156,9 @@ const MakeRoom = () => {
       }));
       SelectItems[type] = temp;
     }
-    console.log(SelectItems);
     setSelectItem(SelectItems);
   }),
     [];
-
-  useEffect(() => {
-    //방만들기 정보가 다 입력되어있는지 확인하기 위함, 일단은 key가
-    const formDataArr = {};
-
-    roomName ? (formDataArr[`roomName`] = roomName) : null;
-    discription ? (formDataArr[`discription`] = discription) : null;
-    startTime.forEach((item) => (item.value ? (formDataArr[item.id] = item.value) : null));
-    distance.forEach((item) => (item.value ? (formDataArr[item.id] = item.value) : null));
-    timeLimit.forEach((item) => (item.value ? (formDataArr[item.id] = item.value) : null));
-    participants.forEach((item) => (item.value ? (formDataArr[item.id] = item.value) : null));
-
-    setFormReady(Object.keys(formDataArr).length == 10 ? true : false);
-  }, [roomName, discription, startTime, distance, timeLimit]);
 
   const handleClickOpen = (type) => {
     setOpen({ ...open, [type]: true });
@@ -275,7 +251,18 @@ const MakeRoom = () => {
             />
           )}
         </Box>
-        <CustomButton css={button(formReady)}> 방만들기 </CustomButton>
+        <CustomButton
+          css={button}
+          disabled={
+            !roomName ||
+            !!startTime.filter((item) => !item.value).length ||
+            !!distance.filter((item) => !item.value).length ||
+            !!timeLimit.filter((item) => !item.value).length ||
+            !!participants.filter((item) => !item.value).length
+          }
+        >
+          방만들기
+        </CustomButton>
       </Box>
     </>
   );
@@ -318,7 +305,8 @@ const inputForm = css`
   display: flex;
   justify-content: start;
 `;
-const button = (formReady) => css`
+
+const button = css`
   position: fixed;
   bottom: 0;
   left: 0;
@@ -333,7 +321,17 @@ const button = (formReady) => css`
   letter-spacing: 0em;
   text-align: left;
   color: #ffffff;
-  background-color: ${formReady ? '#1162FF' : '#C4C4C4'};
+  background-color: #1162ff;
   margin-top: 40px;
   border-radius: 0;
+  &:hover {
+    background-color: #1162ff;
+  }
+
+  &:disabled {
+    background-color: #c4c4c4;
+    &:hover {
+      background-color: #c4c4c4;
+    }
+  }
 `;
