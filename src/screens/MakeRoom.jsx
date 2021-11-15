@@ -64,26 +64,22 @@ const getShowingValue = (value) => {
 };
 
 //numberInputPicker 초기 state 설정
-const InitStartTime = {
-  initValue: [
+
+const InitValue = {
+  startTime: [
     { id: 'start/slot', value: '', inputLabel: ' ' },
     { id: 'start/hour', value: '', inputLabel: ':' },
     { id: 'start/minute', value: '' },
   ],
-};
-
-const InitDistance = {
-  initValue: [
+  distance: [
     { id: 'distance/km', value: '', inputLabel: '.' },
     { id: 'distance/m', value: '', inputLabel: ' km' },
   ],
-};
-
-const InitTimeLimit = {
-  initValue: [
+  timeLimit: [
     { id: 'limit/hour', value: '', inputLabel: '시간 ' },
     { id: 'limit/minute', value: '', inputLabel: '분' },
   ],
+  participants: [{ id: 'participants/number', value: '', inputLabel: '명' }],
 };
 
 const InitpickOptions = {
@@ -100,26 +96,36 @@ const InitpickOptions = {
     { id: 'limit/hour', placeholder: '시간', numRange: { min: 0, max: 5 } },
     { id: 'limit/minute', placeholder: '분', increProp: 5, numRange: { min: 0, max: 59 } },
   ],
+  participants: [{ id: 'participants/number', placeholder: '명', numRange: { min: 0, max: 30 } }],
 };
 
-const InitselectItems = {
+const SelectItems = {
   startTime: [],
   distance: [],
   timeLimit: [],
+  participants: [],
 };
 
 const MakeRoom = () => {
   const [props, setProps] = useState(null);
-  const [open, setOpen] = useState({ startTime: false, distance: false, timeLimit: false });
+  const [open, setOpen] = useState({
+    startTime: false,
+    distance: false,
+    timeLimit: false,
+    participants: false,
+  });
   const [roomName, setRoomName] = useState('');
   const [discription, setDiscription] = useState('');
-  const [timeLimit, setTimeLimit] = useState(InitTimeLimit.initValue);
-  const [distance, setDistance] = useState(InitDistance.initValue);
-  const [startTime, setStartTime] = useState(InitStartTime.initValue);
+  const [timeLimit, setTimeLimit] = useState(InitValue.timeLimit);
+  const [distance, setDistance] = useState(InitValue.distance);
+  const [startTime, setStartTime] = useState(InitValue.startTime);
+  const [participants, setParticipants] = useState(InitValue.participants);
+
   const [selectItem, setSelectItem] = useState({
     startTime: [],
     distance: [],
     timeLimit: [],
+    participants: [],
   });
   const [formReady, setFormReady] = useState(false);
 
@@ -129,7 +135,7 @@ const MakeRoom = () => {
   };
   const listener = (data) => {
     const propsData = JSON.parse(data);
-    if (propsData.type === 'bodyInfo') {
+    if (propsData.type === 'makeroom') {
       setProps(propsData.value);
     }
   };
@@ -150,17 +156,19 @@ const MakeRoom = () => {
   }, []);
 
   useEffect(() => {
-    //셀렉트창에 옵션 정보를 보내주기 위해 위에 함수들을 거쳐 range 만들어준다,
+    //셀렉트창에 옵션 정보를 보내주기 위해 위에 함수들을 거쳐 선택 옵션들을 만들어주고 상태값으로 저장
     let temp = [];
     for (let type of Object.keys(InitpickOptions)) {
       temp = InitpickOptions[type].map((option) => ({ id: option.id, ...getSelectItems(option) }));
-      InitselectItems[type] = temp;
+      SelectItems[type] = temp;
     }
-    setSelectItem(InitselectItems);
+    console.log(SelectItems);
+    setSelectItem(SelectItems);
   }),
     [];
 
   useEffect(() => {
+    //방만들기 정보가 다 입력되어있는지 확인하기 위함, 일단은 key가
     const formDataArr = {};
 
     roomName ? (formDataArr[`roomName`] = roomName) : null;
@@ -168,10 +176,9 @@ const MakeRoom = () => {
     startTime.forEach((item) => (item.value ? (formDataArr[item.id] = item.value) : null));
     distance.forEach((item) => (item.value ? (formDataArr[item.id] = item.value) : null));
     timeLimit.forEach((item) => (item.value ? (formDataArr[item.id] = item.value) : null));
+    participants.forEach((item) => (item.value ? (formDataArr[item.id] = item.value) : null));
 
-    // console.log(formDataArr);
-
-    setFormReady(Object.keys(formDataArr).length == 9 ? true : false);
+    setFormReady(Object.keys(formDataArr).length == 10 ? true : false);
   }, [roomName, discription, startTime, distance, timeLimit]);
 
   const handleClickOpen = (type) => {
@@ -249,6 +256,22 @@ const MakeRoom = () => {
             />
           )}
         </Box>
+        <Box>
+          <Box css={typeTypo}>제한인원</Box>
+          <CustomButton css={inputForm} onClick={() => handleClickOpen('participants')}>
+            {getShowingValue(participants)}
+          </CustomButton>
+          {open.participants && (
+            <DialogSelect
+              type="participants"
+              open={open.participants}
+              value={participants}
+              setValue={setParticipants}
+              selectItems={selectItem.participants}
+              handleClose={handleClose}
+            />
+          )}
+        </Box>
         <CustomButton css={button(formReady)}> 방만들기 </CustomButton>
       </Box>
     </>
@@ -271,6 +294,7 @@ const typeTypo = css`
   line-height: 22px;
   letter-spacing: -0.04em;
   text-align: left;
+  margin-top: 25px;
 `;
 const inputForm = css`
   border: 1px solid #d4d4d4;

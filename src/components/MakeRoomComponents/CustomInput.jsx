@@ -36,6 +36,7 @@ const input = css`
   border-radius: 3px;
   padding: 15px;
   align-items: start;
+  margin-top: 13px;
   & .MuiInputBase-input {
     font-family: Apple SD Gothic Neo;
     font-size: 15px;
