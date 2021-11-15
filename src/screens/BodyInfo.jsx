@@ -92,7 +92,7 @@ const DialogSelect = ({
 const BodyInfo = () => {
   const [props, setProps] = useState(null);
 
-  const listener = (data) => {
+  const listener = ({ data }) => {
     const propsData = JSON.parse(data);
     if (propsData.type === 'bodyInfo') {
       setProps(propsData.value);

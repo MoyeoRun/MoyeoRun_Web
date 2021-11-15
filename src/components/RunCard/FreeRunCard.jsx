@@ -3,7 +3,12 @@ import { css } from '@emotion/react';
 import { Box } from '@mui/material';
 
 const FreeRunCard = ({ title, description }) => (
-  <Box css={runCardWrapper}>
+  <Box
+    css={runCardWrapper}
+    onClick={() => {
+      window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'goReadySingleRun' }));
+    }}
+  >
     <Box css={gradient}>
       <Box css={bottomTitle}>{title}</Box>
       <Box css={bottomDescription}>{description}</Box>

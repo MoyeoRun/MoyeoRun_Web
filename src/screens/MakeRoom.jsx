@@ -159,7 +159,10 @@ const MakeRoom = () => {
     //셀렉트창에 옵션 정보를 보내주기 위해 위에 함수들을 거쳐 선택 옵션들을 만들어주고 상태값으로 저장
     let temp = [];
     for (let type of Object.keys(InitpickOptions)) {
-      temp = InitpickOptions[type].map((option) => ({ id: option.id, ...getSelectItems(option) }));
+      temp = InitpickOptions[type].map((option) => ({
+        id: option.id,
+        ...getSelectItems(option),
+      }));
       SelectItems[type] = temp;
     }
     console.log(SelectItems);
@@ -280,7 +283,7 @@ const MakeRoom = () => {
 export default MakeRoom;
 
 const makeRoomWrapper = css`
-  padding: 20px;
+  padding: 20px 20px 88px 20px;
 `;
 const backButton = css`
   margin-top: 60px;

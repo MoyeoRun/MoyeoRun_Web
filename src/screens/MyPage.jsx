@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 const Mypage = () => {
   const [props, setProps] = useState(null);
 
-  const listener = (data) => {
+  const listener = ({ data }) => {
     const propsData = JSON.parse(data);
     if (propsData.type === 'mypage') {
       setProps(propsData.value);

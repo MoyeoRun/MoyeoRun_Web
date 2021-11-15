@@ -10,10 +10,12 @@ import { ReactComponent as RightArrowIcon } from '../assets/svgs/RightArrowIcon.
 import HotRunCard from '../components/RunCard/HotRunCard';
 import MissionCard from '../components/RunCard/MissionCard';
 import RecordCard from '../components/RunCard/RecordCard';
+import { useLocation } from 'react-router';
 
-const Home = () => {
+const HomeTab = () => {
   const [props, setProps] = useState(null);
   const [scroll, setScroll] = useState(0);
+  const { pathname } = useLocation();
   const containerRef = useRef();
 
   useEffect(() => {
@@ -24,25 +26,18 @@ const Home = () => {
     return () => window.removeEventListener('scroll', updateScroll);
   });
 
-  const listener = (data) => {
+  const listener = ({ data }) => {
     if (typeof data !== 'string') return;
     const propsData = JSON.parse(data);
-    if (propsData.type === 'home') {
+    if (propsData.type === 'homeTab') {
       setProps(propsData.value);
     }
   };
 
-  const on = () => {
-    const data = JSON.stringify({});
-    window.ReactNativeWebView.onMessage(data);
-  };
-
   useEffect(() => {
-    //테스트 데이터 주입
-    setProps(tempProps);
+    if (pathname === '/test/homeTab') setProps(tempProps);
     document.addEventListener('message', listener);
     window.addEventListener('message', listener);
-
     return () => {
       document.removeEventListener('message', listener);
       window.removeEventListener('message', listener);
@@ -50,7 +45,7 @@ const Home = () => {
   }, []);
 
   return (
-    <Box css={homeWrapper} ref={containerRef}>
+    <Box css={homeTabWrapper} ref={containerRef}>
       <Box css={header({ scrolled: scroll > 10 })}>
         <IconButton
           onClick={() => {
@@ -67,7 +62,7 @@ const Home = () => {
       {props ? (
         <Text css={headTitle}>{props.user.name}님, 즐거운 러닝 되세요</Text>
       ) : (
-        <Skeleton variant="text" css={headTitle} />
+        <Skeleton variant="text" width="100%" css={{ marginTop: '60px' }} />
       )}
       <Box css={runListTitle}>
         지금 인기있는 러닝
@@ -81,7 +76,11 @@ const Home = () => {
                   <HotRunCard runData={runData} />
                 </Box>
               ))
-            : [1, 2, 3].map(() => <Skeleton variant="rectangular" width="335px" height="196px" />)}
+            : [1, 2, 3, 4].map(() => (
+                <Box css={runItem}>
+                  <Skeleton variant="rectangular" width="100%" height="100%" />
+                </Box>
+              ))}
         </Box>
       </Box>
 
@@ -94,9 +93,9 @@ const Home = () => {
                   <MissionCard missionData={missionData} />
                 </Grid>
               ))
-            : [1, 2, 3].map(() => (
+            : [1, 2, 3, 4].map(() => (
                 <Grid item xs={6} css={missionItem}>
-                  <Skeleton variant="rectangular" width="335px" height="196px" />
+                  <Skeleton variant="rectangular" width="100%" height="100%" />
                 </Grid>
               ))}
         </Grid>
@@ -120,9 +119,9 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomeTab;
 
-const homeWrapper = css`
+const homeTabWrapper = css`
   width: calc(100% - 36px);
   height: fit-content;
   display: flex;

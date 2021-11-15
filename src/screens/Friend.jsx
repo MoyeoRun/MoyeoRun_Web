@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 const Friend = () => {
   const [props, setProps] = useState(null);
 
-  const listener = (data) => {
+  const listener = ({ data }) => {
     const propsData = JSON.parse(data);
     if (propsData.type === 'friend') {
       setProps(propsData.value);

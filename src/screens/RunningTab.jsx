@@ -10,15 +10,17 @@ import MoyeoRunCard from '../components/RunCard/HotRunCard';
 import { ReactComponent as PlusIcon } from '../assets/svgs/PlusIcon.svg';
 import { ReactComponent as CancleIcon } from '../assets/svgs/CancleIcon.svg';
 import CustomButton from '../components/CustomButton';
+import { useLocation } from 'react-router';
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const Running = () => {
+const RunningTab = () => {
   const [props, setProps] = useState(null);
   const [menu, setMenu] = useState(0);
   const [open, setOpen] = useState(false);
+  const { pathname } = useLocation();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -28,22 +30,16 @@ const Running = () => {
     setOpen(false);
   };
 
-  const listener = (data) => {
+  const listener = ({ data }) => {
     if (typeof data !== 'string') return;
     const propsData = JSON.parse(data);
-    if (propsData.type === 'running') {
+    if (propsData.type === 'runningTab') {
       setProps(propsData.value);
     }
   };
 
-  const on = () => {
-    const data = JSON.stringify({});
-    window.ReactNativeWebView.onMessage(data);
-  };
-
   useEffect(() => {
-    //테스트 데이터 주입
-    setProps(tempProps);
+    if (pathname === '/test/runningTab') setProps(tempProps);
     document.addEventListener('message', listener);
     window.addEventListener('message', listener);
 
@@ -54,7 +50,7 @@ const Running = () => {
   }, []);
 
   return (
-    <Box css={runningWrapper}>
+    <Box css={runningTabWrapper}>
       {props ? (
         <Box css={headWrapper}>
           <Text css={headTitle}>
@@ -75,7 +71,14 @@ const Running = () => {
                 </IconButton>
               </Box>
               <Text className="description">목표를 설정하고 함께 뛸 수 있어요!</Text>
-              <CustomButton className="button">방 만들기</CustomButton>
+              <CustomButton
+                className="button"
+                onClick={() => {
+                  window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'goMakeRoom' }));
+                }}
+              >
+                방 만들기
+              </CustomButton>
             </Box>
           </Dialog>
         </Box>
@@ -127,9 +130,9 @@ const Running = () => {
   );
 };
 
-export default Running;
+export default RunningTab;
 
-const runningWrapper = css`
+const runningTabWrapper = css`
   width: calc(100% - 36px);
   height: fit-content;
   display: flex;

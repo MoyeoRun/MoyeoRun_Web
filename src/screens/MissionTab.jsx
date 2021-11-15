@@ -3,12 +3,12 @@ import { css } from '@emotion/react';
 import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-const Record = () => {
+const MissionTab = () => {
   const [props, setProps] = useState(null);
 
-  const listener = (data) => {
+  const listener = ({ data }) => {
     const propsData = JSON.parse(data);
-    if (propsData.type === 'record') {
+    if (propsData.type === 'missionTab') {
       setProps(propsData.value);
     }
   };
@@ -28,8 +28,8 @@ const Record = () => {
     };
   }, []);
 
-  return <Box css={recordWrapper}></Box>;
+  return <Box css={missionTabWrapper}></Box>;
 };
-const recordWrapper = css``;
+const missionTabWrapper = css``;
 
-export default Record;
+export default MissionTab;

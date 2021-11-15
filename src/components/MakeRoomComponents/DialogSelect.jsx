@@ -31,7 +31,7 @@ const DialogSelect = ({ type, open, value, selectItems, setValue, handleClose })
     );
     setValue(updateValue);
   };
-
+  console.log(value);
   if (!selectItems) return null;
   if (selectItems) {
     return (
@@ -49,18 +49,22 @@ const DialogSelect = ({ type, open, value, selectItems, setValue, handleClose })
             </Box>
             <Box component="form" css={dialogContent}>
               {value.map((item) => (
-                <FormControl sx={{ m: 1, minWidth: 120 }}>
-                  <Box>{item.head}</Box>
-                  <select
-                    id={item.id}
-                    native
-                    value={item.value}
-                    onChange={(e) => onChange(e, value, item.id)}
-                    css={selectForm}
-                  >
-                    {<SelectOptions selectItems={selectItems} optionId={item.id} />}
-                  </select>
-                </FormControl>
+                <Box css={formControlWrap}>
+                  <FormControl sx={{ m: 1, minWidth: 120 }}>
+                    <Box>{item.head}</Box>
+                    <select
+                      id={item.id}
+                      native
+                      value={item.value}
+                      onChange={(e) => onChange(e, value, item.id)}
+                      css={selectForm}
+                    >
+                      <option selected="true" disabled="disabled"></option>
+                      {<SelectOptions selectItems={selectItems} optionId={item.id} />}
+                    </select>
+                  </FormControl>
+                  <Box>{item.inputLabel}</Box>
+                </Box>
               ))}
             </Box>
           </DialogContent>
@@ -105,4 +109,10 @@ const dialogHead = css`
   position: absolute;
   top: 10px;
   color: #007aff;
+`;
+
+const formControlWrap = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

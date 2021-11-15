@@ -8,15 +8,16 @@ import {
   RecordDetail,
   SingleRunStatus,
   TestMain,
-  Home,
-  Record,
-  Running,
-  Mission,
+  HomeTab,
+  RecordTab,
+  RunningTab,
+  MissionTab,
   Friend,
   ReadySingleRun,
   SingleRunMap,
   Room,
   MakeRoom,
+  SingleRunOnlyMap,
 } from './screens';
 
 function App() {
@@ -31,18 +32,20 @@ function App() {
           <Route index element={<Login />} />
           <Route path="login" element={<Login />} />
           <Route path="singleRunStatus" element={<SingleRunStatus />} />
+          <Route path="singleRunMap" element={<SingleRunMap />} />
           <Route path="recordDetail" element={<RecordDetail />} />
           <Route path="recordAnalysis" element={<RecordAnalysis />} />
           <Route path="bodyInfo" element={<BodyInfo />} />
-          <Route path="home" element={<Home />} />
-          <Route path="record" element={<Record />} />
+          <Route path="homeTab" element={<HomeTab />} />
+          <Route path="recordTab" element={<RecordTab />} />
           <Route path="recordDetail" element={<RecordDetail />} />
-          <Route path="running" element={<Running />} />
-          <Route path="mission" element={<Mission />} />
+          <Route path="runningTab" element={<RunningTab />} />
+          <Route path="missionTab" element={<MissionTab />} />
           <Route path="friend" element={<Friend />} />
           <Route path="myPage" element={<MyPage />} />
           <Route path="readySingleRun" element={<ReadySingleRun />} />
           <Route path="singleRunMap" element={<SingleRunMap />} />
+          <Route path="singleRunOnlyMap" element={<SingleRunOnlyMap />} />
           <Route path="makeRoom" element={<MakeRoom />} />
           <Route path="room" element={<Room />} />
           <Route path="moyeoRun" element={<moyeoRun />} />
