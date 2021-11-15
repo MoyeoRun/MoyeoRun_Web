@@ -15,10 +15,10 @@ const SummaryItem = ({ value, keyword, ...props }) => {
   );
 };
 
-const Summary = ({ summaryRecord }) => {
-  const summaryDistance = getDistanceString(summaryRecord.distance);
-  const summaryPace = getPaceString(summaryRecord.pace);
-  const summaryTime = secondToTimeString(summaryRecord.time);
+const Summary = ({ distance, pace, time }) => {
+  const summaryDistance = getDistanceString(distance);
+  const summaryPace = getPaceString(pace);
+  const summaryTime = secondToTimeString(time);
 
   return (
     <>

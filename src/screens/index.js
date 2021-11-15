@@ -1,4 +1,5 @@
 export { default as BodyInfo } from './BodyInfo';
+export { default as UploadProfile } from './UploadProfile';
 export { default as MyPage } from './MyPage';
 export { default as Login } from './Login';
 export { default as RecordAnalysis } from './RecordAnalysis';

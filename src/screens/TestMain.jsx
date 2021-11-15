@@ -27,6 +27,7 @@ import SingleRunMap from './SingleRunMap';
 import MakeRoom from './MakeRoom';
 import Room from './Room';
 import SingleRunOnlyMap from './SingleRunOnlyMap';
+import { UploadProfile } from '.';
 
 const device = [
   { name: 'iPhone6, 7, 8 (9:16)', width: 375, height: 667 },
@@ -38,6 +39,7 @@ const device = [
 const index = [
   { url: '/test/login', title: '로그인', component: <Login /> },
   { url: '/test/bodyInfo', title: '신체정보 입력 스크린', component: <BodyInfo /> },
+  { url: '/test/uploadProfile', title: '프로필 등록 스크린', component: <UploadProfile /> },
   { url: '/test/myPage', title: '마이페이지 스크린', component: <MyPage /> },
   { url: '/test/homeTab', title: '홈 탭 스크린', component: <HomeTab /> },
   { url: '/test/recordTab', title: '기록 탭 스크린', component: <RecordTab /> },

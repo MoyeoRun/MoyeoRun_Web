@@ -2,67 +2,28 @@
 import { css } from '@emotion/react';
 import { Box } from '@mui/material';
 import Chart from 'chart.js/auto';
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
+import { useEffect } from 'react';
 import externalTooltipHandler from '../BarGraphToolTip';
 
-const initData = {
-  labels: [1, 2, 3, 4, 5, 7],
-  datasets: [
-    {
-      label: '',
-      data: [10, 3, 10, 23, 10, 5, 15, 20, 13, 5, 9],
-      backgroundColor: '#C4C4C4',
-      fill: true,
-    },
-  ],
-};
+// type RunStatistics = Array<{
+//   count: number;
+//   date: string;
+//   totalDistanceOfTerm: number;
+//   totalTimeOfTerm: number;
+//   averagePaceOfTerm: number;
+// }>;
 
-const RecordBarGraph = () => {
-  const [data, setData] = useState(null);
-  const [buffer, setBuffer] = useState(null);
-
-  useEffect(() => {
-    setData(initData);
-    document.addEventListener('message', (e) => {
-      const { latitude, longitude } = JSON.parse(e.data);
-      alert(latitude, longitude);
-      setBuffer({ latitude, longitude });
-    });
-    window.addEventListener('message', (e) => {
-      const { latitude, longitude } = JSON.parse(e.data);
-      alert(latitude, longitude);
-      setBuffer({ latitude, longitude });
-    });
-  }, []);
-
-  useEffect(() => {
-    if (buffer) {
-      setData({
-        ...data,
-        runData: data.runData.concat({
-          latitude: buffer.latitude,
-          longitude: buffer.longitude,
-        }),
-      });
-    }
-  }, [buffer]);
-
+const RecordBarGraph = ({ runStatistics }) => {
   useEffect(() => {
     const barGraphCtx = document.getElementById('barGraph');
     const barGraph = new Chart(barGraphCtx, {
-      //     type: TType;
-      //     data: ChartData<TType, TData, TLabel>;
-      //     options?: ChartOptions<TType>;
-      //     plugins?: Plugin<TType>[];
-      //   }
       type: 'bar',
       data: {
-        labels: [1, 2, 3, 4, 5, 7],
+        labels: runStatistics.map((item) => new Date(item.date).getDate()),
         datasets: [
           {
             label: '',
-            data: [10, 3, 10, 23, 10, 5, 15, 20, 13, 5, 9],
+            data: runStatistics.map((item) => item.totalDistanceOfTerm),
             backgroundColor: '#C4C4C4',
             fill: true,
           },

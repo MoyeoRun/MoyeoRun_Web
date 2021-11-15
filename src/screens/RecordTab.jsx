@@ -1,28 +1,36 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Box } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import RecordBarGraph from '../components/RecordComponents/RecordBarGraph';
 import DetailRecordCard from '../components/RecordComponents/DetailRecordCard';
 import Filtering from '../components/RecordComponents/Filtering';
 import Summary from '../components/RecordComponents/Summary';
+import tempProps from '../testData/recordTabTest';
+import { useLocation } from 'react-router';
+
+// type RunHistory = {
+//   totalDistance: number;
+//   totalAveragePace: number;
+//   totalTime: number;
+//   analysisRunningListBetweenTerm: RunStatistics;
+//   runningList: Array<RunRecord>;
+// };
 
 const RecordTab = () => {
   const [props, setProps] = useState(null);
+  const { pathname } = useLocation();
 
   const listener = ({ data }) => {
+    if (typeof data !== 'string') return;
     const propsData = JSON.parse(data);
     if (propsData.type === 'recordTab') {
       setProps(propsData.value);
     }
   };
 
-  const on = () => {
-    const data = JSON.stringify({});
-    window.ReactNativeWebView.onMessage(data);
-  };
-
   useEffect(() => {
+    if (pathname === '/test/recordTab') setProps(tempProps);
     document.addEventListener('message', listener);
     window.addEventListener('message', listener);
 
@@ -32,58 +40,39 @@ const RecordTab = () => {
     };
   }, []);
 
-  const detailRecords = [
-    {
-      totalDistanceOfTerm: 12312,
-      averagePaceOfTerm: 12312312,
-      totalTimeOfTerm: 12312333,
-      date: '2021-11-13T06:55:56.670Z',
-      title: 'tiltittltl',
-    },
-    {
-      totalDistanceOfTerm: 12312,
-      averagePaceOfTerm: 12312312,
-      totalTimeOfTerm: 12312333,
-      date: '2021-11-13T06:55:56.670Z',
-      title: 'tiltittltl',
-    },
-    {
-      totalDistanceOfTerm: 12312,
-      averagePaceOfTerm: 12312312,
-      totalTimeOfTerm: 12312333,
-      date: '2021-11-13T06:55:56.670Z',
-      title: 'tiltittltl',
-    },
-    {
-      totalDistanceOfTerm: 12312,
-      averagePaceOfTerm: 12312312,
-      totalTimeOfTerm: 12312333,
-      date: '2021-11-13T06:55:56.670Z',
-      title: 'tiltittltl',
-    },
-    {
-      totalDistanceOfTerm: 12312,
-      averagePaceOfTerm: 12312312,
-      totalTimeOfTerm: 12312333,
-      date: '2021-11-13T06:55:56.670Z',
-      title: 'tiltittltl',
-    },
-  ];
-  const summaryRecord = { distance: 123123, pace: 1231.123, time: 12312223123 };
   return (
     <>
+      {console.log(props)}
       <Box css={recordWrapper}>
         <Box css={recordTitle}>기록</Box>
-        <Filtering />
-        <Summary summaryRecord={summaryRecord} />
-        <RecordBarGraph />
+        {props ? (
+          <>
+            <Filtering startDate={props.startDate} endDate={props.startDate} />
+            <Summary
+              distance={props.runHistory.totalDistance}
+              pace={props.runHistory.totalAveragePace}
+              time={props.runHistory.totalTime}
+            />
+            <RecordBarGraph runStatistics={props.runHistory.analysisRunningListBetweenTerm} />
+          </>
+        ) : (
+          <>
+            <Skeleton variant="text" width="100%" />
+            <Skeleton variant="rectangular" width="100%" width="50px" />
+            <Skeleton variant="rectangular" width="100%" width="200px" />
+          </>
+        )}
       </Box>
 
       <Box css={detailRecordWapper}>
         상세 기록
-        {detailRecords.map((record) => {
-          return <DetailRecordCard detailRecord={record} />;
-        })}
+        {props
+          ? props.runHistory.runningList.map((record, i) => (
+              <DetailRecordCard key={i} detailRecord={record} />
+            ))
+          : [1, 2, 3, 4].map((x, i) => (
+              <Skeleton key={i} variant="rectangular" width="100%" width="100px" />
+            ))}
       </Box>
     </>
   );
