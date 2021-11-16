@@ -4,7 +4,7 @@ import TimeBadge from './TimeBadge';
 import { ReactComponent as PeopleIcon } from '../../assets/svgs/PeopleIcon.svg';
 import { Box } from '@mui/material';
 
-const HotRunCard = ({ runData }) => (
+const HotRunCard = ({ runData, goBackProp }) => (
   <Box
     css={runCardWrapper(
       runData.image
