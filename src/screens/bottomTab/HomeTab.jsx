@@ -2,14 +2,14 @@
 import { css } from '@emotion/react';
 import { Avatar, Box, Grid, IconButton, Skeleton } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
-import CustomButton from '../components/CustomButton';
-import Text from '../components/Text';
-import tempProps from '../testData/homeData';
-import { ReactComponent as LogoMini } from '../assets/svgs/LogoMini.svg';
-import { ReactComponent as RightArrowIcon } from '../assets/svgs/RightArrowIcon.svg';
-import HotRunCard from '../components/RunCard/HotRunCard';
-import MissionCard from '../components/RunCard/MissionCard';
-import RecordCard from '../components/RunCard/RecordCard';
+import CustomButton from '../../components/CustomButton';
+import Text from '../../components/Text';
+import tempProps from '../../testData/homeData';
+import { ReactComponent as LogoMini } from '../../assets/svgs/LogoMini.svg';
+import { ReactComponent as RightArrowIcon } from '../../assets/svgs/RightArrowIcon.svg';
+import HotRunCard from '../../components/RunCard/HotRunCard';
+import MissionCard from '../../components/RunCard/MissionCard';
+import RecordCard from '../../components/RunCard/RecordCard';
 import { useLocation } from 'react-router';
 
 const HomeTab = () => {

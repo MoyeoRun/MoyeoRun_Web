@@ -10,50 +10,14 @@ import { Button, Menu, MenuItem, TextField } from '@mui/material';
 import { useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import index from '../screens';
 import Text from '../components/Text';
-import BodyInfo from './BodyInfo';
-import MyPage from './MyPage';
-import Login from './Login';
-import RecordAnalysis from './RecordAnalysis';
-import RecordDetail from './RecordDetail';
-import SingleRunStatus from './SingleRunStatus';
-import HomeTab from './HomeTab';
-import RecordTab from './RecordTab';
-import RunningTab from './RunningTab';
-import MissionTab from './MissionTab';
-import Friend from './Friend';
-import ReadySingleRun from './ReadySingleRun';
-import SingleRunMap from './SingleRunMap';
-import MakeRoom from './MakeRoom';
-import Room from './Room';
-import SingleRunOnlyMap from './SingleRunOnlyMap';
-import { UploadProfile } from '.';
 
 const device = [
   { name: 'iPhone6, 7, 8 (9:16)', width: 375, height: 667 },
   { name: 'iPhoneX (9:9.15)', width: 375, height: 812 },
   { name: 'iPad Pro (3:4)', width: 1024, height: 1366 },
   { name: 'Galaxy S20 (9:20)', width: 480, height: 1066 },
-];
-
-const index = [
-  { url: '/test/login', title: '로그인', component: <Login /> },
-  { url: '/test/bodyInfo', title: '신체정보 입력 스크린', component: <BodyInfo /> },
-  { url: '/test/uploadProfile', title: '프로필 등록 스크린', component: <UploadProfile /> },
-  { url: '/test/myPage', title: '마이페이지 스크린', component: <MyPage /> },
-  { url: '/test/homeTab', title: '홈 탭 스크린', component: <HomeTab /> },
-  { url: '/test/recordTab', title: '기록 탭 스크린', component: <RecordTab /> },
-  { url: '/test/recordAnalysis', title: '기록 상세 분석 스크린', component: <RecordAnalysis /> },
-  { url: '/test/recordDetail', title: '기록 상세 스크린', component: <RecordDetail /> },
-  { url: '/test/runningTab', title: '러닝 탭 스크린', component: <RunningTab /> },
-  { url: '/test/missionTab', title: '미션 탭 스크린', component: <MissionTab /> },
-  { url: '/test/friend', title: '친구 탭 스크린', component: <Friend /> },
-  { url: '/test/singleRunStatus', title: '개인런 상태 스크린', component: <SingleRunStatus /> },
-  { url: '/test/readySingleRun', title: '개인런 준비 스크린', component: <ReadySingleRun /> },
-  { url: '/test/singleRunMap', title: '개인런 맵 스크린', component: <SingleRunMap /> },
-  { url: '/test/singleRunOnlyMap', title: '개인런 맵만', component: <SingleRunOnlyMap /> },
-  { url: '/test/makeRoom', title: '모여런 만들기 스크린', component: <MakeRoom /> },
-  { url: '/test/room', title: '모여런 방 스크린', component: <Room /> },
 ];
 
 const TestMain = () => {
@@ -98,7 +62,7 @@ const TestMain = () => {
               <MenuItem
                 key={item.url}
                 onClick={() => {
-                  navigate(item.url);
+                  navigate('/test/' + item.url);
                   handleScreenMenuClose();
                 }}
               >
@@ -106,11 +70,6 @@ const TestMain = () => {
               </MenuItem>
             ))}
           </Menu>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {pathname === '/test'
-              ? '로그인 스크린'
-              : index.filter((item) => item.url === pathname)[0].title}
-          </Typography>
           <Button
             variant="contained"
             disableElevation

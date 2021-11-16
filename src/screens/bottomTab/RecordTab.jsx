@@ -2,11 +2,11 @@
 import { css } from '@emotion/react';
 import { Box, Skeleton } from '@mui/material';
 import { useEffect, useState } from 'react';
-import RecordBarGraph from '../components/RecordComponents/RecordBarGraph';
-import DetailRecordCard from '../components/RecordComponents/DetailRecordCard';
-import Filtering from '../components/RecordComponents/Filtering';
-import Summary from '../components/RecordComponents/Summary';
-import tempProps from '../testData/recordTabTest';
+import RecordBarGraph from '../../components/RecordComponents/RecordBarGraph';
+import DetailRecordCard from '../../components/RecordComponents/DetailRecordCard';
+import Filtering from '../../components/RecordComponents/Filtering';
+import Summary from '../../components/RecordComponents/Summary';
+import tempProps from '../../testData/recordTabTest';
 import { useLocation } from 'react-router';
 
 // type RunHistory = {

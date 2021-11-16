@@ -3,12 +3,12 @@ import { css } from '@emotion/react';
 import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-const Room = () => {
+const FriendTab = () => {
   const [props, setProps] = useState(null);
 
   const listener = ({ data }) => {
     const propsData = JSON.parse(data);
-    if (propsData.type === 'room') {
+    if (propsData.type === 'friendTab') {
       setProps(propsData.value);
     }
   };
@@ -28,8 +28,8 @@ const Room = () => {
     };
   }, []);
 
-  return <Box css={roomWrapper}></Box>;
+  return <Box css={friendTabWrapper}></Box>;
 };
-const roomWrapper = css``;
+const friendTabWrapper = css``;
 
-export default Room;
+export default FriendTab;

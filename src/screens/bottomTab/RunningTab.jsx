@@ -2,14 +2,14 @@
 import { css } from '@emotion/react';
 import { Box, Dialog, IconButton, Skeleton, Slide, Tab, Tabs } from '@mui/material';
 import { forwardRef, useEffect, useState } from 'react';
-import Text from '../components/Text';
-import tempProps from '../testData/runningData';
-import GuideCard from '../components/RunCard/GuideCard';
-import FreeRunCard from '../components/RunCard/FreeRunCard';
-import MoyeoRunCard from '../components/RunCard/HotRunCard';
-import { ReactComponent as PlusIcon } from '../assets/svgs/PlusIcon.svg';
-import { ReactComponent as CancleIcon } from '../assets/svgs/CancleIcon.svg';
-import CustomButton from '../components/CustomButton';
+import Text from '../../components/Text';
+import tempProps from '../../testData/runningData';
+import GuideCard from '../../components/RunCard/GuideCard';
+import FreeRunCard from '../../components/RunCard/FreeRunCard';
+import MoyeoRunCard from '../../components/RunCard/HotRunCard';
+import { ReactComponent as PlusIcon } from '../../assets/svgs/PlusIcon.svg';
+import { ReactComponent as CancleIcon } from '../../assets/svgs/CancleIcon.svg';
+import CustomButton from '../../components/CustomButton';
 import { useLocation } from 'react-router';
 
 const Transition = forwardRef(function Transition(props, ref) {
