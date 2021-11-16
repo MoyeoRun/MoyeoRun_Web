@@ -46,17 +46,15 @@ const UploadProfile = () => {
     window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'uploadProfile' }));
   };
 
-  const onUploadProfileImage = async (formData) => {
+  const onUploadProfileImage = async (imageList) => {
     window.ReactNativeWebView.postMessage(
-      JSON.stringify({ type: 'uploadProfileImage', value: formData }),
+      JSON.stringify({ type: 'uploadProfileImage', value: imageList }),
     );
   };
 
   const onChange = (imageList) => {
     if (imageList.length === 0) return;
-    const formData = new FormData();
-    formData.append('files', imageList[0].file);
-    onUploadProfileImage(formData);
+    onUploadProfileImage(imageList);
   };
 
   return (
