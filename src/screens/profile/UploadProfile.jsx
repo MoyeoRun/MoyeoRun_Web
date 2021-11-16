@@ -8,6 +8,7 @@ import { ReactComponent as CameraIcon } from '../../assets/svgs/CameraIcon.svg';
 import CustomButton from '../../components/CustomButton';
 import Text from '../../components/Text';
 import ImageUploading from 'react-images-uploading';
+import axios from 'axios';
 
 const UploadProfile = () => {
   const [props, setProps] = useState({
@@ -17,8 +18,9 @@ const UploadProfile = () => {
     nickName: null,
     weight: null,
     height: null,
-    profileImage: null,
+    accessToken: null,
   });
+  const [profileImage, setProfileImage] = useState('');
 
   const listener = ({ data }) => {
     if (typeof data !== 'string') return;
@@ -46,15 +48,27 @@ const UploadProfile = () => {
     window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'uploadProfile' }));
   };
 
-  const onUploadProfileImage = async (imageList) => {
+  const onUploadProfileImage = async (data) => {
+    const response = await axios({
+      url: '/images/upload',
+      method: 'post',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: 'Bearer ' + props.accessToken.token,
+      },
+      data,
+    });
+    setProfileImage(response.data.location);
     window.ReactNativeWebView.postMessage(
-      JSON.stringify({ type: 'uploadProfileImage', value: imageList }),
+      JSON.stringify({ type: 'uploadProfileImage', value: response.data.location }),
     );
   };
 
   const onChange = (imageList) => {
     if (imageList.length === 0) return;
-    onUploadProfileImage(imageList);
+    const formData = new FormData();
+    formData.append('image', imageList[0].file);
+    onUploadProfileImage(formData);
   };
 
   return (
@@ -78,14 +92,14 @@ const UploadProfile = () => {
         <Box css={imageWrapper}>
           <ImageUploading onChange={onChange}>
             {({ onImageUpload }) =>
-              !props.user.profileImage ? (
+              !profileImage ? (
                 <Box css={imageBox}>
                   <DefaultImage css={currentImage} />
                   <CameraIcon css={cancelImage} onClick={onImageUpload} />
                 </Box>
               ) : (
                 <Box css={imageBox}>
-                  <img src={props.user.profileImage} alt="" css={currentImage} />
+                  <img src={profileImage} alt="" css={currentImage} />
                   <CameraIcon css={cancelImage} onClick={onImageUpload} />
                 </Box>
               )
