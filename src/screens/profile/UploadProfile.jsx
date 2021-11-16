@@ -1,96 +1,24 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Box, FormControl, Dialog, DialogContent, Button } from '@mui/material';
-import { forwardRef, useEffect, useState } from 'react';
+import { Box, IconButton } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { ReactComponent as LeftBackArrowIcon } from '../../assets/svgs/LeftBackArrowIcon.svg';
+import { ReactComponent as DefaultImage } from '../../assets/svgs/DefaultImage.svg';
+import { ReactComponent as CameraIcon } from '../../assets/svgs/CameraIcon.svg';
 import CustomButton from '../../components/CustomButton';
-import Slide from '@mui/material/Slide';
-
-const Transition = forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
-const DialogSelect = ({
-  open,
-  weight,
-  height,
-  setWeight,
-  setHeight,
-  handleWeightChange,
-  handleHeightChange,
-  handleClose,
-}) => {
-  const weightRange = { min: 40, max: 120 };
-  const heightRange = { min: 130, max: 230 };
-  const weightArr = [];
-  const heightArr = [];
-  const w = weightRange.max - weightRange.min;
-  const h = heightRange.max - heightRange.min;
-
-  let temp1,
-    temp2 = 0;
-  for (let i = 0; i < w / 5; i++) {
-    temp1 = weightRange.min + i * 5;
-    weightArr.push(temp1);
-  }
-  for (let i = 0; i < h / 5; i++) {
-    temp2 = heightRange.min + i * 5;
-    heightArr.push(temp2);
-  }
-
-  return (
-    <>
-      <Dialog
-        disableEscapeKeyDown
-        TransitionComponent={Transition}
-        open={open}
-        onClose={handleClose}
-      >
-        <DialogContent css={dialogWrap}>
-          <Box css={dialogHead}>
-            <Button onClick={handleClose}>취소</Button>
-            <Button onClick={handleClose}>완료</Button>
-          </Box>
-          <Box component="form" css={dialogContent}>
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <Box>키(cm)</Box>
-              <select
-                id="height"
-                native
-                value={height}
-                setJeight
-                onChange={handleHeightChange}
-                css={selectForm}
-              >
-                {heightArr.map((height) => {
-                  return <option value={height}> {height}cm </option>;
-                })}
-              </select>
-            </FormControl>
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <Box>몸무게(kg)</Box>
-              <select
-                native
-                id="weight"
-                value={weight}
-                setWeight
-                onChange={handleWeightChange}
-                css={selectForm}
-              >
-                {weightArr.map((weight) => {
-                  return <option value={weight}> {weight}kg </option>;
-                })}
-              </select>
-            </FormControl>
-          </Box>
-        </DialogContent>
-      </Dialog>
-    </>
-  );
-};
+import Text from '../../components/Text';
+import ImageUploading from 'react-images-uploading';
 
 const UploadProfile = () => {
-  const [props, setProps] = useState(null);
+  const [props, setProps] = useState({
+    user: {
+      name: null,
+    },
+    nickName: null,
+    weight: null,
+    height: null,
+    profileImage: null,
+  });
 
   const listener = ({ data }) => {
     if (typeof data !== 'string') return;
@@ -110,167 +38,185 @@ const UploadProfile = () => {
     };
   }, []);
 
-  const [open, setOpen] = useState(false);
-  const [weight, setWeight] = useState();
-  const [height, setHeight] = useState();
-
-  const handleWeightChange = (event) => {
-    setWeight(Number(event.target.value) || '');
-  };
-  const handleHeightChange = (event) => {
-    setHeight(Number(event.target.value) || '');
+  const handlePrevStep = () => {
+    window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'handlePrevStep' }));
   };
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const onUpLoadProfile = () => {
+    window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'uploadProfile' }));
   };
 
-  const handleClose = (event, reason) => {
-    // if (reason !== 'backdropClick') {
-    setOpen(false);
-    // }
+  const onUploadProfileImage = async (formData) => {
+    window.ReactNativeWebView.postMessage(
+      JSON.stringify({ type: 'uploadProfileImage', value: formData }),
+    );
+  };
+
+  const onChange = (imageList) => {
+    if (imageList.length === 0) return;
+    const formData = new FormData();
+    formData.append('files', imageList[0].file);
+    onUploadProfileImage(formData);
   };
 
   return (
-    <Box css={bodyInfoWrapper}>
-      <Box css={backButton}>
-        <LeftBackArrowIcon />
+    <>
+      <Box css={title}>
+        <Box>
+          <IconButton onClick={handlePrevStep}>
+            <LeftBackArrowIcon className="icon" />
+          </IconButton>
+        </Box>
+        <Box>
+          <Text className="title">내 정보</Text>
+        </Box>
+        <Box>
+          <CustomButton className="uploadButton" onClick={onUpLoadProfile}>
+            완료
+          </CustomButton>
+        </Box>
       </Box>
-      <Box css={splitLine} />
-      <Box css={discription}>
-        <Box>{`신체정보를 입력해주시면`} </Box>
-        <Box>{`효과적인 러닝 데이터를 얻을 수 있어요.`}</Box>
-      </Box>
+      <Box css={uploadProfileWrapper}>
+        <Box css={imageWrapper}>
+          <ImageUploading onChange={onChange}>
+            {({ onImageUpload }) =>
+              !props.user.profileImage ? (
+                <Box css={imageBox}>
+                  <DefaultImage css={currentImage} />
+                  <CameraIcon css={cancelImage} onClick={onImageUpload} />
+                </Box>
+              ) : (
+                <Box css={imageBox}>
+                  <img src={props.user.profileImage} alt="" css={currentImage} />
+                  <CameraIcon css={cancelImage} onClick={onImageUpload} />
+                </Box>
+              )
+            }
+          </ImageUploading>
+        </Box>
+        <Box css={item}>
+          <Text css={type}>이름</Text>
+          <Text css={value}>{props.user.name}</Text>
+        </Box>
+        <Box css={item}>
+          <Text css={type}>닉네임</Text>
+          <Text css={value}>{props.nickName}</Text>
+        </Box>
 
-      <Box>
-        <Box css={typeTypo}>키(cm)</Box>
-        <CustomButton css={inputForm} onClick={handleClickOpen}>
-          {height ? `${height}cm` : null}
-        </CustomButton>
+        <Text css={bototmTitle}>신체 정보</Text>
+        <Box css={item}>
+          <Text css={type}>키</Text>
+          <Text css={value}>{props.height}</Text>
+        </Box>
+        <Box css={item}>
+          <Text css={type}>몸무게</Text>
+          <Text css={value}>{props.weight}</Text>
+        </Box>
       </Box>
-      <Box css={typeTypo}>
-        <Box>몸무게(kg)</Box>
-        <CustomButton css={inputForm} onClick={handleClickOpen}>
-          {weight ? `${weight}kg` : null}
-        </CustomButton>
-      </Box>
-
-      <CustomButton css={button}> 다음 </CustomButton>
-      <DialogSelect
-        open={open}
-        weight={weight}
-        height={height}
-        setWeight={setWeight}
-        setHeight={setHeight}
-        handleWeightChange={handleWeightChange}
-        handleHeightChange={handleHeightChange}
-        handleClose={handleClose}
-      />
-    </Box>
+    </>
   );
 };
 
-const bodyInfoWrapper = css`
-  padding: 0 20px;
-  height: 100%;
-`;
-const backButton = css`
-  margin-top: 60px;
-`;
-const splitLine = css`
-  border: 2px solid #f5f5f5;
-  margin-top: 16px;
-`;
-const discription = css`
-  font-family: Apple SD Gothic Neo;
-  font-size: 19px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 23px;
-  letter-spacing: 0em;
-  text-align: left;
-  margin: 22px 0px 22px 0px;
-`;
-const typeTypo = css`
-  font-family: Apple SD Gothic Neo;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 14px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: #c4c4c4;
-  margin-top: 17px;
-`;
-const inputForm = css`
-  border: 1px solid #d4d4d4;
-  box-sizing: border-box;
-  border-radius: 2px;
+const title = css`
   width: 100%;
-  font-family: Apple SD Gothic Neo;
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 18px;
-  letter-spacing: 0em;
-  padding: 15px;
-  border-radius: 2px;
-  color: #333333;
-  margin-top: 10px;
-  min-height: 48px;
+  height: 55px;
   display: flex;
-  justify-content: start;
-`;
-const button = css`
-  width: 100%;
-  padding: 16px;
-  font-family: Apple SD Gothic Neo;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 17px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: #ffffff;
-  background-color: #1162ff;
-  margin-top: 40px;
-  &:hover {
-    background-color: #1162ff;
+  align-items: center;
+  border-bottom: 2px solid #f5f5f5;
+  .uploadButton {
+    background: white;
+    color: #1162ff;
+  }
+  & .MuiBox-root {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    color: black;
+    font-family: text-500;
+    font-weight: 600;
+    font-size: 18px;
+    &:first-child {
+      justify-content: flex-start;
+    }
+    &:last-child {
+      color: #bcbcbc;
+      font-family: text-500;
+      font-weight: 500;
+      font-size: 16px;
+      justify-content: flex-end;
+    }
   }
 `;
 
-const selectForm = css`
-  border: 1px solid #d4d4d4;
-  min-height: 48px;
-  margin-top: 10px;
+const uploadProfileWrapper = css`
+  padding: 20px;
+  height: calc(100% - 40px);
 `;
-const dialogWrap = css`
-  position: fixed;
-  width: calc(100% - 40px);
-  height: 250px;
-  bottom: 0px;
-  left: 0;
-  background: white;
-  border-radius: 12px 12px 0 0;
-  padding: 23px 20px;
+
+const imageWrapper = css`
+  height: 150px;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
-const dialogContent = css`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+const item = css`
+  height: 35px;
   width: 100%;
-  height: 50%;
-`;
-const dialogHead = css`
-  width: calc(100%);
   display: flex;
-  justify-content: space-between;
-  position: absolute;
-  top: 10px;
-  color: #007aff;
+  border-bottom: 0.6px solid #d4d4d4;
+  margin-top: 14px;
+  padding-bottom: 8px;
 `;
+
+const type = css`
+  width: 86px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  color: #82837e;
+  font-family: text-500;
+  font-weight: 400;
+  font-size: 16px;
+`;
+
+const value = css`
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  color: #333333;
+  font-family: text-500;
+  font-size: 19px;
+`;
+
+const bototmTitle = css`
+  color: black;
+  font-family: text-500;
+  font-size: 16px;
+  margin-top: 28px;
+  margin-bottom: 30px;
+`;
+
+const imageBox = css`
+  width: 130px;
+  height: 130px;
+`;
+
+const currentImage = css`
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+`;
+
+const cancelImage = css`
+  width: 40px;
+  height: 40px;
+  position: relative;
+  top: -45px;
+  left: 85px;
+  cursor: pointer;
+  z-index: 1000;
+`;
+
 export default UploadProfile;

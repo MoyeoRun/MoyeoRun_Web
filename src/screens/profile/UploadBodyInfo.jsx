@@ -1,12 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { Box, FormControl, Dialog, DialogContent, Button } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import { ReactComponent as LeftBackArrowIcon } from '../../assets/svgs/LeftBackArrowIcon.svg';
 import CustomButton from '../../components/CustomButton';
 import Slide from '@mui/material/Slide';
+import { useLocation } from 'react-router';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
@@ -14,8 +15,6 @@ const DialogSelect = ({
   open,
   weight,
   height,
-  setWeight,
-  setHeight,
   handleWeightChange,
   handleHeightChange,
   handleClose,
@@ -89,19 +88,29 @@ const DialogSelect = ({
   );
 };
 
-const BodyInfo = () => {
-  const [props, setProps] = useState(null);
+const UploadBodyInfo = () => {
+  const [props, setProps] = useState({ weight: 0, height: 0 });
+  const { pathname } = useLocation();
 
   const listener = ({ data }) => {
+    if (typeof data !== 'string') return;
     const propsData = JSON.parse(data);
-    if (propsData.type === 'bodyInfo') {
+    if (propsData.type === 'uploadBodyInfo') {
       setProps(propsData.value);
     }
   };
 
-  const on = () => {
-    const data = JSON.stringify({});
-    window.ReactNativeWebView.onMessage(data);
+  const changeBodyInfo = (type, value) => {
+    if (pathname === '/test/uploadBodyInfo') setProps({ ...props, [type]: value });
+    else {
+      if (type === 'weight')
+        window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'changeWeight', value }));
+      else window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'changeHeight', value }));
+    }
+  };
+
+  const handleNextStep = () => {
+    window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'handleNextStep' }));
   };
 
   useEffect(() => {
@@ -115,14 +124,12 @@ const BodyInfo = () => {
   }, []);
 
   const [open, setOpen] = useState(false);
-  const [weight, setWeight] = useState();
-  const [height, setHeight] = useState();
 
   const handleWeightChange = (event) => {
-    setWeight(Number(event.target.value) || '');
+    changeBodyInfo('weight', Number(event.target.value) || '');
   };
   const handleHeightChange = (event) => {
-    setHeight(Number(event.target.value) || '');
+    changeBodyInfo('height', Number(event.target.value) || '');
   };
 
   const handleClickOpen = () => {
@@ -130,60 +137,67 @@ const BodyInfo = () => {
   };
 
   const handleClose = (event, reason) => {
-    // if (reason !== 'backdropClick') {
     setOpen(false);
-    // }
   };
 
   return (
-    <Box css={bodyInfoWrapper}>
-      <Box css={backButton}>
-        <LeftBackArrowIcon />
-      </Box>
-      <Box css={splitLine} />
-      <Box css={discription}>
-        <Box>{`신체정보를 입력해주시면`} </Box>
-        <Box>{`효과적인 러닝 데이터를 얻을 수 있어요.`}</Box>
-      </Box>
+    <>
+      <Box css={title}></Box>
+      <Box css={bodyInfoWrapper}>
+        <Box css={discription}>
+          <Box>신체정보를 입력해주시면 </Box>
+          <Box>효과적인 러닝 데이터를 얻을 수 있어요.</Box>
+        </Box>
 
-      <Box>
-        <Box css={typeTypo}>키(cm)</Box>
-        <CustomButton css={inputForm} onClick={handleClickOpen}>
-          {height ? `${height}cm` : null}
-        </CustomButton>
-      </Box>
-      <Box css={typeTypo}>
-        <Box>몸무게(kg)</Box>
-        <CustomButton css={inputForm} onClick={handleClickOpen}>
-          {weight ? `${weight}kg` : null}
-        </CustomButton>
-      </Box>
+        <Box>
+          <Box css={typeTypo}>키(cm)</Box>
+          <CustomButton css={inputForm} onClick={handleClickOpen}>
+            {props.height ? `${props.height}cm` : null}
+          </CustomButton>
+        </Box>
+        <Box css={typeTypo}>
+          <Box>몸무게(kg)</Box>
+          <CustomButton css={inputForm} onClick={handleClickOpen}>
+            {props.weight ? `${props.weight}kg` : null}
+          </CustomButton>
+        </Box>
 
-      <CustomButton css={button}> 다음 </CustomButton>
-      <DialogSelect
-        open={open}
-        weight={weight}
-        height={height}
-        setWeight={setWeight}
-        setHeight={setHeight}
-        handleWeightChange={handleWeightChange}
-        handleHeightChange={handleHeightChange}
-        handleClose={handleClose}
-      />
-    </Box>
+        <CustomButton
+          css={button}
+          disabled={!props.weight || !props.height}
+          onClick={handleNextStep}
+        >
+          다음
+        </CustomButton>
+        <DialogSelect
+          open={open}
+          weight={props.weight}
+          height={props.height}
+          handleWeightChange={handleWeightChange}
+          handleHeightChange={handleHeightChange}
+          handleClose={handleClose}
+        />
+      </Box>
+    </>
   );
 };
 
+const title = css`
+  width: 100%;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid #f5f5f5;
+  &.MuiBox-root {
+    flex: 1;
+  }
+`;
+
 const bodyInfoWrapper = css`
   padding: 20px;
+  height: calc(100% - 40px);
 `;
-const backButton = css`
-  margin-top: 60px;
-`;
-const splitLine = css`
-  border: 2px solid #f5f5f5;
-  margin-top: 16px;
-`;
+
 const discription = css`
   font-family: Apple SD Gothic Neo;
   font-size: 19px;
@@ -237,6 +251,13 @@ const button = css`
   color: #ffffff;
   background-color: #1162ff;
   margin-top: 40px;
+  &:hover {
+    background-color: #1162ff;
+  }
+  &:disabled {
+    background-color: #c4c4c4;
+    color: white;
+  }
 `;
 
 const selectForm = css`
@@ -273,4 +294,4 @@ const dialogHead = css`
   top: 10px;
   color: #007aff;
 `;
-export default BodyInfo;
+export default UploadBodyInfo;
