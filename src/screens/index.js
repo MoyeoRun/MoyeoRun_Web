@@ -5,8 +5,9 @@ import RecordTab from './bottomTab/RecordTab';
 import RunningTab from './bottomTab/RunningTab';
 import CreateMultiRoom from './multiRun/CreateMultiRoom';
 import MultiRoom from './multiRun/MultiRoom';
-import BodyInfo from './profile/BodyInfo';
 import Mypage from './profile/MyPage';
+import UploadBodyInfo from './profile/UploadBodyInfo';
+import UploadNickName from './profile/UploadNickName';
 import UploadProfile from './profile/UploadProfile';
 import RecordAnalysis from './record/RecordAnalysis';
 import RecordDetail from './record/RecordDetail';
@@ -34,8 +35,9 @@ const index = [
   { url: 'room', title: '멀티 런 방 스크린', component: <MultiRoom /> },
 
   //프로필
-  { url: 'bodyInfo', title: '신체정보 입력 스크린', component: <BodyInfo /> },
   { url: 'uploadProfile', title: '프로필 등록 스크린', component: <UploadProfile /> },
+  { url: 'uploadBodyInfo', title: '신체정보 입력 스크린', component: <UploadBodyInfo /> },
+  { url: 'uploadNickName', title: '닉네임 입력 스크린', component: <UploadNickName /> },
   { url: 'myPage', title: '마이페이지 스크린', component: <Mypage /> },
 ];
 

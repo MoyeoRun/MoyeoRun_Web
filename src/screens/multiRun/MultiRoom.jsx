@@ -28,7 +28,7 @@ const room = {
 
 const image = 'https://source.unsplash.com/random/100x100';
 
-const MultiRoom = ({}) => {
+const MultiRoom = () => {
   const [props, setProps] = useState(null);
   const [roomState, setRoomState] = useState({ isMyRoom: true, isAttend: false });
 
