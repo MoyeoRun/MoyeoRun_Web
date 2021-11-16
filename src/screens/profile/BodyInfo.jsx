@@ -2,8 +2,8 @@
 import { css } from '@emotion/react';
 import { Box, FormControl, Dialog, DialogContent, Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { ReactComponent as LeftBackArrowIcon } from '../assets/svgs/LeftBackArrowIcon.svg';
-import CustomButton from '../components/CustomButton';
+import { ReactComponent as LeftBackArrowIcon } from '../../assets/svgs/LeftBackArrowIcon.svg';
+import CustomButton from '../../components/CustomButton';
 import Slide from '@mui/material/Slide';
 
 const Transition = React.forwardRef(function Transition(props, ref) {

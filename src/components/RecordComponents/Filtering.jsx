@@ -8,18 +8,19 @@ import { ReactComponent as CalendarIcon } from '../../assets/svgs/CalendarIcon.s
 import CalenderPicker from './CalenderPicker';
 
 const Filtering = ({ startDate, endDate }) => {
-  const [modalOpen, setModalOpen] = useState();
+  const [modalOpen, setModalOpen] = useState(false);
   const handleClose = () => {
     setModalOpen(false);
   };
+  const date = new Date(startDate);
+  const week = Math.floor(date.getDate() / 7 + 1);
 
   return (
     <>
       <ButtonUnstyled css={Button} onClick={() => setModalOpen(true)}>
         <Box css={flexWrap}>
           <CalendarIcon />
-          <Box css={Typo}>{`2021년 11월 8 - 19일`}</Box>
-          {/* {`${startYear}년 ${startMonth}월 ${startDay} - ${endDay}일`} */}
+          {`${date.getFullYear()}년 ${date.getMonth()}월 ${week}째주`}
         </Box>
       </ButtonUnstyled>
       <CalenderPicker open={modalOpen} handleClose={handleClose} />

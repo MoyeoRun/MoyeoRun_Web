@@ -34,12 +34,11 @@ const DetailRecord = ({ value, keyword, ...props }) => {
 };
 
 const DetailRecordCard = ({ detailRecord }) => {
-  const { totalDistanceOfTerm, averagePaceOfTerm, totalTimeOfTerm, date, title, image } =
-    detailRecord;
-  const detailDistance = getDistanceString(totalDistanceOfTerm);
-  const detailPace = getPaceString(averagePaceOfTerm);
-  const detailTime = secondToTimeString(totalTimeOfTerm);
-  const detailDate = getModifiedDateString(date);
+  const { runDistance, runPace, runTime, createdAt, title, image } = detailRecord;
+  const detailDistance = getDistanceString(runDistance);
+  const detailPace = getPaceString(runPace);
+  const detailTime = secondToTimeString(runTime);
+  const detailDate = getModifiedDateString(createdAt);
   const detailImage = image || 'https://source.unsplash.com/random/90x90';
   const detailTitle = title || '제목도 받아와야 합니다';
   return (

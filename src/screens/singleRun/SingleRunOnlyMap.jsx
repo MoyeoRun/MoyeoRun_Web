@@ -4,7 +4,7 @@ import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { NaverMap, Polyline, Marker } from 'react-naver-maps';
 import { useLocation } from 'react-router';
-import tempProps from '../testData/singleRumMapData';
+import tempProps from '../../testData/singleRumMapData';
 
 const SingleRunOnlyMap = () => {
   const [props, setProps] = useState(null);

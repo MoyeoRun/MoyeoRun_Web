@@ -2,10 +2,10 @@
 import { css } from '@emotion/react';
 import { Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { ReactComponent as LeftBackArrowIcon } from '../assets/svgs/LeftBackArrowIcon.svg';
-import CustomButton from '../components/CustomButton';
-import CustomInput from '../components/MakeRoomComponents/CustomInput';
-import DialogSelect from '../components/MakeRoomComponents/DialogSelect';
+import { ReactComponent as LeftBackArrowIcon } from '../../assets/svgs/LeftBackArrowIcon.svg';
+import CustomButton from '../../components/CustomButton';
+import CustomInput from '../../components/MakeRoomComponents/CustomInput';
+import DialogSelect from '../../components/MakeRoomComponents/DialogSelect';
 
 const numberSelectItems = (numRange, increProp = 1) => {
   let { min, max } = numRange;
@@ -104,7 +104,7 @@ const SelectItems = {
   participants: [],
 };
 
-const MakeRoom = () => {
+const CreateMultiRoom = () => {
   const [props, setProps] = useState(null);
   const [roomName, setRoomName] = useState('');
   const [discription, setDiscription] = useState('');
@@ -169,7 +169,7 @@ const MakeRoom = () => {
 
   return (
     <>
-      <Box css={makeRoomWrapper}>
+      <Box css={createMultiRoomWrapper}>
         <Box css={backButton}>
           <LeftBackArrowIcon />
         </Box>
@@ -267,9 +267,9 @@ const MakeRoom = () => {
     </>
   );
 };
-export default MakeRoom;
+export default CreateMultiRoom;
 
-const makeRoomWrapper = css`
+const createMultiRoomWrapper = css`
   padding: 20px 20px 88px 20px;
 `;
 const backButton = css`

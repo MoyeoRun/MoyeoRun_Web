@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { Box } from '@mui/material';
-import RecordDetailTable from '../components/RecordDetailTable';
-import Text from '../components/Text';
-import CustomButton from '../components/CustomButton';
-import { getDistanceString, getPaceString, recordTimeString } from '../lib/util/strFormat';
-import { ReactComponent as EditIcon } from '../assets/svgs/EditIcon.svg';
-import { useEffect, useRef, useState } from 'react';
-import recordDetailData from '../testData/recordDetailData.json';
+import RecordDetailTable from '../../components/RecordDetailTable';
+import Text from '../../components/Text';
+import CustomButton from '../../components/CustomButton';
+import { getDistanceString, getPaceString, recordTimeString } from '../../lib/util/strFormat';
+import { ReactComponent as EditIcon } from '../../assets/svgs/EditIcon.svg';
+import { useEffect, useState } from 'react';
+import recordDetailData from '../../testData/recordDetailData.json';
 import { NaverMap, Polyline, Marker } from 'react-naver-maps';
 
 const RecordDetail = () => {

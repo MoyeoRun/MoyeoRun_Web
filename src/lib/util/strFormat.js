@@ -33,14 +33,15 @@ export const recordTimeString = (secondNumber) => {
   else return minute + ':' + second;
 };
 
-export const getModifiedDateString = (date) => {
-  const dateToArr = date.toString().split('-');
-  const year = dateToArr[0];
-  const month = dateToArr[1];
-  const day = dateToArr[2].slice(0, 2);
-  const beforeHour = parseInt(dateToArr[2].slice(3, 5));
-  const AMorPM = beforeHour <= 12 ? '오전' : '오후';
-  const hour = beforeHour <= 12 ? beforeHour.toString() : (beforeHour - 12).toString();
-  const minute = dateToArr[2].slice(6, 8);
+export const getModifiedDateString = (dateString) => {
+  const date = new Date(dateString);
+  const year = date.getYear();
+  const month = date.getMonth();
+  const day = date.getDate();
+  const beforeHour = date.getHours();
+  const AMorPM = beforeHour < 12 ? '오전' : '오후';
+  var hour = beforeHour < 12 ? beforeHour.toString() : (beforeHour - 12).toString();
+  if (AMorPM === '오후' && hour === '0') hour = '12';
+  const minute = date.getMinutes();
   return year + '. ' + month + '. ' + day + ' - ' + AMorPM + ' ' + hour + ':' + minute;
 };

@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { Dialog, Modal } from '@mui/material';
-import { Box } from '@mui/system';
-import React, { useState } from 'react';
+import { Dialog } from '@mui/material';
+import { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';

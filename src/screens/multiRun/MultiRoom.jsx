@@ -2,12 +2,12 @@
 import { css } from '@emotion/react';
 import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
-import RoomInfo from '../components/RoomComponents/RoomInfo';
-import RoomStateButton from '../components/RoomComponents/RoomStateButton';
-import RoomCard from '../components/RoomComponents/RoomCard';
-import Host from '../components/RoomComponents/Host';
-import ParticipationGraph from '../components/RoomComponents/ParticipationGraph';
-import MemberList from '../components/RoomComponents/MemberList';
+import RoomInfo from '../../components/RoomComponents/RoomInfo';
+import RoomStateButton from '../../components/RoomComponents/RoomStateButton';
+import RoomCard from '../../components/RoomComponents/RoomCard';
+import Host from '../../components/RoomComponents/Host';
+import ParticipationGraph from '../../components/RoomComponents/ParticipationGraph';
+import MemberList from '../../components/RoomComponents/MemberList';
 const room = {
   id: 1,
   title: '바람 부는 날 5Km 함께 뛰어요',
@@ -27,20 +27,17 @@ const room = {
 };
 
 const image = 'https://source.unsplash.com/random/100x100';
-const Room = ({}) => {
+
+const MultiRoom = ({}) => {
   const [props, setProps] = useState(null);
   const [roomState, setRoomState] = useState({ isMyRoom: true, isAttend: false });
 
   const listener = ({ data }) => {
+    if (typeof data !== 'string') return;
     const propsData = JSON.parse(data);
-    if (propsData.type === 'room') {
+    if (propsData.type === 'multiRoom') {
       setProps(propsData.value);
     }
-  };
-
-  const on = () => {
-    const data = JSON.stringify({});
-    window.ReactNativeWebView.onMessage(data);
   };
 
   useEffect(() => {
@@ -54,7 +51,7 @@ const Room = ({}) => {
   }, []);
 
   return (
-    <Box css={roomWrapper}>
+    <Box css={multiRoomWrapper}>
       <Box css={cardWrapper}>
         <RoomCard room={room} goBackProp />
       </Box>
@@ -85,7 +82,7 @@ const Room = ({}) => {
     </Box>
   );
 };
-const roomWrapper = css`
+const multiRoomWrapper = css`
   width: 100%;
   height: 100%;
   padding-bottom: 80px;
@@ -150,4 +147,4 @@ const restPeopletypo = css`
 
 const member = css``;
 
-export default Room;
+export default MultiRoom;
