@@ -2,7 +2,6 @@
 import { css, keyframes } from '@emotion/react';
 import { Box, ButtonBase, Dialog } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
-import useInterval from '../../lib/util/useInterval';
 import { ReactComponent as ToggleIcon } from '../../assets/svgs/ToggleIcon.svg';
 
 const CurrentRankStatus = ({ children }) => {
@@ -10,20 +9,27 @@ const CurrentRankStatus = ({ children }) => {
   //  현재값 -> end값
   const ref = useRef();
   const [toggleState, setToggleState] = useState();
+  const [startLine, endLine] = [-(200 - 48), 0];
 
-  const onPositionChange = () => {
-    const [startLine, endLine] = [-(200 - 48), 0];
-    setToggleState(!toggleState);
-    // falue->true 바뀐상황이면 창이 위로 올라가야함  : true->false 바뀐상황이면 창이 아래로 내려가야함,
+  useEffect(() => {
     if (toggleState) {
       ref.current.style.bottom = `${endLine}px`;
     } else {
       ref.current.style.bottom = `${startLine}px`;
     }
+  }, [toggleState]);
+
+  const onPositionChange = () => {
+    console.log(toggleState);
+    setToggleState(!toggleState);
+    console.log(toggleState);
+    // falue->true 바뀐상황이면 창이 위로 올라가야함  : true->false 바뀐상황이면 창이 아래로 내려가야함,
+
+    console.log(toggleState);
   };
 
   return (
-    <Box css={currentRankingWrapper()} ref={ref}>
+    <Box css={currentRankingWrapper} ref={ref}>
       <ButtonBase css={head} onClick={() => onPositionChange()}>
         <Box>현재 순위</Box>
         <ToggleIcon css={toggleIcon(toggleState)} />
@@ -33,10 +39,10 @@ const CurrentRankStatus = ({ children }) => {
   );
 };
 
-const currentRankingWrapper = () => css`
+const currentRankingWrapper = css`
   height: 200px;
   position: fixed;
-  bottom: 0px;
+  bottom: -152px;
   width: 100%;
   transition: all 0.3s ease;
 `;

@@ -17,21 +17,31 @@ const RankingBadge = ({ rank }) => {
 
 const UserImage = ({ image, isMe, rank }) => {
   return (
-    <Box>
+    <Box css={userWrap}>
       <AccountImage isMe={isMe} image={image} />
       <RankingBadge rank={rank} />
     </Box>
   );
 };
 export default UserImage;
-const rankingBadge = css`
-  height: 33px;
-  width: 64px;
-  border-radius: 3px;
-  background-color: #1162ff;
-  border-radius: 3px;
+
+const userWrap = css`
+  position: fixed;
+  left: 20px;
+  top: 65px;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+`;
+const rankingBadge = css`
+  margin-top: 17px;
+  height: 33px;
+  width: 64px;
+  border-radius: 3px;
+  padding: 7px;
+  box-sizing: border-box;
+  display: flex;
   color: #ffffff;
+  background-color: #1162ff;
 `;

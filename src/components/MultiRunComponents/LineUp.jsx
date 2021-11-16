@@ -100,6 +100,7 @@ const markerWrap = (distance) => css`
   display: flex;
   justify-content: center;
   z-index: 2;
+  transition: all 0.1s ease;
 `;
 
 const markerImage = (image) => css`

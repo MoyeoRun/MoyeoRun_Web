@@ -23,7 +23,8 @@ const timer = css`
   position: fixed;
   width: 124px;
   height: 32px;
-  left: 138px;
+  left: 50%;
+  transform: translate(-50%, -50%);
   top: 40px;
   display: flex;
   justify-content: center;

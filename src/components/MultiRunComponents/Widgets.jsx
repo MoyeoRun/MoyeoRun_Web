@@ -15,6 +15,7 @@ const MoveToIndividualMapView = ({ onClick }) => {
         console.log('individualMapView로 이동');
         onClick('selfMapView');
       }}
+      css={buttonIcon}
     >
       <MoveToSelfMapIcon />
     </ButtonBase>
@@ -24,6 +25,7 @@ const MoveToIndividualMapView = ({ onClick }) => {
 const MoveToDiviedMapView = ({ onClick }) => {
   return (
     <ButtonBase
+      css={buttonIcon}
       onClick={() => {
         console.log('dividedMapview로 이동');
         onClick('dividedMapview');
@@ -36,7 +38,7 @@ const MoveToDiviedMapView = ({ onClick }) => {
 
 const Widgets = ({ onHandelViewState }) => {
   return (
-    <Box>
+    <Box css={widgetsWrap}>
       <MoveToIndividualMapView onClick={onHandelViewState} />
       <MoveToDiviedMapView onClick={onHandelViewState} />
     </Box>
@@ -44,3 +46,20 @@ const Widgets = ({ onHandelViewState }) => {
 };
 
 export default Widgets;
+
+const widgetsWrap = css`
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  top: 64px;
+  right: 22px;
+`;
+const buttonIcon = css`
+  width: 55px;
+  height: 55px;
+  padding: 15px;
+  background: #ffffff;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 3px;
+  margin-top: 8px;
+`;
