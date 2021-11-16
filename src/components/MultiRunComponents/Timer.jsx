@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { Box } from '@mui/material';
-import React from 'react';
 import { ReactComponent as ClockIcon_blue } from '../../assets/svgs/ClockIcon_Blue.svg';
 import { secondToTimeString } from '../../lib/util/strFormat';
 

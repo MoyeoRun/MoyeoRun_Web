@@ -34,7 +34,7 @@ const RunStatusWrapper = css`
   border-radius: 6px;
   display: flex;
   align-items: center;
-  box-shadow: 0px 0px 10px -4px #777777;
+  box-shadow: 0px 0px 6px -4px #777777;
 `;
 
 //
@@ -71,16 +71,3 @@ const topDataTitle = css`
   text-align: left;
   color: #1162ff;
 `;
-
-// const distanceData = css`
-//   margin-top: 50px;
-//   font-family: number-500;
-//   font-size: 100px;
-//   color: #111111;
-// `;
-// const distancetitle = css`
-//   margin-top: 18px;
-//   font-family: text-500;
-//   font-size: 20px;
-//   color: rgba(85, 85, 85, 0.8);
-// `;

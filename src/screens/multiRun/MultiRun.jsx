@@ -4,7 +4,7 @@ import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import {
-  CurrentRanking,
+  CurrentRankStatus,
   DivideMapView,
   IndividualMapView,
   LineUp,
@@ -12,7 +12,7 @@ import {
   Timer,
   UserRank,
   Widgets,
-} from '../components/MoyeoRunComponents';
+} from '../../components/MultiRunComponents';
 
 const InitValue = {
   remainTime: 10000,
@@ -23,9 +23,15 @@ const InitValue = {
     distance: 1000,
     time: 1000,
   },
+  multiRoomMember: [
+    { id: 1, name: '황인서', image: 'https://source.unsplash.com/random/70x90', distance: 10.2 },
+    { id: 2, name: '김건훈', image: 'https://source.unsplash.com/random/80x90', distance: 5.34 },
+    { id: 3, name: '조인혁', image: 'https://source.unsplash.com/random/90x90', distance: 2.55 },
+    { id: 4, name: '이상준', image: 'https://source.unsplash.com/random/100x90', distance: 4.123 },
+  ],
 };
 
-const MoyeoRun = () => {
+const MultiRun = () => {
   const [props, setProps] = useState(null);
   const [viewState, setViewState] = useState({ selfMapView: true, dividedMapview: false });
   const { pathname } = useLocation();
@@ -33,13 +39,13 @@ const MoyeoRun = () => {
   const listener = ({ data }) => {
     if (typeof data !== 'string') return;
     const propsData = JSON.parse(data);
-    if (propsData.type === 'MoyeoRun') {
+    if (propsData.type === 'MultiRun') {
       setProps(propsData.value);
     }
   };
 
   useEffect(() => {
-    if (pathname === '/test/MoyeoRun') setProps(tempProps);
+    if (pathname === '/test/MultiRun') setProps(tempProps);
     document.addEventListener('message', listener);
     window.addEventListener('message', listener);
     return () => {
@@ -67,9 +73,9 @@ const MoyeoRun = () => {
         {/* <IndividualMapView data={props} /> */}
         <Box>
           <RunStatus runData={props.runData} />
-          <CurrentRanking>
-            <LineUp />
-          </CurrentRanking>
+          <CurrentRankStatus>
+            <LineUp multiRoomMember={props.multiRoomMember} />
+          </CurrentRankStatus>
         </Box>
       </Box>
     );
@@ -82,7 +88,7 @@ const MoyeoRun = () => {
     );
 };
 
-export default MoyeoRun;
+export default MultiRun;
 
 const moyeoRunWrapper = css`
   width: 100%;

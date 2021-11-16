@@ -5,6 +5,7 @@ import RecordTab from './bottomTab/RecordTab';
 import RunningTab from './bottomTab/RunningTab';
 import CreateMultiRoom from './multiRun/CreateMultiRoom';
 import MultiRoom from './multiRun/MultiRoom';
+import MultiRun from './multiRun/MultiRun';
 import BodyInfo from './profile/BodyInfo';
 import Mypage from './profile/MyPage';
 import UploadProfile from './profile/UploadProfile';
@@ -32,6 +33,7 @@ const index = [
   //멀티런
   { url: 'makeRoom', title: '멀티 런 만들기 스크린', component: <CreateMultiRoom /> },
   { url: 'room', title: '멀티 런 방 스크린', component: <MultiRoom /> },
+  { url: 'multiRun', title: '멀티 런 스크린', component: <MultiRun /> },
 
   //프로필
   { url: 'bodyInfo', title: '신체정보 입력 스크린', component: <BodyInfo /> },
