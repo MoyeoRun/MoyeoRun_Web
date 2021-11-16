@@ -162,12 +162,12 @@ const title = css`
 `;
 
 const uploadProfileWrapper = css`
-  padding: 20px;
-  height: calc(100% - 40px);
+  padding: 0 20px;
+  height: calc(100% - 57px);
 `;
 
 const imageWrapper = css`
-  height: 150px;
+  height: 180px;
   display: flex;
   justify-content: center;
   align-items: center;
