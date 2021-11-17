@@ -50,7 +50,7 @@ const UploadProfile = () => {
 
   const onUploadProfileImage = async (data) => {
     const response = await axios({
-      url: '/images/upload',
+      url: 'http://localhost:30007/images/upload',
       method: 'post',
       headers: {
         'Content-Type': 'multipart/form-data',
