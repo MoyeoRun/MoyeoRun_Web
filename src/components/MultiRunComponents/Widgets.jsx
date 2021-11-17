@@ -53,6 +53,7 @@ const widgetsWrap = css`
   flex-direction: column;
   top: 64px;
   right: 22px;
+  z-index: 1;
 `;
 const buttonIcon = css`
   width: 55px;

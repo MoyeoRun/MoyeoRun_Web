@@ -2,6 +2,7 @@
 import { css } from '@emotion/react';
 import { Box } from '@mui/material';
 import React from 'react';
+import { CurrentRankStatus } from '.';
 import { ReactComponent as LineUpMarkerIcon } from '../../assets/svgs/LineUpMarkerIcon.svg';
 
 const colorData = ['#1162FF', '#FC6BFF', '#00F2B8', '#FFDD64'];
@@ -15,8 +16,10 @@ const LineUpMarker = ({ fill, image, distance }) => {
   );
 };
 
-const LineUp = ({ multiRoomMember }) => {
-  const runDistanceArr = multiRoomMember.map((member) => member.distance.toFixed(1));
+const LineUp = ({ lineUpProps }) => {
+  console.log(lineUpProps);
+  const { markerData } = lineUpProps;
+  const runDistanceArr = markerData.map((member) => member.distance.toFixed(1));
   runDistanceArr.sort(function (a, b) {
     return a - b;
   });
@@ -38,30 +41,32 @@ const LineUp = ({ multiRoomMember }) => {
 
   return (
     <>
-      <Box css={lineUpWrapper}>
-        <Box css={lineUpContainer}>
-          <Box css={line} />
-          {multiRoomMember.map((member, index) => (
-            <LineUpMarker
-              key={index}
-              fill={colorData[index]}
-              image={member.image}
-              distance={getMarkerPositionRatio(member.distance)}
-            />
-          ))}
-          <Box>
-            {runDistanceArr.map((distance, index) => (
-              <Box key={index} css={xAxisValue(getMarkerPositionRatio(distance))}>
-                {distance}
-              </Box>
+      <CurrentRankStatus>
+        <Box css={lineUpWrapper}>
+          <Box css={lineUpContainer}>
+            <Box css={line} />
+            {markerData.map((member, index) => (
+              <LineUpMarker
+                key={index}
+                fill={colorData[index]}
+                image={member.image}
+                distance={getMarkerPositionRatio(member.distance)}
+              />
             ))}
+            <Box>
+              {runDistanceArr.map((distance, index) => (
+                <Box key={index} css={xAxisValue(getMarkerPositionRatio(distance))}>
+                  {distance}
+                </Box>
+              ))}
 
-            <Box css={xAxisBase(true)}>{left}</Box>
-            <Box css={xAxisBase(false)}>{right}</Box>
-            <Box css={xAxisUnit}>km</Box>
+              <Box css={xAxisBase(true)}>{left}</Box>
+              <Box css={xAxisBase(false)}>{right}</Box>
+              <Box css={xAxisUnit}>km</Box>
+            </Box>
           </Box>
         </Box>
-      </Box>
+      </CurrentRankStatus>
     </>
   );
 };

@@ -4,8 +4,8 @@ import { Box } from '@mui/material';
 import { ReactComponent as ClockIcon_blue } from '../../assets/svgs/ClockIcon_Blue.svg';
 import { secondToTimeString } from '../../lib/util/strFormat';
 
-const Timer = ({ remainTime = 10000 }) => {
-  console.log(remainTime);
+const Timer = ({ timerProps }) => {
+  const { remainTime } = timerProps;
   return (
     <Box css={timer}>
       <ClockIcon_blue />
@@ -38,6 +38,6 @@ const timer = css`
   letter-spacing: -0.045em;
   text-align: left;
   color: #1162ff;
-
+  z-index: 1;
   box-shadow: 0px 0px 10px -4px #777777;
 `;

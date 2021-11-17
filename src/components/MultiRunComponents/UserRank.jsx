@@ -15,15 +15,21 @@ const RankingBadge = ({ rank }) => {
   );
 };
 
-const UserImage = ({ image, isMe, rank }) => {
+const UserRank = ({ userRankProps }) => {
+  console.log(userRankProps);
+  const { rank } = userRankProps;
+
+  const user = rank.find((user) => user.displayUserId);
   return (
-    <Box css={userWrap}>
-      <AccountImage isMe={isMe} image={image} />
-      <RankingBadge rank={rank} />
-    </Box>
+    <>
+      <Box css={userWrap}>
+        <AccountImage isMe={user.isMe} image={user.image} />
+        <RankingBadge rank={user.rank} />
+      </Box>
+    </>
   );
 };
-export default UserImage;
+export default UserRank;
 
 const userWrap = css`
   position: fixed;
@@ -33,6 +39,7 @@ const userWrap = css`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  z-index: 1;
 `;
 const rankingBadge = css`
   margin-top: 17px;

@@ -4,42 +4,54 @@ import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { NaverMap, Polyline, Marker } from 'react-naver-maps';
 
-const IndividualMapView = ({ data }) => {
-  const [props, setProps] = useState(null);
-  const [center, setCenter] = useState({
-    lat: 37.51977586326575,
-    lng: 127.06283169005788,
-  });
-  console.log(data);
+const IndividualMapView = ({ mapViewProps }) => {
+  console.log(mapViewProps);
+  const { userPoints, disPlayUserId } = mapViewProps;
+  const displayRunData = userPoints.find((user) => user.userId === disPlayUserId).runData;
+  console.log(displayRunData);
+  const currentPoint = displayRunData[length - 1];
+  const center = currentPoint
+    ? { lat: currentPoint.latitude, lng: currentPoint.longitude }
+    : {
+        lat: 37.51977586326575,
+        lng: 127.06283169005788,
+      };
 
-  useEffect(() => {
-    if (data) {
-      if (data.runData[data.section].length !== 0) {
-        const currentPoint = data.runData[data.section][data.runData[data.section].length - 1];
-        setCenter({ lat: currentPoint.latitude, lng: currentPoint.longitude });
-      }
-    }
-  }, [data]);
+  // const [props, setProps] = useState(null);
+  // const [center, setCenter] = useState({
+  // lat: 37.51977586326575,
+  // lng: 127.06283169005788,
+  // });
+  // const [displayRunData, setDisplayRunData] = useState();
 
-  if (!data) return null;
+  // useEffect(() => {
+  //   if (mapViewProps) {
+  //     if (displayRunData.length !== 0) {
+  //       const currentPoint = displayRunData[length - 1];
+  //       setCenter({ lat: currentPoint.latitude, lng: currentPoint.longitude });
+  //     }
+  //   }
+  // }, [mapViewProps]);
 
-  return (
-    <Box css={singleRunMapWrapper}>
-      <NaverMap
-        mapDivId={'maps-getting-started-uncontrolled'}
-        css={mapStyle}
-        center={center}
-        mapTypes={
-          new window.naver.maps.MapTypeRegistry({
-            normal: naver.maps.NaverStyleMapTypeOptions.getVectorMap(),
-          })
-        }
-        defaultZoom={15}
-      >
-        <Marker
-          position={center}
-          icon={{
-            content: `
+  if (!displayRunData) return null;
+  if (displayRunData)
+    return (
+      <Box css={singleRunMapWrapper}>
+        <NaverMap
+          mapDivId={'maps-getting-started-uncontrolled'}
+          css={mapStyle}
+          center={center}
+          mapTypes={
+            new window.naver.maps.MapTypeRegistry({
+              normal: naver.maps.NaverStyleMapTypeOptions.getVectorMap(),
+            })
+          }
+          defaultZoom={15}
+        >
+          <Marker
+            position={center}
+            icon={{
+              content: `
           <div style="
             width: 100px;
             height: 100px;
@@ -60,15 +72,37 @@ const IndividualMapView = ({ data }) => {
               </div>
           </div>
         `,
-          }}
-        />
-        {data.runData.map((runSection, i) => (
-          <Polyline
-            key={i}
-            path={runSection.map((point) => ({
-              lat: point.latitude,
-              lng: point.longitude,
-            }))}
+            }}
+          />
+          {displayRunData.map((point) => {
+            console.log(point);
+            return (
+              <Polyline
+                path={[
+                  {
+                    lat: point.latitude,
+                    lng: point.longitude,
+                  },
+                ]}
+                strokeColor={'#1162FF'}
+                strokeStyle={'solid'}
+                strokeLineCap={'round'}
+                strokeLineJoin={'round'}
+                line
+                strokeOpacity={0.8}
+                strokeWeight={7}
+              />
+            );
+          })}
+
+          {/* <Polyline
+            // key={i}
+            path={[
+              {
+                lat: 37.51977586326575,
+                lng: 127.06283169005788,
+              },
+            ]}
             strokeColor={'#1162FF'}
             strokeStyle={'solid'}
             strokeLineCap={'round'}
@@ -76,18 +110,19 @@ const IndividualMapView = ({ data }) => {
             line
             strokeOpacity={0.8}
             strokeWeight={7}
-          />
-        ))}
-      </NaverMap>
-    </Box>
-  );
+          /> */}
+        </NaverMap>
+      </Box>
+    );
 };
 
 export default IndividualMapView;
 
 const singleRunMapWrapper = css`
+  position: fixed;
   width: 100%;
   height: 100%;
+  z-index: 0;
 `;
 
 const mapStyle = css`

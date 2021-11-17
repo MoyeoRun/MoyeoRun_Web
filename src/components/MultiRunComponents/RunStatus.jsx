@@ -4,19 +4,21 @@ import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { getDistanceString, getPaceString, secondToTimeString } from '../../lib/util/strFormat';
 
-const RunStatus = ({ runData }) => {
+const RunStatus = ({ runStatusProps }) => {
+  console.log(runStatusProps);
+  const { distance, pace, time } = runStatusProps.runStatus;
   return (
     <Box css={RunStatusWrapper}>
       <Box css={topDataBox}>
-        <Box css={topData}>{getDistanceString(runData.distance)}</Box>
+        <Box css={topData}>{getDistanceString(distance)}</Box>
         <Box css={topDataTitle}>거리</Box>
       </Box>
       <Box css={topDataBox}>
-        <Box css={topData}>{getPaceString(runData.pace)}</Box>
+        <Box css={topData}>{getPaceString(pace)}</Box>
         <Box css={topDataTitle}>평균 페이스</Box>
       </Box>
       <Box css={topDataBox}>
-        <Box css={topData}>{secondToTimeString(runData.time / 1000)}</Box>
+        <Box css={topData}>{secondToTimeString(time / 1000)}</Box>
         <Box css={topDataTitle}>시간</Box>
       </Box>
     </Box>
@@ -35,6 +37,7 @@ const RunStatusWrapper = css`
   display: flex;
   align-items: center;
   box-shadow: 0px 0px 6px -4px #777777;
+  background-color: white;
 `;
 
 //
