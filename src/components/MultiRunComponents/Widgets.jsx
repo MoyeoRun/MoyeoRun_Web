@@ -1,19 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Timer } from '@mui/icons-material';
 import { Box, ButtonBase } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { ReactComponent as ClockIcon } from '../../assets/svgs/ClockIcon_Blue.svg';
 import { ReactComponent as MoveToSelfMapIcon } from '../../assets/svgs/MoveToSelfMapIcon_MoyeoRun.svg';
 import { ReactComponent as MoveToDividedMapIcon } from '../../assets/svgs/MoveToDividedMapIcon_MoyeoRun.svg';
-import AccountImage from '../AccountImage';
 
-const MoveToIndividualMapView = ({ onClick }) => {
+const MoveToIndividualMapView = ({ onClick, userId }) => {
   return (
     <ButtonBase
       onClick={() => {
         console.log('individualMapView로 이동');
-        onClick('selfMapView');
+        onClick('individualMapView', userId);
       }}
       css={buttonIcon}
     >
@@ -27,8 +23,8 @@ const MoveToDiviedMapView = ({ onClick }) => {
     <ButtonBase
       css={buttonIcon}
       onClick={() => {
-        console.log('dividedMapview로 이동');
-        onClick('dividedMapview');
+        console.log('dividedMapView로 이동');
+        onClick('dividedMapView');
       }}
     >
       <MoveToDividedMapIcon />
@@ -36,10 +32,10 @@ const MoveToDiviedMapView = ({ onClick }) => {
   );
 };
 
-const Widgets = ({ onHandelViewState }) => {
+const Widgets = ({ onHandelViewState, userId }) => {
   return (
     <Box css={widgetsWrap}>
-      <MoveToIndividualMapView onClick={onHandelViewState} />
+      <MoveToIndividualMapView onClick={onHandelViewState} userId={userId} />
       <MoveToDiviedMapView onClick={onHandelViewState} />
     </Box>
   );

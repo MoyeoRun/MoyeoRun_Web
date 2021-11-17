@@ -1,11 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { Box } from '@mui/material';
-import { useEffect, useState } from 'react';
 import { getDistanceString, getPaceString, secondToTimeString } from '../../lib/util/strFormat';
 
 const RunStatus = ({ runStatusProps }) => {
-  console.log(runStatusProps);
+  // console.log(runStatusProps);
   const { distance, pace, time } = runStatusProps.runStatus;
   return (
     <Box css={RunStatusWrapper}>

@@ -1,8 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { Box } from '@mui/material';
-import React from 'react';
-import { CurrentRankStatus } from '.';
 import { ReactComponent as LineUpMarkerIcon } from '../../assets/svgs/LineUpMarkerIcon.svg';
 
 const colorData = ['#1162FF', '#FC6BFF', '#00F2B8', '#FFDD64'];
@@ -17,57 +15,45 @@ const LineUpMarker = ({ fill, image, distance }) => {
 };
 
 const LineUp = ({ lineUpProps }) => {
-  console.log(lineUpProps);
+  // console.log(lineUpProps);
   const { markerData } = lineUpProps;
   const runDistanceArr = markerData.map((member) => member.distance.toFixed(1));
   runDistanceArr.sort(function (a, b) {
     return a - b;
   });
-  console.log(runDistanceArr);
   const left = Math.ceil(runDistanceArr[runDistanceArr.length - 1]);
   const right = Math.floor(runDistanceArr[0]);
-  console.log(left, right);
-  // runDistanceArr.push(left, right);
-  //좌측끝 : 첫째주자 + 1 , 결승선이면 찐하게 표시
-  //우측끝 : 마지막주자 -1km,
-  //그 사이 비율. 그
 
   const getMarkerPositionRatio = (marker) => {
-    console.log(marker, left, right);
     const markerPositionRatio = ((marker - right) / (left - right)) * 100;
-    console.log(markerPositionRatio);
     return 100 - markerPositionRatio;
   };
 
   return (
-    <>
-      <CurrentRankStatus>
-        <Box css={lineUpWrapper}>
-          <Box css={lineUpContainer}>
-            <Box css={line} />
-            {markerData.map((member, index) => (
-              <LineUpMarker
-                key={index}
-                fill={colorData[index]}
-                image={member.image}
-                distance={getMarkerPositionRatio(member.distance)}
-              />
-            ))}
-            <Box>
-              {runDistanceArr.map((distance, index) => (
-                <Box key={index} css={xAxisValue(getMarkerPositionRatio(distance))}>
-                  {distance}
-                </Box>
-              ))}
-
-              <Box css={xAxisBase(true)}>{left}</Box>
-              <Box css={xAxisBase(false)}>{right}</Box>
-              <Box css={xAxisUnit}>km</Box>
+    <Box css={lineUpWrapper}>
+      <Box css={lineUpContainer}>
+        <Box css={line} />
+        {markerData.map((member, index) => (
+          <LineUpMarker
+            key={index}
+            fill={member.color}
+            image={member.image}
+            distance={getMarkerPositionRatio(member.distance)}
+          />
+        ))}
+        <Box>
+          {runDistanceArr.map((distance, index) => (
+            <Box key={index} css={xAxisValue(getMarkerPositionRatio(distance))}>
+              {distance}
             </Box>
-          </Box>
+          ))}
+
+          <Box css={xAxisBase(true)}>{left}</Box>
+          <Box css={xAxisBase(false)}>{right}</Box>
+          <Box css={xAxisUnit}>km</Box>
         </Box>
-      </CurrentRankStatus>
-    </>
+      </Box>
+    </Box>
   );
 };
 export default LineUp;

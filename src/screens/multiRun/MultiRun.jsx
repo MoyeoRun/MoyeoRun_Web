@@ -1,10 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { Box } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router';
 import {
-  DivideMapView,
+  CurrentRankStatus,
+  DividedMapView,
   IndividualMapView,
   LineUp,
   RunStatus,
@@ -93,7 +94,7 @@ const InitValue = {
       pace: 3.12,
       runData: [
         {
-          latitude: 37.659181827620975,
+          latitude: 37.6812312312323,
           longitude: 127.0514242126567,
           currentAltitude: 28,
           currentTime: 1234657,
@@ -109,7 +110,7 @@ const InitValue = {
       pace: 5.12,
       runData: [
         {
-          latitude: 37.659187827620975,
+          latitude: 37.692342342343434,
           longitude: 127.0514252126567,
           currentAltitude: 30,
           currentTime: 1234567,
@@ -121,7 +122,7 @@ const InitValue = {
   ],
   runData: [
     {
-      latitude: 37.659187827620975,
+      latitude: 37.659232320975,
       longitude: 127.0514252126567,
       currentAltitude: 30,
       currentTime: 1234567,
@@ -134,15 +135,19 @@ const InitValue = {
 const MultiRun = () => {
   const [props, setProps] = useState(InitValue);
   const [timerProps, setTimerProps] = useState();
-  // const [widget, setWidget] = useState();
   const [userRankProps, setUserRankProps] = useState();
   const [mapViewProps, setMapViewProps] = useState();
   const [runStatusProps, setRunStatusProps] = useState();
   const [lineUpProps, setLineUpProps] = useState();
-  const [disPlayUserId, setDisPlayUserId] = useState(1);
-  const [viewState, setViewState] = useState({ selfMapView: true, dividedMapview: false });
+  const [displayUserId, setDisplayUserId] = useState(1);
+
+  const individualMapViewRef = useRef();
+  const dividedMapViewRef = useRef();
+  const refs = { individualMapView: individualMapViewRef, dividedMapView: dividedMapViewRef };
 
   const { pathname } = useLocation();
+
+  const colorData = ['#1162FF', '#FC6BFF', '#00F2B8', '#FFDD64'];
 
   const listener = ({ data }) => {
     if (typeof data !== 'string') return;
@@ -171,6 +176,10 @@ const MultiRun = () => {
     if (props) {
       console.log('useEffect');
 
+      const userColor = props.room.multiRoomMember.map((member, index) => ({
+        userId: member.id,
+        color: colorData[index],
+      }));
       const userImage = props.room.multiRoomMember.map((member) => ({
         userId: member.id,
         image: member.image,
@@ -183,45 +192,58 @@ const MultiRun = () => {
           rank: index + 1,
           isMe: props.user.id === member.userId,
           image: userImage.find((user) => user.userId === member.userId).image,
-          displayUserId: disPlayUserId,
+          displayUserId: displayUserId,
+          color: userColor.find((user) => user.userId === member.userId).color,
         }));
 
-      const otherPoints = props.othersRunData.map((member) => ({
+      const otherMapData = props.othersRunData.map((member) => ({
         userId: member.userId,
         runData: member.runData,
+        center: {
+          lat: member.runData[member.runData.length - 1].latitude,
+          lng: member.runData[member.runData.length - 1].longitude,
+        },
+        rank: userRankState.find((user) => user.userId === member.userId),
       }));
 
       const otherDistance = new Object();
       props.othersRunData.forEach((member) => (otherDistance[member.userId] = member.distance));
 
-      // console.log(otherDistance);
       const markerData = props.room.multiRoomMember.map((member) => ({
         ...member,
         distance: otherDistance[member.id],
+        color: userColor.find((user) => user.userId === member.id).color,
       }));
-      // console.log(markerData);
 
-      // setDisPlayUserId(props.user.id);
+      //multiRun에서 사용하는 데이터는 여기서 다 설정해준다
       setTimerProps({ remainTime: props.none.remainTime });
       setUserRankProps({ rank: userRankState });
       setMapViewProps({
-        disPlayUserId: props.user.id,
-        userPoints: [...otherPoints],
+        displayUserId: displayUserId,
+        userPoints: [...otherMapData],
       });
       setRunStatusProps({ runStatus: props.runStatus });
       setLineUpProps({ markerData: markerData });
     }
-  }, [props]);
+  }, [props, displayUserId]);
 
-  const onHandelViewState = (type) => {
-    const initState = { selfMapView: false, dividedMapview: false };
-    setViewState({ ...initState, [type]: true });
+  const onHandelViewState = (type, userId = displayUserId) => {
+    if (type === 'individualMapView') {
+      refs.individualMapView.current.style.left = '0px';
+      refs.dividedMapView.current.style.left = `${window.innerWidth}px`;
+    } else if (type === 'dividedMapView') {
+      refs.individualMapView.current.style.left = `-${window.innerWidth}px`;
+      refs.dividedMapView.current.style.left = `0px`;
+    } else {
+      console.log(오류오류);
+    }
+    console.log(userId);
+    setDisplayUserId(userId);
   };
-  const onChangeDisplayUser = (userId) => {
-    setDisPlayUserId(userId);
-  };
+
+  // console.log(timerProps, userRankProps, displayUserId, mapViewProps, runStatusProps, lineUpProps);
   if (
-    !(timerProps && userRankProps && disPlayUserId && mapViewProps && runStatusProps && lineUpProps)
+    !(timerProps && userRankProps && displayUserId && mapViewProps && runStatusProps && lineUpProps)
   ) {
     return <Box>로딩중</Box>;
   }
@@ -229,36 +251,65 @@ const MultiRun = () => {
   if (
     timerProps &&
     userRankProps &&
-    disPlayUserId &&
+    displayUserId &&
     mapViewProps &&
     runStatusProps &&
     lineUpProps
   ) {
-    console.log('lender 시작');
     return (
-      <Box css={moyeoRunWrapper}>
-        <Timer timerProps={timerProps} />
-        <Widgets onHandelViewState={onHandelViewState} onChangeDisPlayUser={onChangeDisplayUser} />
-        <UserRank userRankProps={userRankProps} />
-        <IndividualMapView mapViewProps={mapViewProps} />
-        <RunStatus runStatusProps={runStatusProps} />
-        <LineUp lineUpProps={lineUpProps} />
+      <Box css={multiRunWrapper}>
+        <Box css={indiVidualWrapper} ref={individualMapViewRef}>
+          <Timer timerProps={timerProps} />
+          <Widgets onHandelViewState={onHandelViewState} userId={props.user.id} />
+          <UserRank userRankProps={userRankProps} />
+          <IndividualMapView mapViewProps={mapViewProps} />
+          <RunStatus runStatusProps={runStatusProps} />
+          <CurrentRankStatus>
+            <LineUp lineUpProps={lineUpProps} />
+          </CurrentRankStatus>
+        </Box>
+
+        <Box css={dividedWrapper} ref={dividedMapViewRef}>
+          <DividedMapView mapViewProps={mapViewProps} onHandelViewState={onHandelViewState} />
+          <Box css={dividedlineUp}>
+            <LineUp lineUpProps={lineUpProps} />
+          </Box>
+        </Box>
       </Box>
     );
-  }
-  // if (viewState.dividedMapview) {
-  //   return (
-  //     <Box css={moyeoRunWrapper}>
-  //       <DivideMapView />
-  //       <LineUp />
-  //     </Box>
-  //   );
-  // }
+  } else return <Box>오류오류</Box>;
 };
 
 export default MultiRun;
 
-const moyeoRunWrapper = css`
+const multiRunWrapper = css``;
+
+const indiVidualWrapper = css`
+  position: fixed;
+  top: 0px;
+  left: 0px;
   width: 100%;
   height: 100%;
+  transition: all 0.5s ease;
+  z-index: 3;
+`;
+const dividedWrapper = css`
+  position: fixed;
+  top: 0px;
+  left: ${window.innerWidth}px;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  transition: all 0.5s ease;
+  z-index: 3;
+`;
+
+const dividedlineUp = css`
+  position: fixed;
+  bottom: 0px;
+  box-sizing: border-box;
+  display: flex;
+  background-color: white;
+  padding: 10px;
+  width: 100%;
 `;
