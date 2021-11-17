@@ -7,8 +7,7 @@ import { ReactComponent as DefaultImage } from '../../assets/svgs/DefaultImage.s
 import { ReactComponent as CameraIcon } from '../../assets/svgs/CameraIcon.svg';
 import CustomButton from '../../components/CustomButton';
 import Text from '../../components/Text';
-import ImageUploading from 'react-images-uploading';
-import axios from 'axios';
+import { useLocation } from 'react-router';
 
 const UploadProfile = () => {
   const [props, setProps] = useState({
@@ -19,8 +18,9 @@ const UploadProfile = () => {
     weight: null,
     height: null,
     accessToken: null,
+    image: '',
   });
-  const [profileImage, setProfileImage] = useState('');
+  const { pathname } = useLocation();
 
   const listener = ({ data }) => {
     if (typeof data !== 'string') return;
@@ -48,27 +48,16 @@ const UploadProfile = () => {
     window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'uploadProfile' }));
   };
 
-  const onUploadProfileImage = async (data) => {
-    const response = await axios({
-      url: 'http://45.248.73.50:30007/images/upload',
-      method: 'post',
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: 'Bearer ' + props.accessToken.token,
-      },
-      data,
-    });
-    setProfileImage(response.data.location);
-    window.ReactNativeWebView.postMessage(
-      JSON.stringify({ type: 'uploadProfileImage', value: response.data.location }),
-    );
-  };
-
-  const onChange = (imageList) => {
-    if (imageList.length === 0) return;
-    const formData = new FormData();
-    formData.append('image', imageList[0].file);
-    onUploadProfileImage(formData);
+  const getProfileImage = async () => {
+    if (pathname === '/test/uploadProfile') {
+      setProps({
+        ...props,
+        image:
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/200px-React-icon.svg.png',
+      });
+      return;
+    }
+    window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'getProfileImage' }));
   };
 
   return (
@@ -90,21 +79,17 @@ const UploadProfile = () => {
       </Box>
       <Box css={uploadProfileWrapper}>
         <Box css={imageWrapper}>
-          <ImageUploading onChange={onChange}>
-            {({ onImageUpload }) =>
-              !profileImage ? (
-                <Box css={imageBox}>
-                  <DefaultImage css={currentImage} />
-                  <CameraIcon css={cancelImage} onClick={onImageUpload} />
-                </Box>
-              ) : (
-                <Box css={imageBox}>
-                  <img src={profileImage} alt="" css={currentImage} />
-                  <CameraIcon css={cancelImage} onClick={onImageUpload} />
-                </Box>
-              )
-            }
-          </ImageUploading>
+          {!props.image ? (
+            <Box css={imageBox}>
+              <DefaultImage css={currentImage} />
+              <CameraIcon css={cancelImage} onClick={getProfileImage} />
+            </Box>
+          ) : (
+            <Box css={imageBox}>
+              <img src={props.image} alt="" css={currentImage} />
+              <CameraIcon css={cancelImage} onClick={getProfileImage} />
+            </Box>
+          )}
         </Box>
         <Box css={item}>
           <Text css={type}>이름</Text>
