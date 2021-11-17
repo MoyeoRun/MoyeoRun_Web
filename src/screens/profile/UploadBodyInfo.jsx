@@ -194,8 +194,8 @@ const title = css`
 `;
 
 const bodyInfoWrapper = css`
-  padding: 20px;
-  height: calc(100% - 40px);
+  padding: 0 20px;
+  height: calc(100% - 57px);
 `;
 
 const discription = css`
@@ -206,7 +206,7 @@ const discription = css`
   line-height: 23px;
   letter-spacing: 0em;
   text-align: left;
-  margin: 22px 0px 22px 0px;
+  padding: 22px 0px 22px 0px;
 `;
 const typeTypo = css`
   font-family: Apple SD Gothic Neo;

@@ -42,7 +42,6 @@ const RecordTab = () => {
 
   return (
     <>
-      {console.log(props)}
       <Box css={recordWrapper}>
         <Box css={recordTitle}>기록</Box>
         {props ? (
