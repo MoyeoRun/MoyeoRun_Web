@@ -15,7 +15,12 @@ const SelectOptions = ({ selectItems, optionId }) => {
   return (
     <>
       {options.map(
-        (option) => option.value && <option value={option.value}>{option.label}</option>,
+        (option, index) =>
+          option.value !== '' && (
+            <option key={index} value={option.value}>
+              {option.label}
+            </option>
+          ),
       )}
     </>
   );
@@ -47,8 +52,8 @@ const DialogSelect = ({ type, open, value, selectItems, setValue, handleClose })
               <Button onClick={() => handleClose(type)}>완료</Button>
             </Box>
             <Box component="form" css={dialogContent}>
-              {value.map((item) => (
-                <Box css={formControlWrap}>
+              {value.map((item, index) => (
+                <Box css={formControlWrap} key={index}>
                   <FormControl sx={{ m: 1, minWidth: 120 }}>
                     <Box>{item.head}</Box>
                     <select

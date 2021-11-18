@@ -1,11 +1,26 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { Box } from '@mui/material';
+import dayjs, { utc } from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { ReactComponent as LeftBackArrowIcon } from '../../assets/svgs/LeftBackArrowIcon.svg';
 import CustomButton from '../../components/CustomButton';
 import CustomInput from '../../components/MakeRoomComponents/CustomInput';
 import DialogSelect from '../../components/MakeRoomComponents/DialogSelect';
+
+// type Room = {
+//   id: number; //방 아이디
+//   title: string; //방 제목
+//   isOpen: boolean; //현재 방이 열려있는지 여부
+//   description: string | null; // 방 설명
+//   limitMember: number; //인원 제한
+//   userAmount: number; //참가 인원 수
+//   multiRoomMember: Array<Partial<User>>; //참가 유저 리스트
+//   startDate: string; //모여런 시작 일시 ISOString
+//   targetDistance: number; //모여런 목표 거리 Km단위
+//   targetTime: number; //모여런 목표 시간 밀리세컨드 단위
+//   roomImage: string | null;  //모여런 이미지
+// };
 
 const numberSelectItems = (numRange, increProp = 1) => {
   let { min, max } = numRange;
@@ -24,9 +39,10 @@ const numberSelectItems = (numRange, increProp = 1) => {
     steps = Math.floor((cMax - cMin) / increProp) + 1;
   }
 
-  for (let i = 1; i < steps; i++) {
-    itemValue += increProp;
+  itemValue = min;
+  for (let i = 0; i < steps; i++) {
     numList.push({ label: `${itemValue}`, value: itemValue });
+    itemValue += increProp;
   }
 
   return numList;
@@ -83,7 +99,7 @@ const InitValue = {
 const InitpickOptions = {
   startTime: [
     { id: 'start/slot', placeholder: '', strRange: ['오전', '오후'] },
-    { id: 'start/hour', placeholder: '시', numRange: { min: 0, max: 12 } },
+    { id: 'start/hour', placeholder: '시', numRange: { min: 0, max: 11 } },
     { id: 'start/minute', placeholder: '분', increProp: 5, numRange: { min: 0, max: 59 } },
   ],
   distance: [
@@ -94,7 +110,7 @@ const InitpickOptions = {
     { id: 'limit/hour', placeholder: '시간', numRange: { min: 0, max: 5 } },
     { id: 'limit/minute', placeholder: '분', increProp: 5, numRange: { min: 0, max: 59 } },
   ],
-  participants: [{ id: 'participants/number', placeholder: '명', numRange: { min: 0, max: 30 } }],
+  participants: [{ id: 'participants/number', placeholder: '명', numRange: { min: 1, max: 30 } }],
 };
 
 const SelectItems = {
@@ -105,7 +121,6 @@ const SelectItems = {
 };
 
 const CreateMultiRoom = () => {
-  const [props, setProps] = useState(null);
   const [roomName, setRoomName] = useState('');
   const [discription, setDiscription] = useState('');
   const [timeLimit, setTimeLimit] = useState(InitValue.timeLimit);
@@ -128,10 +143,34 @@ const CreateMultiRoom = () => {
     name: `방 이름을 입력해주세요.\n(ex. 자유롭게 5km 뛰어요)`,
     disc: `방을 설명할 정보를 입력해주세요.\n(ex. 30분 안에 5km 뛰기)`,
   };
+
+  const onCreateMultiRoom = () => {
+    window.ReactNativeWebView.postMessage(
+      JSON.stringify({
+        type: 'createMultiRoom',
+        value: {
+          title: roomName,
+          description: discription,
+          startDate: dayjs(new Date())
+            .hour(parseInt(startTime[0].value === '오후' && 12) + parseInt(startTime[1].value))
+            .minute(startTime[2].value)
+            .second(0)
+            .millisecond(0)
+            .toISOString(),
+          targetDistance: parseInt(distance[0].value) + parseInt(distance[1].value) * 0.1,
+          targetTime:
+            (parseInt(timeLimit[0].value) * 60 + parseInt(timeLimit[1].value)) * 60 * 1000,
+          limitMember: parseInt(participants[0].value),
+          roomImage: '',
+        },
+      }),
+    );
+  };
+
   const listener = (data) => {
     if (typeof data !== 'string') return;
     const propsData = JSON.parse(data);
-    if (propsData.type === 'makeRoom') {
+    if (propsData.type === 'createMultiRoom') {
       setProps(propsData.value);
     }
   };
@@ -253,6 +292,7 @@ const CreateMultiRoom = () => {
         </Box>
         <CustomButton
           css={button}
+          onClick={onCreateMultiRoom}
           disabled={
             !roomName ||
             !!startTime.filter((item) => !item.value).length ||
