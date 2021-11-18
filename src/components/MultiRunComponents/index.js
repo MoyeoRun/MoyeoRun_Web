@@ -8,3 +8,4 @@ export { default as UserRank } from './UserRank';
 export { default as Widgets } from './Widgets';
 export { default as CurrentRankStatus } from './CurrentRankStatus';
 export { default as RankingBadge } from './RankingBadge';
+export { default as ExitWindow } from './ExitWindow';

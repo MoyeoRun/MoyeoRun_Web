@@ -12,6 +12,7 @@ import {
   Timer,
   UserRank,
   Widgets,
+  ExitWindow,
 } from '../../components/MultiRunComponents';
 
 // {type MultiRunProps = {
@@ -283,7 +284,9 @@ const MultiRun = () => {
     }
   }, [props, displayUserId]);
 
-  const onHandelViewState = (type, userId = displayUserId) => {
+  const onHandelViewState = (type, userId = displayUserId, e = null) => {
+    console.log(2);
+    console.log(displayUserId);
     if (type === 'individualMapView') {
       refs.individualMapView.current.style.left = '0px';
       refs.dividedMapView.current.style.left = `${window.innerWidth}px`;
@@ -291,7 +294,7 @@ const MultiRun = () => {
       refs.individualMapView.current.style.left = `-${window.innerWidth}px`;
       refs.dividedMapView.current.style.left = `0px`;
     } else {
-      console.log(오류오류);
+      console.log('오류오류');
     }
     console.log(userId);
     setDisplayUserId(userId);
@@ -315,18 +318,26 @@ const MultiRun = () => {
     return (
       <Box css={multiRunWrapper}>
         <Box css={indiVidualWrapper} ref={individualMapViewRef}>
-          <Timer timerProps={timerProps} />
-          <Widgets onHandelViewState={onHandelViewState} userId={props.user.id} />
-          <UserRank userRankProps={userRankProps} />
-          <IndividualMapView mapViewProps={mapViewProps} />
+          <ExitWindow timerProps={timerProps}>
+            <IndividualMapView mapViewProps={mapViewProps} />
+
+            <Widgets onHandelViewState={onHandelViewState} userId={props.user.id} />
+            <Timer timerProps={timerProps} fixed />
+            <UserRank userRankProps={userRankProps} />
+          </ExitWindow>
+
           <RunStatus runStatusProps={runStatusProps} />
+
           <CurrentRankStatus>
             <LineUp lineUpProps={lineUpProps} />
           </CurrentRankStatus>
         </Box>
 
         <Box css={dividedWrapper} ref={dividedMapViewRef}>
-          <DividedMapView mapViewProps={mapViewProps} onHandelViewState={onHandelViewState} />
+          <ExitWindow timerProps={timerProps}>
+            <DividedMapView mapViewProps={mapViewProps} onHandelViewState={onHandelViewState} />
+          </ExitWindow>
+
           <Box css={dividedlineUp}>
             <LineUp lineUpProps={lineUpProps} />
           </Box>
@@ -338,7 +349,9 @@ const MultiRun = () => {
 
 export default MultiRun;
 
-const multiRunWrapper = css``;
+const multiRunWrapper = css`
+  position: relative;
+`;
 
 const indiVidualWrapper = css`
   position: fixed;
@@ -347,7 +360,7 @@ const indiVidualWrapper = css`
   width: 100%;
   height: 100%;
   transition: all 0.5s ease;
-  z-index: 3;
+  z-index: 1;
 `;
 const dividedWrapper = css`
   position: fixed;

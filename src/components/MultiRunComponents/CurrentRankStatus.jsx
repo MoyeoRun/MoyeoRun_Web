@@ -20,18 +20,14 @@ const CurrentRankStatus = ({ children }) => {
   }, [toggleState]);
 
   const onPositionChange = () => {
-    console.log(toggleState);
     setToggleState(!toggleState);
-    console.log(toggleState);
     // falue->true 바뀐상황이면 창이 위로 올라가야함  : true->false 바뀐상황이면 창이 아래로 내려가야함,
-
-    console.log(toggleState);
   };
 
   return (
     <Box css={currentRankingWrapper} ref={ref}>
       <ButtonBase css={head} onClick={() => onPositionChange()}>
-        <Box>현재 순위</Box>
+        <Box>실시간</Box>
         <ToggleIcon css={toggleIcon(toggleState)} />
       </ButtonBase>
       <Box css={content}>{children}</Box>
@@ -45,6 +41,7 @@ const currentRankingWrapper = css`
   bottom: -152px;
   width: 100%;
   transition: all 0.3s ease;
+  z-index: 2;
 `;
 const head = css`
   width: 100%;
@@ -73,6 +70,7 @@ const content = css`
 `;
 const toggleIcon = (onToggled) => css`
   transform: rotate(${onToggled ? 180 : 0}deg);
+  transition: all 0.4s ease;
 `;
 
 export default CurrentRankStatus;

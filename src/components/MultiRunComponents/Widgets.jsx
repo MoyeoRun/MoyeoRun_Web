@@ -4,12 +4,12 @@ import { Box, ButtonBase } from '@mui/material';
 import { ReactComponent as MoveToSelfMapIcon } from '../../assets/svgs/MoveToSelfMapIcon_MoyeoRun.svg';
 import { ReactComponent as MoveToDividedMapIcon } from '../../assets/svgs/MoveToDividedMapIcon_MoyeoRun.svg';
 
-const MoveToIndividualMapView = ({ onClick, userId }) => {
+const MoveToIndividualMapView = ({ onHandelViewState, userId }) => {
   return (
     <ButtonBase
       onClick={() => {
         console.log('individualMapView로 이동');
-        onClick('individualMapView', userId);
+        onHandelViewState('individualMapView', userId);
       }}
       css={buttonIcon}
     >
@@ -18,13 +18,12 @@ const MoveToIndividualMapView = ({ onClick, userId }) => {
   );
 };
 
-const MoveToDiviedMapView = ({ onClick }) => {
+const MoveToDiviedMapView = ({ onHandelViewState }) => {
   return (
     <ButtonBase
       css={buttonIcon}
       onClick={() => {
-        console.log('dividedMapView로 이동');
-        onClick('dividedMapView');
+        onHandelViewState('dividedMapView');
       }}
     >
       <MoveToDividedMapIcon />
@@ -35,8 +34,8 @@ const MoveToDiviedMapView = ({ onClick }) => {
 const Widgets = ({ onHandelViewState, userId }) => {
   return (
     <Box css={widgetsWrap}>
-      <MoveToIndividualMapView onClick={onHandelViewState} userId={userId} />
-      <MoveToDiviedMapView onClick={onHandelViewState} />
+      <MoveToIndividualMapView onHandelViewState={onHandelViewState} userId={userId} />
+      <MoveToDiviedMapView onHandelViewState={onHandelViewState} />
     </Box>
   );
 };
@@ -49,7 +48,7 @@ const widgetsWrap = css`
   flex-direction: column;
   top: 64px;
   right: 22px;
-  z-index: 1;
+  z-index: 3;
 `;
 const buttonIcon = css`
   width: 55px;

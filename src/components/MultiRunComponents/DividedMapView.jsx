@@ -7,7 +7,7 @@ import AccountImage from '../AccountImage';
 
 const Map = ({ userId, runData, center, rank, index, onHandelViewState }) => {
   return (
-    <Box css={mapWrapper} onDoubleClick={() => onHandelViewState('individualMapView', userId)}>
+    <Box css={mapWrapper} onDoubleClick={(e) => onHandelViewState('individualMapView', userId, e)}>
       <Box css={accountImage}>
         <AccountImage isMe={rank.isMe} image={rank.image} />
       </Box>

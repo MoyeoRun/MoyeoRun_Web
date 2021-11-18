@@ -1,14 +1,17 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { Box } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NaverMap, Polyline, Marker } from 'react-naver-maps';
 
-const IndividualMapView = ({ mapViewProps, userId }) => {
+const IndividualMapView = ({ mapViewProps, userId, children }) => {
   const { userPoints, displayUserId = userId } = mapViewProps;
   const displayData = userPoints.find((user) => user.userId === displayUserId);
   const center = displayData.center;
   const color = displayData.rank.color;
+
+  const ref = useRef();
+
   if (!displayData) return null;
   if (displayData)
     return (
@@ -81,7 +84,8 @@ const individualMapWrapper = css`
   position: fixed;
   width: 100%;
   height: 100%;
-  z-index: 0;
+  z-index: 1;
+  background-color: #ffffff;
 `;
 
 const mapStyle = css`
@@ -90,4 +94,5 @@ const mapStyle = css`
   &:focus-visible {
     outline: none;
   }
+  z-index: 0;
 `;

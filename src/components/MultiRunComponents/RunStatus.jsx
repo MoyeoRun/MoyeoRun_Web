@@ -37,6 +37,7 @@ const RunStatusWrapper = css`
   align-items: center;
   box-shadow: 0px 0px 6px -4px #777777;
   background-color: white;
+  z-index: 2;
 `;
 
 //

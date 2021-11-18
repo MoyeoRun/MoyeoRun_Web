@@ -6,9 +6,7 @@ import AccountImage from '../AccountImage';
 
 const UserRank = ({ userRankProps }) => {
   const { rank } = userRankProps;
-  // console.log(rank);
   const user = rank.find((user) => user.displayUserId === user.userId);
-  // console.log(user.rank);
 
   return (
     <>
@@ -31,7 +29,7 @@ const userWrap = css`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  z-index: 1;
+  z-index: 2;
 `;
 
 const rankingBadgeMargin = css`
