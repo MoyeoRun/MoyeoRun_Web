@@ -21,7 +21,7 @@ const multiRoomProps = {
     title: '테스트',
     status: 'Open',
     description: '음',
-    startDate: '2021-11-19T13:30:00.000Z',
+    startDate: '2021-11-1T13:30:00.000Z',
     targetDistance: 1,
     targetTime: 2700000,
     limitMember: 7,

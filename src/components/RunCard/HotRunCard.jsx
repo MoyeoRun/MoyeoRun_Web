@@ -6,12 +6,9 @@ import { Box } from '@mui/material';
 
 const HotRunCard = ({ runData }) => (
   <Box
-    onClick={() => {
-      window.nativeWindow.postMessage(JSON.stringify({ type: 'goRoomById', value: roomData.id }));
-    }}
     css={runCardWrapper(
-      runData.image
-        ? runData.image
+      runData.roomImage
+        ? runData.roomImage
         : 'https://images.unsplash.com/photo-1604314923234-5144a466130f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1632&q=80',
     )}
   >
@@ -65,6 +62,7 @@ const bottomTitle = css`
   font-size: 24px;
   color: white;
   width: 190px;
+  text-align: start;
   word-break: keep-all;
   overflow: hidden;
   text-overflow: ellipsis;

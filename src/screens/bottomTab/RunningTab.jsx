@@ -19,7 +19,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 const RunningTab = () => {
   const [props, setProps] = useState({
     user: null,
-    openRoomList: [],
+    openRoomList: null,
     currentRoom: null,
   });
   const [menu, setMenu] = useState(0);
@@ -106,24 +106,48 @@ const RunningTab = () => {
 
       {menu === 0 && (
         <>
-          {props.currentRoom[0] && (
+          {props.currentRoom &&
+            props.currentRoom.length === 0 &&
+            props.openRoomList &&
+            props.openRoomList.length === 0 && (
+              <Box css={section}>
+                <Text css={sectionTitle}>현재 열려있는 모여런이 없습니다!</Text>
+              </Box>
+            )}
+          {props.currentRoom && props.currentRoom.length !== 0 && (
             <>
               <Text css={sectionTitle}>참여중인 러닝</Text>
               <Box css={section}>
-                <Box css={moyeoRunItem}>
+                <CustomButton
+                  css={moyeoRunItem}
+                  onClick={() => {
+                    window.ReactNativeWebView.postMessage(
+                      JSON.stringify({ type: 'goRoomById', value: props.currentRoom[0].id }),
+                    );
+                  }}
+                >
                   <MoyeoRunCard runData={props.currentRoom[0]} />
-                </Box>
+                </CustomButton>
               </Box>
             </>
           )}
 
-          <Text css={sectionTitle}>실시간 러닝방</Text>
+          {props.openRoomList && props.openRoomList.length !== 0 && (
+            <Text css={sectionTitle}>실시간 러닝방</Text>
+          )}
           <Box css={section}>
-            {props.openRoomList.length !== 0
+            {props.openRoomList
               ? props.openRoomList.map((moyeoRunData) => (
-                  <Box css={moyeoRunItem}>
+                  <CustomButton
+                    css={moyeoRunItem}
+                    onClick={() => {
+                      window.ReactNativeWebView.postMessage(
+                        JSON.stringify({ type: 'goRoomById', value: moyeoRunData.id }),
+                      );
+                    }}
+                  >
                     <MoyeoRunCard runData={moyeoRunData} />
-                  </Box>
+                  </CustomButton>
                 ))
               : [1, 2, 3].map(() => <Skeleton variant="rectangular" css={moyeoRunItem} />)}
           </Box>
@@ -281,6 +305,7 @@ const moyeoRunItem = css`
   width: 100%;
   height: 196px;
   margin-bottom: 28px;
+  padding: 0;
 `;
 
 const singleRunTitle = css`

@@ -15,6 +15,7 @@ const MultiRoom = () => {
   const [props, setProps] = useState({
     user: null,
     room: null,
+    statusBarHeight: 48,
     roomOwner: null,
   });
   const { pathname } = useLocation();
@@ -75,7 +76,7 @@ const MultiRoom = () => {
     <Box css={multiRoomWrapper}>
       <Box css={cardWrapper}>
         {props.room ? (
-          <RoomCard room={props.room} />
+          <RoomCard statusBarHeight={props.statusBarHeight} room={props.room} />
         ) : (
           <Skeleton variant="rectangular" css={{ width: '100%', height: '100%' }} />
         )}
@@ -130,9 +131,7 @@ const MultiRoom = () => {
           {props.room ? (
             <>
               <MemberList
-                member={props.room.multiRoomMember.filter(
-                  (member) => member.multiRoomUser.id !== props.roomOwner.id,
-                )}
+                member={props.room.multiRoomMember}
                 limitMember={props.room.limitMember}
                 userAmount={props.room.multiRoomMember.length}
               />
@@ -148,7 +147,8 @@ const MultiRoom = () => {
 };
 const multiRoomWrapper = css`
   width: 100%;
-  height: 100%;
+  height: fit-content;
+  padding-bottom: 120px;
   overflow-x: hidden;
 `;
 
