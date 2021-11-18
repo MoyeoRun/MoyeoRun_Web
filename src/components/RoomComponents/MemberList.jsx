@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Box } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
 import { ReactComponent as PeopleIcon_Room } from '../../assets/svgs/PeopleIcon_Room.svg';
 import { ReactComponent as RightArrowIcon_Room } from '../../assets/svgs/RightArrowIcon_Room.svg';
 import AccountImage from '../AccountImage';
@@ -12,7 +12,11 @@ const MemberList = ({ member, limitMember, userAmount }) => {
       <Box>
         {member.map((member, index) => (
           <Box css={memberImage(index)}>
-            <AccountImage image={member.image} />
+            {member ? (
+              <AccountImage image={member.image} />
+            ) : (
+              <Skeleton variant="circular" css={{ width: '48px', height: '48px' }} />
+            )}
           </Box>
         ))}
       </Box>
