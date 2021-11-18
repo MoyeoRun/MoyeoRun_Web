@@ -13,6 +13,7 @@ import {
   UserRank,
   Widgets,
   ExitWindow,
+  NetworkError,
 } from '../../components/MultiRunComponents';
 
 // {type MultiRunProps = {
@@ -192,6 +193,7 @@ const MultiRun = () => {
   const [runStatusProps, setRunStatusProps] = useState();
   const [lineUpProps, setLineUpProps] = useState();
   const [displayUserId, setDisplayUserId] = useState(props.user.id);
+  const [error, setError] = useState();
 
   const individualMapViewRef = useRef();
   const dividedMapViewRef = useRef();
@@ -224,6 +226,10 @@ const MultiRun = () => {
   }, []);
 
   useEffect(() => {
+    // setError(false);
+  }, []);
+
+  useEffect(() => {
     if (props) {
       console.log('useEffect');
 
@@ -239,11 +245,11 @@ const MultiRun = () => {
         userId: member.userId,
         image: member.multiRoomUser.image || 'https://source.unsplash.com/random/90x90',
       }));
-      console.log(userImage);
+      // console.log(userImage);
       const userRankState = props.othersRunData
         .sort((a, b) => b.distance - a.distance)
         .map((member, index) => {
-          console.log(member);
+          // console.log(member);
           return {
             ...member,
             rank: index + 1,
@@ -253,7 +259,7 @@ const MultiRun = () => {
             color: userColor.find((user) => user.userId === member.userId).color,
           };
         });
-      console.log(userRankState);
+      // console.log(userRankState);
       const otherMapData = props.othersRunData.map((member) => ({
         userId: member.userId,
         runData: member.runData,
@@ -285,8 +291,8 @@ const MultiRun = () => {
   }, [props, displayUserId]);
 
   const onHandelViewState = (type, userId = displayUserId, e = null) => {
-    console.log(2);
-    console.log(displayUserId);
+    // console.log(displayUserId);
+
     if (type === 'individualMapView') {
       refs.individualMapView.current.style.left = '0px';
       refs.dividedMapView.current.style.left = `${window.innerWidth}px`;
@@ -296,11 +302,11 @@ const MultiRun = () => {
     } else {
       console.log('오류오류');
     }
-    console.log(userId);
+    // console.log(userId);
     setDisplayUserId(userId);
   };
 
-  console.log(timerProps, userRankProps, displayUserId, mapViewProps, runStatusProps, lineUpProps);
+  // console.log(timerProps, userRankProps, displayUserId, mapViewProps, runStatusProps, lineUpProps);
   if (
     !(timerProps && userRankProps && displayUserId && mapViewProps && runStatusProps && lineUpProps)
   ) {
@@ -342,6 +348,7 @@ const MultiRun = () => {
             <LineUp lineUpProps={lineUpProps} />
           </Box>
         </Box>
+        <NetworkError error={error} />
       </Box>
     );
   } else return <Box>오류오류</Box>;

@@ -9,3 +9,5 @@ export { default as Widgets } from './Widgets';
 export { default as CurrentRankStatus } from './CurrentRankStatus';
 export { default as RankingBadge } from './RankingBadge';
 export { default as ExitWindow } from './ExitWindow';
+export { default as ExitModal } from './ExitModal';
+export { default as NetworkError } from './NetworkError';
