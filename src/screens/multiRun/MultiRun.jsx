@@ -54,20 +54,71 @@ const InitValue = {
   },
   room: {
     id: 1,
+    roomImage: '',
     title: '바람 부는 날 5Km 함께 뛰어요',
-    isOpen: true,
+    statue: 'open',
     description: 'ㅎㅇ',
-    limitMember: 4,
-    userAmount: 3,
-    multiRoomMember: [
-      { id: 1, name: '황인서', image: 'https://source.unsplash.com/random/90x90' },
-      { id: 2, name: '김건훈', image: 'https://source.unsplash.com/random/90x90' },
-      { id: 3, name: '조인혁', image: 'https://source.unsplash.com/random/90x90' },
-    ],
     startDate: '2021-11-14T12:31:04.672Z',
     targetDistance: 3,
     targetTime: 30,
     roomImage: '',
+    limitMember: 4,
+    // userAmount: 3,
+    // roomId: 1,
+    // userId: 2,
+    // runId: 1,
+    // isOwner: true,
+    // isReady: false,
+    multiRoomMember: [
+      {
+        userId: 1,
+        isOwer: true,
+        isReady: false,
+        roomId: 1,
+        runId: null,
+        multiRoomUser: {
+          id: 1,
+          name: '황인서',
+          nickName: 'sjsjs…',
+          image: 'https://source.unsplash.com/random/90x90',
+          token: null,
+          height: null,
+          weight: null,
+        },
+      },
+      {
+        userId: 2,
+        isOwer: false,
+        isReady: false,
+        roomId: 1,
+        runId: null,
+        multiRoomUser: {
+          id: 2,
+          name: '김건훈',
+          nickName: 'sjsjs…',
+          image: 'https://source.unsplash.com/random/90x90',
+          token: null,
+          height: null,
+          weight: null,
+        },
+      },
+      {
+        userId: 3,
+        isOwer: false,
+        isReady: false,
+        roomId: 1,
+        runId: null,
+        multiRoomUser: {
+          id: 3,
+          name: '조인혁',
+          nickName: 'ㅁㄴㄹㅁㄴㅇㄹ',
+          image: 'https://source.unsplash.com/random/90x90',
+          token: null,
+          height: null,
+          weight: null,
+        },
+      },
+    ],
   },
   othersRunData: [
     {
@@ -139,7 +190,7 @@ const MultiRun = () => {
   const [mapViewProps, setMapViewProps] = useState();
   const [runStatusProps, setRunStatusProps] = useState();
   const [lineUpProps, setLineUpProps] = useState();
-  const [displayUserId, setDisplayUserId] = useState(1);
+  const [displayUserId, setDisplayUserId] = useState(props.user.id);
 
   const individualMapViewRef = useRef();
   const dividedMapViewRef = useRef();
@@ -168,7 +219,6 @@ const MultiRun = () => {
   }, []);
 
   useEffect(() => {
-    console.log(props);
     setProps(InitValue);
   }, []);
 
@@ -176,26 +226,33 @@ const MultiRun = () => {
     if (props) {
       console.log('useEffect');
 
+      //multiRun에서 사용하는 데이터는 여기서 다 설정해준다
+
       const userColor = props.room.multiRoomMember.map((member, index) => ({
-        userId: member.id,
-        color: colorData[index],
+        userId: member.userId,
+        color: colorData[index] || '#E5E5E5',
       }));
+
+      // console.log(props.room.multiRoomMember);
       const userImage = props.room.multiRoomMember.map((member) => ({
-        userId: member.id,
-        image: member.image,
+        userId: member.userId,
+        image: member.multiRoomUser.image || 'https://source.unsplash.com/random/90x90',
       }));
-
+      console.log(userImage);
       const userRankState = props.othersRunData
-        .sort((a, b) => a.distance - b.distance)
-        .map((member, index) => ({
-          ...member,
-          rank: index + 1,
-          isMe: props.user.id === member.userId,
-          image: userImage.find((user) => user.userId === member.userId).image,
-          displayUserId: displayUserId,
-          color: userColor.find((user) => user.userId === member.userId).color,
-        }));
-
+        .sort((a, b) => b.distance - a.distance)
+        .map((member, index) => {
+          console.log(member);
+          return {
+            ...member,
+            rank: index + 1,
+            isMe: props.user.id === member.userId,
+            image: userImage.find((user) => user.userId === member.userId).image,
+            displayUserId: displayUserId,
+            color: userColor.find((user) => user.userId === member.userId).color,
+          };
+        });
+      console.log(userRankState);
       const otherMapData = props.othersRunData.map((member) => ({
         userId: member.userId,
         runData: member.runData,
@@ -211,11 +268,10 @@ const MultiRun = () => {
 
       const markerData = props.room.multiRoomMember.map((member) => ({
         ...member,
-        distance: otherDistance[member.id],
-        color: userColor.find((user) => user.userId === member.id).color,
+        distance: otherDistance[member.userId],
+        color: userColor.find((user) => user.userId === member.userId).color,
       }));
 
-      //multiRun에서 사용하는 데이터는 여기서 다 설정해준다
       setTimerProps({ remainTime: props.none.remainTime });
       setUserRankProps({ rank: userRankState });
       setMapViewProps({
@@ -241,7 +297,7 @@ const MultiRun = () => {
     setDisplayUserId(userId);
   };
 
-  // console.log(timerProps, userRankProps, displayUserId, mapViewProps, runStatusProps, lineUpProps);
+  console.log(timerProps, userRankProps, displayUserId, mapViewProps, runStatusProps, lineUpProps);
   if (
     !(timerProps && userRankProps && displayUserId && mapViewProps && runStatusProps && lineUpProps)
   ) {

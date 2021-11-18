@@ -37,7 +37,7 @@ const LineUp = ({ lineUpProps }) => {
           <LineUpMarker
             key={index}
             fill={member.color}
-            image={member.image}
+            image={member.multiRoomUser.image}
             distance={getMarkerPositionRatio(member.distance)}
           />
         ))}

@@ -5,15 +5,14 @@ import { NaverMap, Polyline, Marker } from 'react-naver-maps';
 import { RankingBadge } from '.';
 import AccountImage from '../AccountImage';
 
-const Map = ({ userId, runData, center, rankData, index, onHandelViewState }) => {
-  const colorData = ['#1162FF', '#FC6BFF', '#00F2B8', '#FFDD64'];
+const Map = ({ userId, runData, center, rank, index, onHandelViewState }) => {
   return (
     <Box css={mapWrapper} onDoubleClick={() => onHandelViewState('individualMapView', userId)}>
       <Box css={accountImage}>
-        <AccountImage isMe={rankData.isMe} image={rankData.image} />
+        <AccountImage isMe={rank.isMe} image={rank.image} />
       </Box>
       <Box css={rankingBadge}>
-        <RankingBadge rank={rankData.rank} divMap={true} />
+        <RankingBadge rank={rank.rank} divMap={true} />
       </Box>
       <NaverMap
         id={`map_of_${userId}`}
@@ -34,7 +33,7 @@ const Map = ({ userId, runData, center, rankData, index, onHandelViewState }) =>
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            background: ${colorData[index]}1A;
+            background: ${rank.color}1A;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -42,11 +41,11 @@ const Map = ({ userId, runData, center, rankData, index, onHandelViewState }) =>
             ">
               <div style="
                 width: 20px;
-                height: 20px; background: ${colorData[index]};
+                height: 20px; background: ${rank.color};
                 border: 3px solid #FFFFFF;
                 box-sizing: border-box;
                 border-radius: 50%;
-                box-shadow: 0px 0px 2px ${colorData[index]};">
+                box-shadow: 0px 0px 2px ${rank.color};">
               </div>
           </div>
         `,
@@ -62,7 +61,7 @@ const Map = ({ userId, runData, center, rankData, index, onHandelViewState }) =>
                   lng: point.longitude,
                 },
               ]}
-              strokeColor={`${colorData[index]}`}
+              strokeColor={`${rank.color}`}
               strokeStyle={'solid'}
               strokeLineCap={'round'}
               strokeLineJoin={'round'}
@@ -79,7 +78,7 @@ const Map = ({ userId, runData, center, rankData, index, onHandelViewState }) =>
 
 const DividedMapView = ({ mapViewProps, onHandelViewState }) => {
   const { userPoints, disPlayUserId } = mapViewProps;
-  // console.log(userPoints);
+
   if (!userPoints) {
     console.log('랜더링 노노');
     return null;
@@ -96,7 +95,7 @@ const DividedMapView = ({ mapViewProps, onHandelViewState }) => {
               userId={user.userId}
               center={user.center}
               runData={user.runData}
-              rankData={user.rank}
+              rank={user.rank}
               onHandelViewState={onHandelViewState}
             />
           ))}

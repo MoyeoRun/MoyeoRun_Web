@@ -4,10 +4,9 @@ import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { NaverMap, Polyline, Marker } from 'react-naver-maps';
 
-const IndividualMapView = ({ mapViewProps }) => {
-  const { userPoints, displayUserId } = mapViewProps;
+const IndividualMapView = ({ mapViewProps, userId }) => {
+  const { userPoints, displayUserId = userId } = mapViewProps;
   const displayData = userPoints.find((user) => user.userId === displayUserId);
-  console.log(displayData);
   const center = displayData.center;
   const color = displayData.rank.color;
   if (!displayData) return null;
@@ -61,7 +60,7 @@ const IndividualMapView = ({ mapViewProps }) => {
                     lng: point.longitude,
                   },
                 ]}
-                strokeColor={'#1162FF'}
+                strokeColor={`${color}`}
                 strokeStyle={'solid'}
                 strokeLineCap={'round'}
                 strokeLineJoin={'round'}
