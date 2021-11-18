@@ -31,8 +31,8 @@ const index = [
   { url: 'singleRunOnlyMap', title: '개인런 맵스크린', component: <SingleRunOnlyMap /> },
 
   //멀티런
-  { url: 'createMultiRoom', title: '멀티 런 만들기 스크린', component: <CreateMultiRoom /> },
-  { url: 'multiRoom', title: '멀티 런 방 스크린', component: <MultiRoom /> },
+  { url: 'makeRoom', title: '멀티 런 만들기 스크린', component: <CreateMultiRoom /> },
+  { url: 'room', title: '멀티 런 방 스크린', component: <MultiRoom /> },
 
   //프로필
   { url: 'uploadProfile', title: '프로필 등록 스크린', component: <UploadProfile /> },
