@@ -2,14 +2,12 @@
 import { css } from '@emotion/react';
 import { Box } from '@mui/material';
 import AccountImage from '../AccountImage';
-import { ReactComponent as CrownIcon } from '../../assets/svgs/CrownIcon.svg';
 
 const Host = ({ image, message, host }) => {
   return (
     <Box css={hostWrap}>
       <Box css={account}>
-        <AccountImage image={image} />
-        <CrownIcon css={crownIcon} />
+        <AccountImage image={image} isMe={true} />
         <Box css={accountName}>{host}</Box>
       </Box>
       <Box css={hostMessage}>{message}</Box>
@@ -66,10 +64,4 @@ const accountName = css`
   text-align: left;
   color: #1162ff;
   margin-top: 4px;
-`;
-
-const crownIcon = css`
-  position: absolute;
-  bottom: 0px;
-  right: 0px;
 `;
