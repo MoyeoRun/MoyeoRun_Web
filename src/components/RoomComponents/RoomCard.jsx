@@ -17,7 +17,7 @@ const RoomCard = ({ room, statusBarHeight = 48, ...props }) => (
   >
     <Box css={gradient}>
       <ButtonBase
-        css={[goBackButton, { marginBottom: '4px' }]}
+        css={[goBackButton, { marginBottom: '15px' }]}
         onClick={() => {
           window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'goBack' }));
         }}
@@ -65,7 +65,7 @@ const goBackButton = css`
   display: flex;
   justify-content: centerflex;
   align-items: center;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 18px;
   font-style: normal;
   font-weight: 600;

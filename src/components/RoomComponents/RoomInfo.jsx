@@ -7,9 +7,12 @@ import { ReactComponent as DistanceIcon_Room } from '../../assets/svgs/DistanceI
 
 const startTimeString = (startTime) => {
   const date = new Date(startTime);
-  const hour = date.getHours();
-  const min = date.getMinutes();
-  return (hour > 12 ? '오후' : '오전') + ' ' + (hour > 12 ? hour - 12 : hour) + ' : ' + min;
+  let hour = date.getHours();
+  let period = hour >= 12 ? '오후' : '오전';
+  if (hour > 12) hour -= 12;
+  hour = hour.toString().padStart(2, '0');
+  let min = date.getMinutes().toString().padStart(2, '0');
+  return period + ' ' + hour + ' : ' + min;
 };
 
 const targetTimeString = (second) => {
@@ -85,7 +88,7 @@ const content = css`
   overflow: hidden;
 `;
 const keyword = css`
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 13px;
   font-style: normal;
   font-weight: 400;
@@ -96,7 +99,7 @@ const keyword = css`
   margin-left: 10px;
 `;
 const value = css`
-  font-family: SF Compact Display;
+  font-family: number-500;
   font-size: 13px;
   font-style: normal;
   font-weight: 400;

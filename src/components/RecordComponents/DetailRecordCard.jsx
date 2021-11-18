@@ -88,7 +88,7 @@ const detailRecordWrap = css`
 `;
 
 const cardDate = css`
-  font-family: SF Compact Display;
+  font-family: number-500;
   font-size: 13px;
   font-style: normal;
   font-weight: 400;
@@ -98,7 +98,7 @@ const cardDate = css`
   color: #aaaaaa;
 `;
 const cardTitle = css`
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 16px;
   font-style: normal;
   font-weight: 600;
@@ -113,7 +113,7 @@ const cardRecordWrap = css`
 `;
 
 const summaryValue = css`
-  font-family: SF Compact Display;
+  font-family: number-500;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -122,7 +122,7 @@ const summaryValue = css`
   text-align: left;
 `;
 const summaryKeyword = css`
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 13px;
   font-style: normal;
   font-weight: 400;

@@ -10,21 +10,35 @@ import MemberList from '../../components/RoomComponents/MemberList';
 import { useLocation } from 'react-router';
 import multiRoomProps from '../../testData/MultiRoomProps';
 import CustomButton from '../../components/CustomButton';
+import ReactPullToRefresh from 'react-pull-to-refresh';
+import ReactLoading from 'react-loading';
 
 const MultiRoom = () => {
   const [props, setProps] = useState({
     user: null,
     room: null,
+    statusBarHeight: 48,
     roomOwner: null,
+    error: null,
   });
   const { pathname } = useLocation();
+  const [loading, setLoading] = useState(false);
 
   const listener = ({ data }) => {
     if (typeof data !== 'string') return;
     const propsData = JSON.parse(data);
     if (propsData.type === 'multiRoom') {
       setProps(propsData.value);
+      setLoading(false);
     }
+  };
+
+  const handleRefresh = () => {
+    setLoading(true);
+    window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'refresh' }));
+    // setTimeout(() => {
+    //   setLoading(false);
+    // }, 1000);
   };
 
   useEffect(() => {
@@ -41,7 +55,8 @@ const MultiRoom = () => {
   const ActionButton = () => {
     const isAttend =
       props.user &&
-      props.user.id in props.room.multiRoomMember.map((item) => item.multiRoomUser.id);
+      props.room.multiRoomMember.filter((item) => item.multiRoomUser.id === props.user.id)
+        .length !== 0;
     const isOwner = props.user && props.user.id === props.roomOwner.id;
     if (props.user.roomId && props.user.roomId !== props.room.id) {
       return <CustomButton css={button(2)}>이미 다른 모여런에 참여 중입니다</CustomButton>;
@@ -55,7 +70,7 @@ const MultiRoom = () => {
             window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'exitRoom' }));
           }}
         >
-          탈퇴하기
+          떠나기
         </CustomButton>
       );
     else
@@ -63,7 +78,7 @@ const MultiRoom = () => {
         <CustomButton
           css={button(0)}
           onClick={() => {
-            window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'exitRoom' }));
+            window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'joinRoom' }));
           }}
         >
           참여하기
@@ -72,83 +87,90 @@ const MultiRoom = () => {
   };
 
   return (
-    <Box css={multiRoomWrapper}>
-      <Box css={cardWrapper}>
-        {props.room ? (
-          <RoomCard room={props.room} />
-        ) : (
-          <Skeleton variant="rectangular" css={{ width: '100%', height: '100%' }} />
-        )}
-      </Box>
-      <Box css={contentWrapper}>
-        <Box css={informationTypo}>
-          <Box>정보</Box>
+    <ReactPullToRefresh onRefresh={handleRefresh} css={pullDown}>
+      <Box css={multiRoomWrapper}>
+        <Box css={cardWrapper}>
           {props.room ? (
-            <RoomInfo room={props.room} />
+            <RoomCard statusBarHeight={props.statusBarHeight} room={props.room} />
           ) : (
-            <Skeleton
-              variant="rectangular"
-              css={{ width: '100%', height: '95px', marginTop: '9px', marginBottom: '24px' }}
-            />
+            <Skeleton variant="rectangular" css={{ width: '100%', height: '100%' }} />
           )}
-          <Box css={host}>
-            <Box>호스트</Box>
-            {props.roomOwner ? (
-              <Host
-                image={props.roomOwner.image}
-                host={props.roomOwner.nickName}
-                message={props.room.title}
-              />
+        </Box>
+        <Box css={contentWrapper}>
+          <Box css={informationTypo}>
+            <Box>정보</Box>
+            {props.room ? (
+              <RoomInfo room={props.room} />
             ) : (
               <Skeleton
-                variant="circular"
-                css={{ width: '48px', height: '48px', marginBottom: '37px', marginTop: '20px' }}
+                variant="rectangular"
+                css={{ width: '100%', height: '95px', marginTop: '9px', marginBottom: '24px' }}
               />
+            )}
+
+            <Box css={host}>
+              <Box>호스트</Box>
+              {props.roomOwner ? (
+                <Host
+                  image={props.roomOwner.image}
+                  host={props.roomOwner.nickName}
+                  message={props.room.title}
+                />
+              ) : (
+                <Skeleton
+                  variant="circular"
+                  css={{ width: '48px', height: '48px', marginBottom: '37px', marginTop: '20px' }}
+                />
+              )}
+            </Box>
+          </Box>
+          <Box css={splitLine} />
+          <Box>
+            <Box css={recruitmentTypo}>참가자 모집중입니다</Box>
+            {props.room ? (
+              <>
+                <ParticipationGraph
+                  limitMember={props.room.limitMember}
+                  userAmount={props.room.multiRoomMember.length}
+                />
+                <Box css={restPeopletypo}>
+                  {props.room.limitMember - props.room.multiRoomMember.length}명 더 참여하면 방 마감
+                </Box>
+              </>
+            ) : (
+              <>
+                <Skeleton variant="rectangular" css={{ width: '100%', height: '8px' }} />
+              </>
+            )}
+          </Box>
+          <Box>
+            {props.room ? (
+              <>
+                <MemberList
+                  member={props.room.multiRoomMember}
+                  limitMember={props.room.limitMember}
+                  userAmount={props.room.multiRoomMember.length}
+                />
+                <ActionButton />
+              </>
+            ) : (
+              <MemberList member={[0, 0, 0]} limitMember={0} userAmount={0} />
             )}
           </Box>
         </Box>
-        <Box css={splitLine} />
-        <Box>
-          <Box css={recruitmentTypo}>참가자 모집중입니다</Box>
-          {props.room ? (
-            <>
-              <ParticipationGraph
-                limitMember={props.room.limitMember}
-                userAmount={props.room.multiRoomMember.length}
-              />
-              <Box css={restPeopletypo}>
-                {props.room.limitMember - props.room.multiRoomMember.length}명 더 참여하면 방 마감
-              </Box>
-            </>
-          ) : (
-            <>
-              <Skeleton variant="rectangular" css={{ width: '100%', height: '8px' }} />
-            </>
-          )}
-        </Box>
-        <Box>
-          {props.room ? (
-            <>
-              <MemberList
-                member={props.room.multiRoomMember.filter(
-                  (member) => member.multiRoomUser.id !== props.roomOwner.id,
-                )}
-                limitMember={props.room.limitMember}
-                userAmount={props.room.multiRoomMember.length}
-              />
-              <ActionButton />
-            </>
-          ) : (
-            <MemberList member={[0, 0, 0]} limitMember={0} userAmount={0} />
-          )}
-        </Box>
       </Box>
-    </Box>
+    </ReactPullToRefresh>
   );
 };
+
+const pullDown = css`
+  flex: 1;
+`;
+
 const multiRoomWrapper = css`
   width: 100%;
-  height: 100%;
+  height: fit-content;
+  padding-bottom: 120px;
   overflow-x: hidden;
 `;
 
@@ -165,7 +187,7 @@ const splitLine = css`
   width: 100%;
 `;
 const informationTypo = css`
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -176,7 +198,7 @@ const informationTypo = css`
 `;
 
 const host = css`
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -186,7 +208,7 @@ const host = css`
   color: #63676f;
 `;
 const recruitmentTypo = css`
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 18px;
   font-style: normal;
   font-weight: 600;
@@ -197,7 +219,7 @@ const recruitmentTypo = css`
   margin-top: 24px;
 `;
 const restPeopletypo = css`
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 13px;
   font-style: normal;
   font-weight: 400;
@@ -209,7 +231,7 @@ const restPeopletypo = css`
 `;
 
 const button = (state) => css`
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 21px;
   font-style: normal;
   font-weight: 600;
