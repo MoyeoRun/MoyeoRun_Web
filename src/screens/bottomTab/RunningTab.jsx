@@ -11,6 +11,8 @@ import { ReactComponent as PlusIcon } from '../../assets/svgs/PlusIcon.svg';
 import { ReactComponent as CancleIcon } from '../../assets/svgs/CancleIcon.svg';
 import CustomButton from '../../components/CustomButton';
 import { useLocation } from 'react-router';
+import ReactPullToRefresh from 'react-pull-to-refresh';
+import ReactLoading from 'react-loading';
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -22,6 +24,7 @@ const RunningTab = () => {
     openRoomList: null,
     currentRoom: null,
   });
+  const [loading, setLoading] = useState(false);
   const [menu, setMenu] = useState(0);
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
@@ -39,7 +42,13 @@ const RunningTab = () => {
     const propsData = JSON.parse(data);
     if (propsData.type === 'runningTab') {
       setProps(propsData.value);
+      setLoading(false);
     }
+  };
+
+  const handleRefresh = () => {
+    window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'refresh' }));
+    setLoading(true);
   };
 
   useEffect(() => {
@@ -54,129 +63,144 @@ const RunningTab = () => {
   }, []);
 
   return (
-    <Box css={runningTabWrapper}>
-      <Box css={headWrapper}>
-        {props.user ? (
-          <Text css={headTitle}>
-            {props.user.name}님,
-            <br /> 달려 볼까요?
-          </Text>
-        ) : (
-          <Skeleton variant="text" width="100%" />
-        )}
+    <ReactPullToRefresh
+      onRefresh={handleRefresh}
+      className="your-own-class-if-you-want"
+      css={pullDown}
+    >
+      {loading && (
+        <Box css={{ display: 'flex', justifyContent: 'center' }}>
+          <ReactLoading type="bars" color="#1160ffde" width="50px" height="50px" />
+        </Box>
+      )}
+      <Box css={runningTabWrapper}>
+        <Box css={headWrapper}>
+          {props.user ? (
+            <Text css={headTitle}>
+              {props.user.name}님,
+              <br /> 달려 볼까요?
+            </Text>
+          ) : (
+            <Skeleton variant="text" width="100%" />
+          )}
+
+          {menu === 0 && (
+            <IconButton onClick={handleClickOpen} css={{ flexShrink: 0 }}>
+              <PlusIcon />
+            </IconButton>
+          )}
+          <Dialog TransitionComponent={Transition} open={open} onClose={handleClose}>
+            <Box css={makeRoomWrapper}>
+              <Box className="header">
+                <Text className="title">방 만들기</Text>
+                <IconButton className="icon" onClick={handleClose}>
+                  <CancleIcon />
+                </IconButton>
+              </Box>
+              <Text className="description">목표를 설정하고 함께 뛸 수 있어요!</Text>
+              <CustomButton
+                className="button"
+                onClick={() => {
+                  window.ReactNativeWebView.postMessage(
+                    JSON.stringify({ type: 'goCreateMultiRoom' }),
+                  );
+                }}
+              >
+                방 만들기
+              </CustomButton>
+            </Box>
+          </Dialog>
+        </Box>
+        <Tabs
+          value={menu}
+          onChange={(event, newValue) => {
+            setMenu(newValue);
+          }}
+          css={menuWrapper}
+          TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }}
+        >
+          <Tab label="모여런" css={menuItem} />
+          <Tab label="개인런" css={menuItem} />
+        </Tabs>
 
         {menu === 0 && (
-          <IconButton onClick={handleClickOpen} css={{ flexShrink: 0 }}>
-            <PlusIcon />
-          </IconButton>
-        )}
-        <Dialog TransitionComponent={Transition} open={open} onClose={handleClose}>
-          <Box css={makeRoomWrapper}>
-            <Box className="header">
-              <Text className="title">방 만들기</Text>
-              <IconButton className="icon" onClick={handleClose}>
-                <CancleIcon />
-              </IconButton>
-            </Box>
-            <Text className="description">목표를 설정하고 함께 뛸 수 있어요!</Text>
-            <CustomButton
-              className="button"
-              onClick={() => {
-                window.ReactNativeWebView.postMessage(
-                  JSON.stringify({ type: 'goCreateMultiRoom' }),
-                );
-              }}
-            >
-              방 만들기
-            </CustomButton>
-          </Box>
-        </Dialog>
-      </Box>
-      <Tabs
-        value={menu}
-        onChange={(event, newValue) => {
-          setMenu(newValue);
-        }}
-        css={menuWrapper}
-        TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }}
-      >
-        <Tab label="모여런" css={menuItem} />
-        <Tab label="개인런" css={menuItem} />
-      </Tabs>
-
-      {menu === 0 && (
-        <>
-          {props.currentRoom &&
-            props.currentRoom.length === 0 &&
-            props.openRoomList &&
-            props.openRoomList.length === 0 && (
-              <Box css={section}>
-                <Text css={sectionTitle}>현재 열려있는 모여런이 없습니다!</Text>
-              </Box>
-            )}
-          {props.currentRoom && props.currentRoom.length !== 0 && (
-            <>
-              <Text css={sectionTitle}>참여중인 러닝</Text>
-              <Box css={section}>
-                <CustomButton
-                  css={moyeoRunItem}
-                  onClick={() => {
-                    window.ReactNativeWebView.postMessage(
-                      JSON.stringify({ type: 'goRoomById', value: props.currentRoom[0].id }),
-                    );
-                  }}
-                >
-                  <MoyeoRunCard runData={props.currentRoom[0]} />
-                </CustomButton>
-              </Box>
-            </>
-          )}
-
-          {props.openRoomList && props.openRoomList.length !== 0 && (
-            <Text css={sectionTitle}>실시간 러닝방</Text>
-          )}
-          <Box css={section}>
-            {props.openRoomList
-              ? props.openRoomList.map((moyeoRunData) => (
+          <>
+            {props.currentRoom &&
+              props.currentRoom.length === 0 &&
+              props.openRoomList &&
+              props.openRoomList.length === 0 && (
+                <Box css={section}>
+                  <Text css={sectionTitle}>현재 열려있는 모여런이 없습니다!</Text>
+                </Box>
+              )}
+            {props.currentRoom && props.currentRoom.length !== 0 && (
+              <>
+                <Text css={sectionTitle}>참여중인 러닝</Text>
+                <Box css={section}>
                   <CustomButton
                     css={moyeoRunItem}
                     onClick={() => {
                       window.ReactNativeWebView.postMessage(
-                        JSON.stringify({ type: 'goRoomById', value: moyeoRunData.id }),
+                        JSON.stringify({ type: 'goRoomById', value: props.currentRoom[0].id }),
                       );
                     }}
                   >
-                    <MoyeoRunCard runData={moyeoRunData} />
+                    <MoyeoRunCard runData={props.currentRoom[0]} />
                   </CustomButton>
-                ))
-              : [1, 2, 3].map(() => <Skeleton variant="rectangular" css={moyeoRunItem} />)}
-          </Box>
-        </>
-      )}
-      {menu === 1 && (
-        <Box css={section}>
-          <FreeRunCard title="자유 달리기" description="원하는 만큼 자유롭게 달려보세요" />
-          <Text css={singleRunTitle}>러닝 가이드</Text>
-          <Box css={runListWraper}>
-            <Box css={runList}>
-              {props.singleRunGuideList
-                ? props.singleRunGuideList.map((guideData) => (
-                    <Box css={runItem}>
-                      <GuideCard guideData={guideData} />
-                    </Box>
+                </Box>
+              </>
+            )}
+
+            {props.openRoomList && props.openRoomList.length !== 0 && (
+              <Text css={sectionTitle}>실시간 러닝방</Text>
+            )}
+            <Box css={section}>
+              {props.openRoomList
+                ? props.openRoomList.map((moyeoRunData) => (
+                    <CustomButton
+                      css={moyeoRunItem}
+                      onClick={() => {
+                        window.ReactNativeWebView.postMessage(
+                          JSON.stringify({ type: 'goRoomById', value: moyeoRunData.id }),
+                        );
+                      }}
+                    >
+                      <MoyeoRunCard runData={moyeoRunData} />
+                    </CustomButton>
                   ))
-                : [1, 2, 3].map(() => (
-                    <Skeleton variant="rectangular" width="335px" height="196px" />
-                  ))}
+                : [1, 2, 3].map(() => <Skeleton variant="rectangular" css={moyeoRunItem} />)}
+            </Box>
+          </>
+        )}
+        {menu === 1 && (
+          <Box css={section}>
+            <FreeRunCard title="자유 달리기" description="원하는 만큼 자유롭게 달려보세요" />
+            <Text css={singleRunTitle}>러닝 가이드</Text>
+            <Box css={runListWraper}>
+              <Box css={runList}>
+                {props.singleRunGuideList
+                  ? props.singleRunGuideList.map((guideData) => (
+                      <Box css={runItem}>
+                        <GuideCard guideData={guideData} />
+                      </Box>
+                    ))
+                  : [1, 2, 3].map(() => (
+                      <Skeleton variant="rectangular" width="335px" height="196px" />
+                    ))}
+              </Box>
             </Box>
           </Box>
-        </Box>
-      )}
-    </Box>
+        )}
+      </Box>
+    </ReactPullToRefresh>
   );
 };
 
 export default RunningTab;
+
+const pullDown = css`
+  flex: 1;
+`;
 
 const runningTabWrapper = css`
   width: calc(100% - 36px);
