@@ -1,17 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Box } from '@mui/material';
-import React from 'react';
+import { Avatar } from '@mui/material';
 
 const AccountImage = ({ image, size = 48 }) => {
   return (
-    <Box
-      sx={{
+    <Avatar
+      src={image}
+      css={{
         width: size,
         height: size,
-        borderRadius: size,
-        backgroundImage: `url(${image}})`,
-        backgroundSize: 'cover',
+        borderRadius: '50%',
       }}
     />
   );
