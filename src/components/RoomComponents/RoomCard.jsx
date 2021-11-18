@@ -16,7 +16,12 @@ const RoomCard = ({ room, statusBarHeight = 48, ...props }) => (
     })}
   >
     <Box css={gradient}>
-      <ButtonBase css={[goBackButton, { marginBottom: '4px' }]}>
+      <ButtonBase
+        css={[goBackButton, { marginBottom: '4px' }]}
+        onClick={() => {
+          window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'goBack' }));
+        }}
+      >
         <LeftBackArrowIcon_White stroke="white" />
         <Box sx={{ marginLeft: '6px' }}>뒤로가기</Box>
       </ButtonBase>
