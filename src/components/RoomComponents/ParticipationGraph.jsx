@@ -40,7 +40,7 @@ const deadLine = css`
   width: 50px;
   height: 32px;
   background-image: url("data:image/svg+xml,%3Csvg width='50' height='32' viewBox='0 0 50 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M3 0C1.34315 0 0 1.34315 0 3V23C0 24.6569 1.34315 26 3 26H19.7178L25.0742 31.1421L30.4306 26H47C48.6569 26 50 24.6569 50 23V3C50 1.34315 48.6569 0 47 0H3Z' fill='%231162FF'/%3E%3C/svg%3E%0A");
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;

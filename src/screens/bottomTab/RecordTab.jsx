@@ -83,7 +83,7 @@ const recordWrapper = css`
   padding: 11px;
 `;
 const recordTitle = css`
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 24px;
   font-style: normal;
   font-weight: 600;
@@ -95,7 +95,7 @@ const recordTitle = css`
 `;
 const detailRecordWapper = css`
   padding: 25px 14px 0px 11px;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 18px;
   font-style: normal;
   font-weight: 500;

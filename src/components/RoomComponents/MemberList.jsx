@@ -45,7 +45,7 @@ const participants = css`
   display: flex;
   justify-content: center;
   align-items: center center;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;

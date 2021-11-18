@@ -65,7 +65,7 @@ const goBackButton = css`
   display: flex;
   justify-content: centerflex;
   align-items: center;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 18px;
   font-style: normal;
   font-weight: 600;

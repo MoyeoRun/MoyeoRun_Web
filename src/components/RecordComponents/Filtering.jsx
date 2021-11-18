@@ -42,7 +42,7 @@ const flexWrap = css`
   margin-top: 11px;
 `;
 const Typo = css`
-  font-family: SF Compact Display;
+  font-family: number-500;
   font-size: 20px;
   font-style: normal;
   font-weight: 500;

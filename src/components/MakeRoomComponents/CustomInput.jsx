@@ -22,7 +22,7 @@ const CustomInput = ({ placeholder, value, setValue }) => {
 export default CustomInput;
 
 const input = css`
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
@@ -38,7 +38,7 @@ const input = css`
   align-items: start;
   margin-top: 13px;
   & .MuiInputBase-input {
-    font-family: Apple SD Gothic Neo;
+    font-family: text-500;
     font-size: 15px;
     font-style: normal;
     font-weight: 500;

@@ -333,7 +333,7 @@ const createMultiRoomWrapper = css`
 `;
 
 const typeTypo = css`
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 18px;
   font-style: normal;
   font-weight: 600;
@@ -347,7 +347,7 @@ const inputForm = css`
   box-sizing: border-box;
   border-radius: 2px;
   width: 100%;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 15px;
   font-style: normal;
   font-weight: 500;
@@ -369,7 +369,7 @@ const button = css`
   width: 100%;
   height: 88px;
   padding: 16px;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;

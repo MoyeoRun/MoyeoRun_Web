@@ -29,7 +29,7 @@ const hostMessage = css`
   width: 100%;
   padding: 15px 0px;
   border-radius: 8px;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -57,7 +57,7 @@ const account = css`
 const accountName = css`
   position: absolute;
   bottom: -18px;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 12px;
   font-style: normal;
   font-weight: 600;
