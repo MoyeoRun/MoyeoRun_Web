@@ -1,25 +1,17 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Box } from '@mui/material';
-import React from 'react';
-import { ReactComponent as CrownIcon } from '../assets/svgs/CrownIcon.svg';
+import { Avatar } from '@mui/material';
 
 const AccountImage = ({ image, size = 48, isMe }) => {
   return (
-    <>
-      <Box
-        sx={{
-          position: 'relative',
-          width: size,
-          height: size,
-          borderRadius: size,
-          backgroundImage: `url(${image}})`,
-          backgroundSize: 'cover',
-        }}
-      >
-        {isMe && <CrownIcon css={crownIcon} />}
-      </Box>
-    </>
+    <Avatar
+      src={image}
+      css={{
+        width: size,
+        height: size,
+        borderRadius: '50%',
+      }}
+    />
   );
 };
 

@@ -8,7 +8,7 @@ const homeData = {
       title: '바람 부는 날 5Km 함께 뛰어요',
       current: 20,
       waiting: 25,
-      startDate: new Date() + 10000,
+      startDate: new Date(),
       image:
         'https://images.unsplash.com/photo-1604314923234-5144a466130f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1632&q=80',
     },

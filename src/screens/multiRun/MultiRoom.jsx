@@ -1,36 +1,22 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Box } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import RoomInfo from '../../components/RoomComponents/RoomInfo';
-import RoomStateButton from '../../components/RoomComponents/RoomStateButton';
 import RoomCard from '../../components/RoomComponents/RoomCard';
 import Host from '../../components/RoomComponents/Host';
 import ParticipationGraph from '../../components/RoomComponents/ParticipationGraph';
 import MemberList from '../../components/RoomComponents/MemberList';
-const room = {
-  id: 1,
-  title: '바람 부는 날 5Km 함께 뛰어요',
-  isOpen: true,
-  description: 'ㅎㅇ',
-  limitMember: 4,
-  userAmount: 3,
-  multiRoomMember: [
-    { id: 1, name: '황인서', image: 'https://source.unsplash.com/random/50x50' },
-    { id: 2, name: '김건훈', image: 'https://source.unsplash.com/random/90x90' },
-    { id: 3, name: '조인혁', image: 'https://source.unsplash.com/random/100x100' },
-  ],
-  startDate: '2021-11-14T12:31:04.672Z',
-  targetDistance: 3,
-  targetTime: 30,
-  roomImage: '',
-};
+import { useLocation } from 'react-router';
+import multiRoomProps from '../../testData/MultiRoomProps';
+import CustomButton from '../../components/CustomButton';
 
-const image = 'https://source.unsplash.com/random/100x100';
-
-const MultiRoom = ({}) => {
-  const [props, setProps] = useState(null);
-  const [roomState, setRoomState] = useState({ isMyRoom: true, isAttend: false });
+const MultiRoom = () => {
+  const [props, setProps] = useState({
+    user: null,
+    room: null,
+  });
+  const { pathname } = useLocation();
 
   const listener = ({ data }) => {
     if (typeof data !== 'string') return;
@@ -41,6 +27,7 @@ const MultiRoom = ({}) => {
   };
 
   useEffect(() => {
+    if (pathname === '/test/multiRoom') setProps(multiRoomProps);
     document.addEventListener('message', listener);
     window.addEventListener('message', listener);
 
@@ -50,34 +37,108 @@ const MultiRoom = ({}) => {
     };
   }, []);
 
+  const ActionButton = () => {
+    const isAttend = props.user && props.user.id in props.room.multiRoomMember;
+    const isOwner = props.user && props.user.id === props.room.roomOwner.id;
+    if (props.user.roomId && props.user.roomId !== props.room.id) {
+      return <CustomButton css={button(2)}>이미 다른 모여런에 참여 중입니다</CustomButton>;
+    }
+    if (isOwner) return null;
+    if (isAttend)
+      return (
+        <CustomButton
+          css={button(1)}
+          onClick={() => {
+            window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'exitRoom' }));
+          }}
+        >
+          탈퇴하기
+        </CustomButton>
+      );
+    else
+      return (
+        <CustomButton
+          css={button(0)}
+          onClick={() => {
+            window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'exitRoom' }));
+          }}
+        >
+          참여하기
+        </CustomButton>
+      );
+  };
+
   return (
     <Box css={multiRoomWrapper}>
       <Box css={cardWrapper}>
-        <RoomCard room={room} goBackProp />
+        {props.room ? (
+          <RoomCard room={props.room} />
+        ) : (
+          <Skeleton variant="rectangular" css={{ width: '100%', height: '100%' }} />
+        )}
       </Box>
       <Box css={contentWrapper}>
         <Box css={informationTypo}>
           <Box>정보</Box>
-          <RoomInfo room={room} />
+          {props.room ? (
+            <RoomInfo room={props.room} />
+          ) : (
+            <Skeleton
+              variant="rectangular"
+              css={{ width: '100%', height: '95px', marginTop: '9px', marginBottom: '24px' }}
+            />
+          )}
           <Box css={host}>
             <Box>호스트</Box>
-            <Host image={image} host={'나'} message={room.title} />
+            {props.room ? (
+              <Host
+                image={props.room.roomOwner.image}
+                host={props.room.roomOwner.nickName}
+                message={props.room.title}
+              />
+            ) : (
+              <Skeleton
+                variant="circular"
+                css={{ width: '48px', height: '48px', marginBottom: '37px', marginTop: '20px' }}
+              />
+            )}
           </Box>
         </Box>
         <Box css={splitLine} />
         <Box>
           <Box css={recruitmentTypo}>참가자 모집중입니다</Box>
-          <ParticipationGraph limitMember={room.limitMember} userAmount={room.userAmount} />
-          <Box css={restPeopletypo}>{room.limitMember - room.userAmount}명 더 참여하면 방 마감</Box>
+          {props.room ? (
+            <>
+              <ParticipationGraph
+                limitMember={props.room.limitMember}
+                userAmount={props.room.userAmount}
+              />
+              <Box css={restPeopletypo}>
+                {props.room.limitMember - props.room.userAmount}명 더 참여하면 방 마감
+              </Box>
+            </>
+          ) : (
+            <>
+              <Skeleton variant="rectangular" css={{ width: '100%', height: '8px' }} />
+            </>
+          )}
         </Box>
         <Box>
-          <MemberList
-            member={room.multiRoomMember}
-            limitMember={room.limitMember}
-            userAmount={room.userAmount}
-          ></MemberList>
+          {props.room ? (
+            <>
+              <MemberList
+                member={props.room.multiRoomMember.filter(
+                  (member) => member.id !== props.room.roomOwner.id,
+                )}
+                limitMember={props.room.limitMember}
+                userAmount={props.room.userAmount}
+              />
+              <ActionButton />
+            </>
+          ) : (
+            <MemberList member={[0, 0, 0]} limitMember={0} userAmount={0} />
+          )}
         </Box>
-        <RoomStateButton roomState={roomState}>참여하기</RoomStateButton>
       </Box>
     </Box>
   );
@@ -85,7 +146,6 @@ const MultiRoom = ({}) => {
 const multiRoomWrapper = css`
   width: 100%;
   height: 100%;
-  padding-bottom: 80px;
   overflow-x: hidden;
 `;
 
@@ -145,6 +205,27 @@ const restPeopletypo = css`
   margin-top: 8px;
 `;
 
-const member = css``;
+const button = (state) => css`
+  font-family: Apple SD Gothic Neo;
+  font-size: 21px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 25px;
+  letter-spacing: -0.05em;
+  text-align: left;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  color: white;
+  height: 88px;
+  border-radius: 0px;
+  background-color: ${state === 0 ? '#1162ff' : state === 1 ? 'white' : '#E0E0E0'};
+  color: ${state === 0 ? 'white' : state === 1 ? '#1162ff' : '#828282'};
+  &:hover {
+    background-color: ${state === 0 ? '#1162ff' : state === 1 ? 'white' : '#E0E0E0'};
+    color: ${state === 0 ? 'white' : state === 1 ? '#1162ff' : '#828282'};
+  }
+`;
 
 export default MultiRoom;
