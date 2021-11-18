@@ -15,6 +15,7 @@ const MultiRoom = () => {
   const [props, setProps] = useState({
     user: null,
     room: null,
+    roomOwner: null,
   });
   const { pathname } = useLocation();
 
@@ -38,8 +39,10 @@ const MultiRoom = () => {
   }, []);
 
   const ActionButton = () => {
-    const isAttend = props.user && props.user.id in props.room.multiRoomMember;
-    const isOwner = props.user && props.user.id === props.room.roomOwner.id;
+    const isAttend =
+      props.user &&
+      props.user.id in props.room.multiRoomMember.map((item) => item.multiRoomUser.id);
+    const isOwner = props.user && props.user.id === props.roomOwner.id;
     if (props.user.roomId && props.user.roomId !== props.room.id) {
       return <CustomButton css={button(2)}>이미 다른 모여런에 참여 중입니다</CustomButton>;
     }
@@ -90,10 +93,10 @@ const MultiRoom = () => {
           )}
           <Box css={host}>
             <Box>호스트</Box>
-            {props.room ? (
+            {props.roomOwner ? (
               <Host
-                image={props.room.roomOwner.image}
-                host={props.room.roomOwner.nickName}
+                image={props.roomOwner.image}
+                host={props.roomOwner.nickName}
                 message={props.room.title}
               />
             ) : (
@@ -111,10 +114,10 @@ const MultiRoom = () => {
             <>
               <ParticipationGraph
                 limitMember={props.room.limitMember}
-                userAmount={props.room.userAmount}
+                userAmount={props.room.multiRoomMember.length}
               />
               <Box css={restPeopletypo}>
-                {props.room.limitMember - props.room.userAmount}명 더 참여하면 방 마감
+                {props.room.limitMember - props.room.multiRoomMember.length}명 더 참여하면 방 마감
               </Box>
             </>
           ) : (
@@ -128,10 +131,10 @@ const MultiRoom = () => {
             <>
               <MemberList
                 member={props.room.multiRoomMember.filter(
-                  (member) => member.id !== props.room.roomOwner.id,
+                  (member) => member.multiRoomUser.id !== props.roomOwner.id,
                 )}
                 limitMember={props.room.limitMember}
-                userAmount={props.room.userAmount}
+                userAmount={props.room.multiRoomMember.length}
               />
               <ActionButton />
             </>
