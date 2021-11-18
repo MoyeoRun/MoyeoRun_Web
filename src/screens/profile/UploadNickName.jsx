@@ -136,7 +136,7 @@ const uploadNickNameWrapper = css`
 `;
 
 const discription = css`
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 19px;
   font-style: normal;
   font-weight: 600;
@@ -146,7 +146,7 @@ const discription = css`
   padding: 22px 0px 22px 0px;
 `;
 const typeTypo = css`
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
@@ -162,7 +162,7 @@ const inputForm = css`
   box-sizing: border-box;
   border-radius: 2px;
   width: 100%;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 15px;
   font-style: normal;
   font-weight: 500;
@@ -179,7 +179,7 @@ const inputForm = css`
 const button = css`
   width: 100%;
   padding: 16px;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;

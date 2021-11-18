@@ -64,7 +64,12 @@ const HomeTab = () => {
       ) : (
         <Skeleton variant="text" width="100%" css={{ marginTop: '60px' }} />
       )}
-      <Box css={runListTitle}>
+      <Box
+        css={runListTitle}
+        onDBClick={() => {
+          console.log('더블클릭');
+        }}
+      >
         지금 인기있는 러닝
         <RightArrowIcon css={{ width: '12px', height: '12px' }} />
       </Box>

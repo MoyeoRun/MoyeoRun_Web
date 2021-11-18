@@ -4,27 +4,24 @@ import { Box } from '@mui/material';
 import { ReactComponent as PeopleIcon_Room } from '../../assets/svgs/PeopleIcon_Room.svg';
 import { ReactComponent as ClockIcon_Room } from '../../assets/svgs/ClockIcon_Room.svg';
 import { ReactComponent as DistanceIcon_Room } from '../../assets/svgs/DistanceIcon_Room.svg';
-// import React from 'react';
-// startDate: '2021-11-14T12:31:04.672Z',
-// targetDistance: 3,
-// targetTime: 30,
-// roomImage: '',
 
 const startTimeString = (startTime) => {
-  const parseDate = startTime.toString().split('-');
-  const beforeHour = parseInt(parseDate[2].slice(3, 5));
-  const AMorPM = beforeHour <= 12 ? '오전' : '오후';
-  const hour = beforeHour <= 12 ? beforeHour.toString() : (beforeHour - 12).toString();
-  const min = parseDate[2].slice(6, 8);
-  return AMorPM + ' ' + hour + ' : ' + min;
+  const date = new Date(startTime);
+  let hour = date.getHours();
+  let period = hour >= 12 ? '오후' : '오전';
+  if (hour > 12) hour -= 12;
+  hour = hour.toString().padStart(2, '0');
+  let min = date.getMinutes().toString().padStart(2, '0');
+  return period + ' ' + hour + ' : ' + min;
 };
-const targetTimeString = (targetTime) => {
-  return `${parseInt(targetTime / 60) ? `${parseInt(targetTime / 60)}시간` : ''} ${
-    (targetTime % 60) + '분'
+
+const targetTimeString = (second) => {
+  return `${parseInt(second / 3600) > 0 ? `${parseInt(second / 3600)}시간` : ''} ${
+    parseInt((second % 3600) / 60) + '분'
   }`;
 };
 
-const RoomInfo = ({ room = room }) => {
+const RoomInfo = ({ room }) => {
   const { limitMember, startDate, targetDistance, targetTime } = room;
 
   return (
@@ -51,7 +48,7 @@ const RoomInfo = ({ room = room }) => {
         <Content>
           <ClockIcon_Room />
           <Keyword>제한시간</Keyword>
-          <Value>{targetTimeString(targetTime)}</Value>
+          <Value>{targetTimeString(targetTime / 1000)}</Value>
         </Content>
       </Box>
     </Box>
@@ -91,7 +88,7 @@ const content = css`
   overflow: hidden;
 `;
 const keyword = css`
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 13px;
   font-style: normal;
   font-weight: 400;
@@ -102,7 +99,7 @@ const keyword = css`
   margin-left: 10px;
 `;
 const value = css`
-  font-family: SF Compact Display;
+  font-family: number-500;
   font-size: 13px;
   font-style: normal;
   font-weight: 400;

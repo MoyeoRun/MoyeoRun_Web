@@ -18,7 +18,11 @@ const SelectOptions = ({ selectItems, optionId }) => {
         (option, index) =>
           option.value !== '' && (
             <option key={index} value={option.value}>
-              {option.label}
+              {optionId === 'start/hour'
+                ? option.value === 0
+                  ? parseInt(option.label) + 12
+                  : option.label
+                : option.label}
             </option>
           ),
       )}

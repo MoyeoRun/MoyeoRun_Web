@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Box } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import dayjs, { utc } from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { ReactComponent as LeftBackArrowIcon } from '../../assets/svgs/LeftBackArrowIcon.svg';
@@ -152,7 +152,7 @@ const CreateMultiRoom = () => {
           title: roomName,
           description: discription,
           startDate: dayjs(new Date())
-            .hour(parseInt(startTime[0].value === '오후' && 12) + parseInt(startTime[1].value))
+            .hour(parseInt(startTime[0].value === '오후' ? 12 : 0) + parseInt(startTime[1].value))
             .minute(startTime[2].value)
             .second(0)
             .millisecond(0)
@@ -208,11 +208,16 @@ const CreateMultiRoom = () => {
 
   return (
     <>
-      <Box css={createMultiRoomWrapper}>
-        <Box css={backButton}>
+      <Box css={title}>
+        <IconButton
+          onClick={() => {
+            window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'goBack' }));
+          }}
+        >
           <LeftBackArrowIcon />
-        </Box>
-
+        </IconButton>
+      </Box>
+      <Box css={createMultiRoomWrapper}>
         <Box>
           <Box css={typeTypo}>방이름</Box>
           <CustomInput value={roomName} setValue={setRoomName} placeholder={placeholder.name} />
@@ -309,15 +314,26 @@ const CreateMultiRoom = () => {
 };
 export default CreateMultiRoom;
 
-const createMultiRoomWrapper = css`
-  padding: 20px 20px 88px 20px;
+const title = css`
+  width: 100%;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid #f5f5f5;
+  &.MuiBox-root {
+    flex: 1;
+  }
 `;
-const backButton = css`
-  margin-top: 60px;
+
+const createMultiRoomWrapper = css`
+  height: 100%;
+  width: calc(100% - 40px);
+  padding: 0 20px;
+  padding-bottom: 88px;
 `;
 
 const typeTypo = css`
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 18px;
   font-style: normal;
   font-weight: 600;
@@ -331,7 +347,7 @@ const inputForm = css`
   box-sizing: border-box;
   border-radius: 2px;
   width: 100%;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 15px;
   font-style: normal;
   font-weight: 500;
@@ -353,7 +369,7 @@ const button = css`
   width: 100%;
   height: 88px;
   padding: 16px;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;

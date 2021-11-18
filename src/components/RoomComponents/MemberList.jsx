@@ -6,14 +6,13 @@ import { ReactComponent as RightArrowIcon_Room } from '../../assets/svgs/RightAr
 import AccountImage from '../AccountImage';
 
 const MemberList = ({ member, limitMember, userAmount }) => {
-  console.log(member);
   return (
     <Box css={memberWrap}>
       <Box>
-        {member.map((member, index) => (
+        {member.map((item, index) => (
           <Box css={memberImage(index)}>
-            {member ? (
-              <AccountImage image={member.image} />
+            {item ? (
+              <AccountImage image={item.multiRoomUser.image} />
             ) : (
               <Skeleton variant="circular" css={{ width: '48px', height: '48px' }} />
             )}
@@ -46,7 +45,7 @@ const participants = css`
   display: flex;
   justify-content: center;
   align-items: center center;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;

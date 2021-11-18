@@ -19,6 +19,7 @@
     "react-kakao-login": "^2.1.0",
     "react-loading": "^2.0.3",
     "react-naver-maps": "^0.0.13",
+    "react-pull-to-refresh": "^1.1.2",
     "react-router": "^6.0.1",
     "react-router-dom": "^6.0.1",
     "react-scripts": "4.0.3"

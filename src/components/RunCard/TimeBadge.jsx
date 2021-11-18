@@ -14,7 +14,7 @@ const TimeBadge = ({ runTime }) => {
           ? second > 3600
             ? second > 86400
               ? Math.floor(second / 86400) + '일 전'
-              : Math.floor(second / 60) + '분 전'
+              : Math.floor(second / 3600) + '시간 전'
             : Math.floor(second / 60) + '분 전'
           : Math.floor(second) + '초 전'}
       </Text>
@@ -25,7 +25,7 @@ const TimeBadge = ({ runTime }) => {
 export default TimeBadge;
 
 const timeBadgeWrapper = css`
-  width: 57px;
+  width: 70px;
   height: 24px;
   padding: 0 5px;
   background: #1162ff;
@@ -37,4 +37,6 @@ const timeBadgeWrapper = css`
   justify-content: space-between;
   align-items: center;
   overflow: hidden;
+  -webkit-box-shadow: 5px 4px 15px 5px rgba(0, 0, 0, 0.25);
+  box-shadow: 5px 4px 15px 5px rgba(0, 0, 0, 0.25);
 `;

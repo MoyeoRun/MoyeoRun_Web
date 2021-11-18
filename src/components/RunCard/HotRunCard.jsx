@@ -4,11 +4,11 @@ import TimeBadge from './TimeBadge';
 import { ReactComponent as PeopleIcon } from '../../assets/svgs/PeopleIcon.svg';
 import { Box } from '@mui/material';
 
-const HotRunCard = ({ runData, goBackProp }) => (
+const HotRunCard = ({ runData }) => (
   <Box
     css={runCardWrapper(
-      runData.image
-        ? runData.image
+      runData.roomImage
+        ? runData.roomImage
         : 'https://images.unsplash.com/photo-1604314923234-5144a466130f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1632&q=80',
     )}
   >
@@ -18,7 +18,7 @@ const HotRunCard = ({ runData, goBackProp }) => (
         <Box css={bottomTitle}>{runData.title}</Box>
         <Box css={people}>
           <PeopleIcon className="icon" />
-          {runData.current + '/' + runData.waiting}
+          {runData.multiRoomMember.length + '/' + runData.limitMember}
         </Box>
       </Box>
     </Box>
@@ -62,6 +62,7 @@ const bottomTitle = css`
   font-size: 24px;
   color: white;
   width: 190px;
+  text-align: start;
   word-break: keep-all;
   overflow: hidden;
   text-overflow: ellipsis;
