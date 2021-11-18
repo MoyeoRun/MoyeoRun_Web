@@ -4,8 +4,11 @@ import TimeBadge from './TimeBadge';
 import { ReactComponent as PeopleIcon } from '../../assets/svgs/PeopleIcon.svg';
 import { Box } from '@mui/material';
 
-const HotRunCard = ({ runData, goBackProp }) => (
+const HotRunCard = ({ runData }) => (
   <Box
+    onClick={() => {
+      window.nativeWindow.postMessage(JSON.stringify({ type: 'goRoomById', value: roomData.id }));
+    }}
     css={runCardWrapper(
       runData.image
         ? runData.image

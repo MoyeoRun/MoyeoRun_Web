@@ -10,8 +10,8 @@ const RoomCard = ({ room, statusBarHeight = 48, ...props }) => (
     {...props}
     css={runCardWrapper({
       statusBarHeight,
-      url: room.image
-        ? room.image
+      url: room.roomImage
+        ? room.roomImage
         : 'https://images.unsplash.com/photo-1604314923234-5144a466130f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1632&q=80',
     })}
   >
@@ -30,7 +30,7 @@ const RoomCard = ({ room, statusBarHeight = 48, ...props }) => (
         <Box css={bottomTitle}>{room.title}</Box>
         <Box css={people}>
           <PeopleIcon className="icon" />
-          {room.userAmount + '/' + room.limitMember}
+          {room.multiRoomMember.length + '/' + room.limitMember}
         </Box>
       </Box>
     </Box>
@@ -72,6 +72,7 @@ const goBackButton = css`
   letter-spacing: -0.04em;
   text-align: left;
   color: white;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 `;
 const bottomWrapper = css`
   flex: 1;
