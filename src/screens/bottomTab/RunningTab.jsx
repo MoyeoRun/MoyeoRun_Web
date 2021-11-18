@@ -74,7 +74,9 @@ const RunningTab = () => {
               <CustomButton
                 className="button"
                 onClick={() => {
-                  window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'goMakeRoom' }));
+                  window.ReactNativeWebView.postMessage(
+                    JSON.stringify({ type: 'goCreateMultiRoom' }),
+                  );
                 }}
               >
                 방 만들기
