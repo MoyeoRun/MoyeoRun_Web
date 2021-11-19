@@ -282,7 +282,7 @@ const CreateMultiRoom = () => {
           )}
         </Box>
         <Box>
-          <Box css={typeTypo}>제한인원</Box>
+          <Box css={typeTypo}>참여인원</Box>
           <CustomButton
             css={inputForm}
             onClick={() => {
