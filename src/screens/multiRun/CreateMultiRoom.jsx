@@ -1,26 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { Box, IconButton } from '@mui/material';
-import dayjs, { utc } from 'dayjs';
-import React, { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
 import { ReactComponent as LeftBackArrowIcon } from '../../assets/svgs/LeftBackArrowIcon.svg';
 import CustomButton from '../../components/CustomButton';
 import CustomInput from '../../components/MakeRoomComponents/CustomInput';
 import DialogSelect from '../../components/MakeRoomComponents/DialogSelect';
-
-// type Room = {
-//   id: number; //방 아이디
-//   title: string; //방 제목
-//   isOpen: boolean; //현재 방이 열려있는지 여부
-//   description: string | null; // 방 설명
-//   limitMember: number; //인원 제한
-//   userAmount: number; //참가 인원 수
-//   multiRoomMember: Array<Partial<User>>; //참가 유저 리스트
-//   startDate: string; //모여런 시작 일시 ISOString
-//   targetDistance: number; //모여런 목표 거리 Km단위
-//   targetTime: number; //모여런 목표 시간 밀리세컨드 단위
-//   roomImage: string | null;  //모여런 이미지
-// };
 
 const numberSelectItems = (numRange, increProp = 1) => {
   let { min, max } = numRange;
@@ -81,9 +67,12 @@ const getShowingValue = (value) => {
 
 const InitValue = {
   startTime: [
-    { id: 'start/slot', value: '', inputLabel: ' ' },
-    { id: 'start/hour', value: '', inputLabel: ':' },
-    { id: 'start/minute', value: '' },
+    { id: 'start/slot', value: new Date().getHours() >= 12 ? '오후' : '오전', inputLabel: ' ' },
+    { id: 'start/hour', value: new Date().getHours().toString(), inputLabel: ':' },
+    {
+      id: 'start/minute',
+      value: new Date().getMinutes().toString() - (new Date().getMinutes().toString() % 5),
+    },
   ],
   distance: [
     { id: 'distance/km', value: '', inputLabel: '.' },
@@ -196,9 +185,7 @@ const CreateMultiRoom = () => {
       SelectItems[type] = temp;
     }
     setSelectItem(SelectItems);
-  }),
-    [];
-
+  }, []);
   const handleClickOpen = (type) => {
     setOpen({ ...open, [type]: true });
   };
@@ -233,7 +220,12 @@ const CreateMultiRoom = () => {
         </Box>
         <Box>
           <Box css={typeTypo}>시작시간</Box>
-          <CustomButton css={inputForm} onClick={() => handleClickOpen('startTime')}>
+          <CustomButton
+            css={inputForm}
+            onClick={() => {
+              handleClickOpen('startTime');
+            }}
+          >
             {getShowingValue(startTime)}
           </CustomButton>
           {open.startTime && (
@@ -249,7 +241,12 @@ const CreateMultiRoom = () => {
         </Box>
         <Box>
           <Box css={typeTypo}>목표거리</Box>
-          <CustomButton css={inputForm} onClick={() => handleClickOpen('distance')}>
+          <CustomButton
+            css={inputForm}
+            onClick={() => {
+              handleClickOpen('distance');
+            }}
+          >
             {getShowingValue(distance)}
           </CustomButton>
           {open.distance && (
@@ -265,7 +262,12 @@ const CreateMultiRoom = () => {
         </Box>
         <Box>
           <Box css={typeTypo}>제한시간</Box>
-          <CustomButton css={inputForm} onClick={() => handleClickOpen('timeLimit')}>
+          <CustomButton
+            css={inputForm}
+            onClick={() => {
+              handleClickOpen('timeLimit');
+            }}
+          >
             {getShowingValue(timeLimit)}
           </CustomButton>
           {open.timeLimit && (
@@ -281,7 +283,12 @@ const CreateMultiRoom = () => {
         </Box>
         <Box>
           <Box css={typeTypo}>제한인원</Box>
-          <CustomButton css={inputForm} onClick={() => handleClickOpen('participants')}>
+          <CustomButton
+            css={inputForm}
+            onClick={() => {
+              handleClickOpen('participants');
+            }}
+          >
             {getShowingValue(participants)}
           </CustomButton>
           {open.participants && (
