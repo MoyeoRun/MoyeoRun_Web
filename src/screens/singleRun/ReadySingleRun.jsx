@@ -131,16 +131,26 @@ const ReadySingleRun = () => {
   const handleStart = () => {
     switch (select) {
       case 0:
-        window.ReactNativeWebView.postMessage(JSON.stringify({ key: 'startFreeRun' }));
+        window.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            key: 'goSingleRun',
+            value: {
+              type: 'free',
+              targetTime: null,
+              targetDistance: null,
+            },
+          }),
+        );
         break;
       case 1:
         window.ReactNativeWebView.postMessage(
           JSON.stringify({
-            key: 'startFreeRun',
+            key: 'goSingleRun',
             value: {
-              key: select,
-              value:
+              type: 'time',
+              targetTime:
                 (parseInt(targetTime[0].value) * 60 + parseInt(targetTime[1].value)) * 60 * 1000,
+              targetDistance: null,
             },
           }),
         );
@@ -148,10 +158,11 @@ const ReadySingleRun = () => {
       case 2:
         window.ReactNativeWebView.postMessage(
           JSON.stringify({
-            key: 'startFreeRun',
+            key: 'goSingleRun',
             value: {
-              key: select,
-              value: parseInt(distance[0].value) + parseInt(distance[1].value) * 0.1,
+              type: 'distance',
+              targetTime: null,
+              targetDistance: parseInt(distance[0].value) + parseInt(distance[1].value) * 0.1,
             },
           }),
         );
