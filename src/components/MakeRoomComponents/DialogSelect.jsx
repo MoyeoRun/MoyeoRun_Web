@@ -77,6 +77,7 @@ const DialogSelect = ({ type, open, value, selectItems, setValue, handleClose })
                     onChange={(e) => onChange(e, value, item.id)}
                     css={selectForm}
                   >
+                    <option selected={false}></option>
                     {<SelectOptions selectItems={selectItems} optionId={item.id} />}
                   </select>
                   {item.inputLabel && <Box css={inputLabel}>{item.inputLabel}</Box>}
