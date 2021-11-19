@@ -12,11 +12,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const SelectOptions = ({ selectItems, optionId }) => {
   const options = Object.values(selectItems.find((item) => optionId == item.id));
+  console.log(selectItems[0]);
   return (
     <>
       {options.map(
         (option, index) =>
-          option.value !== '' && (
+          option.value !== '' &&
+          typeof option !== 'string' && (
             <option key={index} value={option.value}>
               {optionId === 'start/hour'
                 ? option.value === 0
