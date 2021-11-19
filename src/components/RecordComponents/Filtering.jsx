@@ -20,7 +20,7 @@ const Filtering = ({ startDate, endDate }) => {
       <ButtonUnstyled css={Button} onClick={() => setModalOpen(true)}>
         <Box css={flexWrap}>
           <CalendarIcon />
-          {`${date.getFullYear()}년 ${date.getMonth()}월 ${week}째주`}
+          <Box css={typo}>{`${date.getFullYear()}년 ${date.getMonth()}월 ${week}째주`}</Box>
         </Box>
       </ButtonUnstyled>
       <CalenderPicker open={modalOpen} handleClose={handleClose} />
@@ -41,7 +41,7 @@ const flexWrap = css`
   flex-direction: row;
   margin-top: 11px;
 `;
-const Typo = css`
+const typo = css`
   font-family: number-500;
   font-size: 20px;
   font-style: normal;
