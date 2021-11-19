@@ -18,7 +18,7 @@ const HotRunCard = ({ runData }) => (
         <Box css={bottomTitle}>{runData.title}</Box>
         <Box css={people}>
           <PeopleIcon className="icon" />
-          {runData.multiRoomMember.length + '/' + runData.limitMember}
+          {runData && runData.multiRoomMember + '/' + runData.limitMember}
         </Box>
       </Box>
     </Box>

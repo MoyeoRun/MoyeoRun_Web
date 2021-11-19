@@ -7,11 +7,13 @@ import React, { useState } from 'react';
 import { ReactComponent as CalendarIcon } from '../../assets/svgs/CalendarIcon.svg';
 import CalenderPicker from './CalenderPicker';
 
-const Filtering = ({ startDate, endDate }) => {
+const Filtering = ({ filteringProps, getSelectedWeekRecords }) => {
+  const { startDate, showOneRecord } = filteringProps;
   const [modalOpen, setModalOpen] = useState(false);
   const handleClose = () => {
     setModalOpen(false);
   };
+
   const date = new Date(startDate);
   const week = Math.floor(date.getDate() / 7 + 1);
 
@@ -23,7 +25,11 @@ const Filtering = ({ startDate, endDate }) => {
           <Box css={typo}>{`${date.getFullYear()}년 ${date.getMonth()}월 ${week}째주`}</Box>
         </Box>
       </ButtonUnstyled>
-      <CalenderPicker open={modalOpen} handleClose={handleClose} />
+      <CalenderPicker
+        open={modalOpen}
+        handleClose={handleClose}
+        getSelectedWeekRecords={getSelectedWeekRecords}
+      />
     </>
   );
 };

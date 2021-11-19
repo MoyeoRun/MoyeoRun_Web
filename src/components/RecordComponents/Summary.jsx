@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css, keyframes } from '@emotion/react';
 import { Box } from '@mui/system';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { getDistanceString, getPaceString, secondToTimeString } from '../../lib/util/strFormat';
 
 const fadein = keyframes`
@@ -18,6 +18,7 @@ const fadein = keyframes`
 `;
 
 const SummaryHead = ({ headData }) => {
+  if (headData.length === 0) return null;
   return (
     <>
       <Box css={headWrap(headData.length)}>
@@ -41,20 +42,54 @@ const SummaryItem = ({ value, keyword }) => {
   );
 };
 
-const Summary = ({ distance, pace, time, info }) => {
-  const summaryDistance = getDistanceString(distance);
-  const summaryPace = getPaceString(pace);
-  const summaryTime = secondToTimeString(time);
+const Summary = ({ summaryProps }) => {
+  const {
+    totalAveragePace,
+    runPace,
+    totalDistance,
+    runDistance,
+    totalTime,
+    runTime,
+    type,
+    targetDistance,
+    targetTime,
+    id,
+  } = summaryProps;
+  console.log(summaryProps);
+  const [headData, setHeadData] = useState();
+  const typeValue = { free: '자유', time: '목표시간', distance: '목표거리' };
+  const summaryDistance = getDistanceString(totalDistance || runDistance);
+  const summaryPace = getPaceString(totalAveragePace || runPace);
+  const summaryTime = secondToTimeString(totalTime || runTime);
 
-  const dummyHeadData = [
-    { value: '자유', keyword: '종류' },
-    { value: '30:00', keyword: '목표' },
-  ];
+  console.log(summaryPace, summaryTime, summaryDistance);
+  const headInfo = id && {
+    type: type,
+    target: targetDistance || targetTime || '',
+  };
+
+  console.log(headInfo);
+  const tempData = [];
+  useEffect(() => {
+    if (headInfo) {
+      tempData.push({ value: typeValue[headInfo.type], keyword: '종류' });
+      tempData.push(
+        headInfo.target !== '' &&
+          (headInfo.type === 'time'
+            ? { value: secondToTimeString(headInfo.target), keyword: '목표' }
+            : headInfo.type === 'distance'
+            ? { value: getDistanceString(headInfo.target), keyword: '목표' }
+            : headInfo.type === 'free' && null),
+      );
+      setHeadData(tempData);
+    }
+  }),
+    [];
 
   return (
     <>
       <Box css={summaryWrap}>
-        <SummaryHead headData={dummyHeadData} />
+        {headData && <SummaryHead headData={headData} />}
         <SummaryItem value={summaryDistance} keyword="거리" />
         <SummaryItem value={summaryPace} keyword="평균 페이스" sx={{ margin: 'auto' }} />
         <SummaryItem value={summaryTime} keyword="시간" />

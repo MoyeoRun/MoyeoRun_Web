@@ -11,7 +11,7 @@ import isSameDay from 'date-fns/isSameDay';
 import isWithinInterval from 'date-fns/isWithinInterval';
 import { add, sub } from 'date-fns';
 
-const CustomCalendar = () => {
+const CustomCalendar = ({ getSelectedWeekRecords }) => {
   const [value, setValue] = useState(new Date());
   const renderWeekPickerDay = (date, selectedDates, pickersDayProps) => {
     if (!value) {
@@ -53,6 +53,8 @@ const CustomCalendar = () => {
         value={value}
         onChange={(newValue) => {
           setValue(newValue);
+          // getSelectedWeekRecords(newValue);
+          // console.log(value, newValue);
         }}
         renderDay={renderWeekPickerDay}
         renderInput={(params) => <TextField {...params} />}
@@ -62,10 +64,10 @@ const CustomCalendar = () => {
   );
 };
 
-const CalenderPicker = ({ open, handleClose }) => {
+const CalenderPicker = ({ open, handleClose, getSelectedWeekRecords }) => {
   return (
     <Dialog open={open} onClose={handleClose}>
-      <CustomCalendar />
+      <CustomCalendar getSelectedWeekRecords={getSelectedWeekRecords} />
     </Dialog>
   );
 };

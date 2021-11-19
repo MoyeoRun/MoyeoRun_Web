@@ -1,5 +1,5 @@
 const getOrCreateTooltip = (chart) => {
-  console.log(chart);
+  // console.log(chart);
   let tooltipEl = chart.canvas.parentNode.querySelector('div');
   // 툴팁 박스 엘레먼트 조절
   if (!tooltipEl) {
@@ -17,20 +17,45 @@ const getOrCreateTooltip = (chart) => {
     table.style.margin = '0px';
 
     tooltipEl.appendChild(table);
-
     chart.canvas.parentNode.appendChild(tooltipEl);
   }
 
   return tooltipEl;
 };
 
+// const getOrCreateBackGround = (chart) => {
+//   // console.log(chart);
+//   let tooltipEl = chart.canvas.parentNode.querySelector('div');
+//   // 툴팁 박스 엘레먼트 조절
+//   if (!tooltipEl) {
+//     tooltipEl = document.createElement('div');
+//     tooltipEl.style.background = '#1162FF33';
+//     // tooltipEl.style.borderRadius = '3px';
+//     // tooltipEl.style.color = 'white';
+//     // tooltipEl.style.opacity = 1;
+//     // tooltipEl.style.pointerEvents = 'none';
+//     tooltipEl.style.position = 'absolute';
+//     tooltipEl.style.transform = 'translate(50,0%)';
+//     tooltipEl.style.transition = 'all .1s ease';
+//     tooltipEl.style.width = '24px';
+//     tooltipEl.style.height = '200px';
+//     // const table = document.createElement('table');
+//     // table.style.margin = '0px';
+
+//     // tooltipEl.appendChild(table);
+//     chart.canvas.parentNode.appendChild(tooltipEl);
+//   }
+
+//   return tooltipEl;
+// };
+
 const externalTooltipHandler = (context) => {
   // Tooltip Element
-
-  console.log(context);
+  // console.log(context);
 
   const { chart, tooltip } = context;
   const tooltipEl = getOrCreateTooltip(chart);
+  // const tooltipEl = getOrCreateBackGround(chart);
 
   // Hide if no tooltip
   if (tooltip.opacity === 0) {
@@ -104,8 +129,10 @@ const externalTooltipHandler = (context) => {
   tooltipEl.style.opacity = 1;
   tooltipEl.style.left = positionX + tooltip.caretX + 'px';
   tooltipEl.style.top = positionY + tooltip.caretY + 'px';
+
+  // tooltipEl.style.transform = 'translate(-50%)';
   console.log(positionX, positionY, tooltip.caretX, tooltip.caretY);
-  tooltipEl.style.font = tooltip.options.bodyFont.string;
+  tooltipEl.style.font = 'text-500';
   tooltipEl.style.padding = '4px' + ' 4px';
 };
 

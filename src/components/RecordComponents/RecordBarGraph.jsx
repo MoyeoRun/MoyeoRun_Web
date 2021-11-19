@@ -13,17 +13,17 @@ import externalTooltipHandler from '../BarGraphToolTip';
 //   averagePaceOfTerm: number;
 // }>;
 
-const RecordBarGraph = ({ runStatistics }) => {
+const RecordBarGraph = ({ graphProps, getSelectedDayRecords }) => {
   useEffect(() => {
     const barGraphCtx = document.getElementById('barGraph');
     const barGraph = new Chart(barGraphCtx, {
       type: 'bar',
       data: {
-        labels: runStatistics.map((item) => new Date(item.date).getDate()),
+        labels: graphProps.map((item) => new Date(item.date).getDate()),
         datasets: [
           {
             label: '',
-            data: runStatistics.map((item) => item.totalDistanceOfTerm),
+            data: graphProps.map((item) => item.totalDistanceOfTerm),
             backgroundColor: '#C4C4C4',
             fill: true,
           },
@@ -61,9 +61,30 @@ const RecordBarGraph = ({ runStatistics }) => {
           text: '막대 차트 테스트',
         },
         hoverBackgroundColor: '#1162FF',
-        barThickness: '8',
+        barThickness: '10',
       },
     });
+
+    barGraphCtx.addEventListener(
+      'click',
+      function (evt) {
+        const points = barGraph.getElementsAtEventForMode(
+          evt,
+          'nearest',
+          { intersect: true },
+          true,
+        );
+
+        if (points.length) {
+          const firstPoint = points[0];
+          const label = barGraph.data.labels[firstPoint.index];
+          const value = barGraph.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
+          // console.log(label, value);
+          getSelectedDayRecords(label);
+        }
+      },
+      false,
+    );
     return () => {
       barGraph.reset();
     };
