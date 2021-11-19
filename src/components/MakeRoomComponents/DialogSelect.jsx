@@ -40,6 +40,15 @@ const DialogSelect = ({ type, open, value, selectItems, setValue, handleClose })
     );
     setValue(updateValue);
   };
+
+  const parseTitleData = selectItems[0].id.split('/')[0];
+  const selectTitle = {
+    start: '시작시간 선택',
+    distance: '목표거리 선택',
+    limit: '제한시간 선택',
+    participants: '참여인원 선택',
+  };
+
   if (!selectItems) return null;
   if (selectItems) {
     return (
@@ -47,32 +56,38 @@ const DialogSelect = ({ type, open, value, selectItems, setValue, handleClose })
         <Dialog
           disableEscapeKeyDown
           TransitionComponent={Transition}
+          fullWidth={true}
           open={open}
           onClose={() => handleClose(type)}
+          css={dialogWrapper}
         >
-          <DialogContent css={dialogWrap}>
+          <DialogContent css={dialogContainer}>
             <Box css={dialogHead}>
-              <Button onClick={() => handleClose(type)}>취소</Button>
-              <Button onClick={() => handleClose(type)}>완료</Button>
+              <Box css={dialogHeadTitle}>{selectTitle[parseTitleData]}</Box>
             </Box>
             <Box component="form" css={dialogContent}>
               {value.map((item, index) => (
                 <Box css={formControlWrap} key={index}>
-                  <FormControl sx={{ m: 1, minWidth: 120 }}>
-                    <Box>{item.head}</Box>
-                    <select
-                      id={item.id}
-                      value={item.value}
-                      onChange={(e) => onChange(e, value, item.id)}
-                      css={selectForm}
-                    >
-                      <option selected="true" disabled="disabled"></option>
-                      {<SelectOptions selectItems={selectItems} optionId={item.id} />}
-                    </select>
-                  </FormControl>
-                  <Box>{item.inputLabel}</Box>
+                  <Box>{item.head}</Box>
+                  <select
+                    id={item.id}
+                    value={item.value}
+                    onChange={(e) => onChange(e, value, item.id)}
+                    css={selectForm}
+                  >
+                    {<SelectOptions selectItems={selectItems} optionId={item.id} />}
+                  </select>
+                  {item.inputLabel && <Box css={inputLabel}>{item.inputLabel}</Box>}
                 </Box>
               ))}
+            </Box>
+            <Box css={buttonWrapper}>
+              <Button onClick={() => handleClose(type)} css={dialogButton(false)}>
+                취소
+              </Button>
+              <Button onClick={() => handleClose(type)} css={dialogButton(true)}>
+                선택완료
+              </Button>
             </Box>
           </DialogContent>
         </Dialog>
@@ -83,19 +98,17 @@ const DialogSelect = ({ type, open, value, selectItems, setValue, handleClose })
 
 export default DialogSelect;
 
-const selectForm = css`
-  border: 1px solid #d4d4d4;
-  min-height: 48px;
-  margin-top: 10px;
+const dialogWrapper = css`
+  width: 100%;
+  height: 100%;
 `;
-const dialogWrap = css`
-  position: fixed;
-  width: calc(100% - 40px);
-  height: 250px;
-  bottom: 0px;
-  left: 0;
+
+const dialogContainer = css`
+  width: 100%;
+  height: 360px;
   background: white;
-  border-radius: 12px 12px 0 0;
+  box-sizing: border-box;
+  border-radius: 12px;
   padding: 23px 20px;
   display: flex;
   flex-direction: column;
@@ -110,16 +123,88 @@ const dialogContent = css`
   height: 100%;
 `;
 const dialogHead = css`
-  width: calc(100%);
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   top: 10px;
-  color: #007aff;
+
+  border-bottom: 1px solid #ebecef;
+`;
+
+const dialogHeadTitle = css`
+  font-family: text-500;
+  font-size: 22px;
+  font-style: normal;
+  line-height: 26px;
+  letter-spacing: -0.04em;
+  text-align: left;
+`;
+
+const selectForm = css`
+  border: 0px solid #d4d4d4;
+  border-bottom: 0.5px solid #d4d4d4;
+  background: #f0f0f0a7;
+  box-shadow: 0px 2px 2px 0px #bcbcbc84;
+  border-radius: 8px;
+  min-width: 60px;
+  min-height: 48px;
+  margin-left: 10px;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: -0.5px;
+  text-align: center;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
 `;
 
 const formControlWrap = css`
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: -0.5px;
+  text-align: center;
+`;
+
+const inputLabel = css`
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: -0.5px;
+  text-align: center;
+  margin-left: 10px;
+`;
+
+const buttonWrapper = css`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+const dialogButton = (selectButton) => css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 14px;
+  width: 100%;
+  border-radius: 4px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  border: ${selectButton ? '' : `1px solid #BDBEC1`};
+  color: ${selectButton ? '#ffffff' : '#000000'};
+  background-color: ${selectButton ? '#007aff' : '#ffffff'};
+  margin-left: ${selectButton ? '10px' : ''};
 `;
