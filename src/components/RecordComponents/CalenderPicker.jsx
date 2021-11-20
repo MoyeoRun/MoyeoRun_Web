@@ -18,10 +18,12 @@ const CustomCalendar = ({ getSelectedWeekRecords }) => {
       return <PickersDay {...pickersDayProps} />;
     }
 
-    const start = value || new Date();
-    const end = add(new Date(value), {
-      days: 6,
-    });
+    // const start = value || new Date();
+    // const end = add(new Date(value), {
+    //   days: 6,
+    // });
+    const start = sub(new Date(value), { days: 6 });
+    const end = value || new Date();
 
     const dayIsBetween = isWithinInterval(date, { start, end });
     const isFirstDay = isSameDay(date, start);
@@ -32,7 +34,12 @@ const CustomCalendar = ({ getSelectedWeekRecords }) => {
         {...pickersDayProps}
         sx={{
           [`&&.${pickersDayClasses.selected}`]: {
-            borderRadius: `50% 0 0 50%`,
+            borderRadius: `0 50% 50% 0`,
+            backgroundColor: '#0047D0',
+            color: 'white',
+          },
+          [`&&.${pickersDayClasses.isFirstDay}`]: {
+            borderRadius: `0 50% 50% 0`,
             backgroundColor: '#0047D0',
             color: 'white',
           },
@@ -53,8 +60,8 @@ const CustomCalendar = ({ getSelectedWeekRecords }) => {
         value={value}
         onChange={(newValue) => {
           setValue(newValue);
-          // getSelectedWeekRecords(newValue);
-          // console.log(value, newValue);
+          getSelectedWeekRecords(newValue);
+          console.log(value, newValue);
         }}
         renderDay={renderWeekPickerDay}
         renderInput={(params) => <TextField {...params} />}
@@ -79,12 +86,12 @@ const CustomPickersDay = styled(PickersDay, {
   shouldForwardProp: (prop) =>
     prop !== 'dayIsBetween' && prop !== 'isFirstDay' && prop !== 'isLastDay',
 })(({ dayIsBetween, isFirstDay, isLastDay, selected }) => ({
-  ...(selected && {
-    borderTopLeftRadius: '50%',
-    borderBottomLeftRadius: '50%',
-    backgroundColor: '#0047D0',
-    color: 'white',
-  }),
+  // ...(selected && {
+  //   borderTopRightRadius: '50%',
+  //   borderBottomRightRadius: '50%',
+  //   backgroundColor: '#0047D0',
+  //   color: 'white',
+  // }),
   ...(dayIsBetween && {
     borderRadius: 0,
     backgroundColor: `rgba(17, 98, 255, 0.1)`,
@@ -94,14 +101,16 @@ const CustomPickersDay = styled(PickersDay, {
       color: 'white',
     },
   }),
+  // ...(isLastDay && {
+  //   borderTopRightRadius: '50%',
+  //   borderBottomRightRadius: '50%',
+  //   backgroundColor: '#0047D0',
+  //   color: 'white',
+  // }),
   ...(isFirstDay && {
+    borderRadius: 0,
     borderTopLeftRadius: '50%',
     borderBottomLeftRadius: '50%',
-    backgroundColor: '#0047D0',
-  }),
-  ...(isLastDay && {
-    borderTopRightRadius: '50%',
-    borderBottomRightRadius: '50%',
     backgroundColor: '#0047D0',
     color: 'white',
   }),
