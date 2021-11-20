@@ -1,52 +1,53 @@
 const getOrCreateTooltip = (chart) => {
   // console.log(chart);
-  let tooltipEl = chart.canvas.parentNode.querySelector('div');
+  let barEl = chart.canvas.parentNode.querySelector('div');
   // 툴팁 박스 엘레먼트 조절
-  if (!tooltipEl) {
-    tooltipEl = document.createElement('div');
-    tooltipEl.style.background = 'rgba(0, 0, 0, 0.4)';
-    // tooltipEl.style.borderRadius = '3px';
-    tooltipEl.style.color = 'white';
-    tooltipEl.style.opacity = 1;
-    tooltipEl.style.pointerEvents = 'none';
-    tooltipEl.style.position = 'absolute';
-    // tooltipEl.style.transform = 'translate(0,-50%)';
-    tooltipEl.style.transition = 'all .2s ease';
+  if (!barEl) {
+    barEl = document.createElement('div');
+    barEl.setAttribute('id', 'settedBar');
+    barEl.style.background = 'rgba(0, 0, 0, 0.4)';
+    // barEl.style.borderRadius = '3px';
+    barEl.style.color = 'white';
+    barEl.style.opacity = 1;
+    barEl.style.pointerEvents = 'none';
+    barEl.style.position = 'absolute';
+    // barEl.style.transform = 'translate(0,-50%)';
+    barEl.style.transition = 'all .2s ease';
 
     const table = document.createElement('table');
     table.style.margin = '0px';
 
-    tooltipEl.appendChild(table);
-    chart.canvas.parentNode.appendChild(tooltipEl);
+    barEl.appendChild(table);
+    chart.canvas.parentNode.appendChild(barEl);
   }
 
-  return tooltipEl;
+  return barEl;
 };
 
 // const getOrCreateBackGround = (chart) => {
 //   // console.log(chart);
-//   let tooltipEl = chart.canvas.parentNode.querySelector('div');
+//   let barEl = chart.canvas.parentNode.querySelector('div');
 //   // 툴팁 박스 엘레먼트 조절
-//   if (!tooltipEl) {
-//     tooltipEl = document.createElement('div');
-//     tooltipEl.style.background = '#1162FF33';
-//     // tooltipEl.style.borderRadius = '3px';
-//     // tooltipEl.style.color = 'white';
-//     // tooltipEl.style.opacity = 1;
-//     // tooltipEl.style.pointerEvents = 'none';
-//     tooltipEl.style.position = 'absolute';
-//     tooltipEl.style.transform = 'translate(50,0%)';
-//     tooltipEl.style.transition = 'all .1s ease';
-//     tooltipEl.style.width = '24px';
-//     tooltipEl.style.height = '200px';
+//   if (!barEl) {
+//     barEl = document.createElement('div');
+//     barEl.style.background = '#1162FF33';
+//     // barEl.style.borderRadius = '3px';
+//     // barEl.style.color = 'white';
+//     // barEl.style.opacity = 1;
+//     // barEl.style.pointerEvents = 'none';
+//     barEl.style.position = 'absolute';
+//     barEl.style.transform = 'translate(50,0%)';
+//     barEl.style.transition = 'all .1s ease';
+//     barEl.style.width = '24px';
+//     barEl.style.height = '200px';
 //     // const table = document.createElement('table');
 //     // table.style.margin = '0px';
 
-//     // tooltipEl.appendChild(table);
-//     chart.canvas.parentNode.appendChild(tooltipEl);
+//     // barEl.appendChild(table);
+//     chart.canvas.parentNode.appendChild(barEl);
 //   }
 
-//   return tooltipEl;
+//   return barEl;
 // };
 
 const externalTooltipHandler = (context) => {
@@ -54,12 +55,12 @@ const externalTooltipHandler = (context) => {
   // console.log(context);
 
   const { chart, tooltip } = context;
-  const tooltipEl = getOrCreateTooltip(chart);
-  // const tooltipEl = getOrCreateBackGround(chart);
+  const barEl = getOrCreateTooltip(chart);
+  // const barEl = getOrCreateBackGround(chart);
 
   // Hide if no tooltip
   if (tooltip.opacity === 0) {
-    tooltipEl.style.opacity = 0;
+    barEl.style.opacity = 0;
     return;
   }
 
@@ -109,7 +110,7 @@ const externalTooltipHandler = (context) => {
       tableBody.appendChild(tr);
     });
 
-    const tableRoot = tooltipEl.querySelector('table');
+    const tableRoot = barEl.querySelector('table');
 
     // Remove old children
     while (tableRoot.firstChild) {
@@ -126,14 +127,14 @@ const externalTooltipHandler = (context) => {
   const { offsetLeft: positionX, offsetTop: positionY } = chart.canvas;
 
   // Display, position, and set styles for font
-  tooltipEl.style.opacity = 1;
-  tooltipEl.style.left = positionX + tooltip.caretX + 'px';
-  tooltipEl.style.top = positionY + tooltip.caretY + 'px';
+  barEl.style.opacity = 1;
+  barEl.style.left = positionX + tooltip.caretX + 'px';
+  barEl.style.top = positionY + tooltip.caretY + 'px';
 
-  // tooltipEl.style.transform = 'translate(-50%)';
-  console.log(positionX, positionY, tooltip.caretX, tooltip.caretY);
-  tooltipEl.style.font = 'text-500';
-  tooltipEl.style.padding = '4px' + ' 4px';
+  // barEl.style.transform = 'translate(-50%)';
+  // console.log(positionX, positionY, tooltip.caretX, tooltip.caretY);
+  barEl.style.font = 'text-500';
+  barEl.style.padding = '4px' + ' 4px';
 };
 
 export default externalTooltipHandler;

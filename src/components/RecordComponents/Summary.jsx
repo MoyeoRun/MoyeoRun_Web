@@ -22,12 +22,15 @@ const SummaryHead = ({ headData }) => {
   return (
     <>
       <Box css={headWrap(headData.length)}>
-        {headData.map((head, index) => (
-          <Box key={index} css={headContainer}>
-            <Box css={summaryHeadValue}>{head.value}</Box>
-            <Box css={summaryHeadKeyword}>{head.keyword}</Box>
-          </Box>
-        ))}
+        {headData.map(
+          (head, index) =>
+            head && (
+              <Box key={index} css={headContainer}>
+                <Box css={summaryHeadValue}>{head.value}</Box>
+                <Box css={summaryHeadKeyword}>{head.keyword}</Box>
+              </Box>
+            ),
+        )}
       </Box>
     </>
   );
@@ -54,45 +57,22 @@ const Summary = ({ summaryProps }) => {
     targetDistance,
     targetTime,
     id,
+    headData,
   } = summaryProps;
-  console.log(summaryProps);
-  const [headData, setHeadData] = useState();
-  const typeValue = { free: '자유', time: '목표시간', distance: '목표거리' };
+
   const summaryDistance = getDistanceString(totalDistance || runDistance);
   const summaryPace = getPaceString(totalAveragePace || runPace);
   const summaryTime = secondToTimeString(totalTime || runTime);
-
-  console.log(summaryPace, summaryTime, summaryDistance);
-  const headInfo = id && {
-    type: type,
-    target: targetDistance || targetTime || '',
-  };
-
-  console.log(headInfo);
-  const tempData = [];
-  useEffect(() => {
-    if (headInfo) {
-      tempData.push({ value: typeValue[headInfo.type], keyword: '종류' });
-      tempData.push(
-        headInfo.target !== '' &&
-          (headInfo.type === 'time'
-            ? { value: secondToTimeString(headInfo.target), keyword: '목표' }
-            : headInfo.type === 'distance'
-            ? { value: getDistanceString(headInfo.target), keyword: '목표' }
-            : headInfo.type === 'free' && null),
-      );
-      setHeadData(tempData);
-    }
-  }),
-    [];
 
   return (
     <>
       <Box css={summaryWrap}>
         {headData && <SummaryHead headData={headData} />}
-        <SummaryItem value={summaryDistance} keyword="거리" />
-        <SummaryItem value={summaryPace} keyword="평균 페이스" sx={{ margin: 'auto' }} />
-        <SummaryItem value={summaryTime} keyword="시간" />
+        <Box css={summaryItemWrap}>
+          <SummaryItem value={summaryDistance} keyword="거리" />
+          <SummaryItem value={summaryPace} keyword="평균 페이스" sx={{ margin: 'auto' }} />
+          <SummaryItem value={summaryTime} keyword="시간" />
+        </Box>
       </Box>
     </>
   );
@@ -104,7 +84,12 @@ const summaryWrap = css`
   margin-top: 27px;
   padding-bottom: 37px;
   display: flex;
+`;
+const summaryItemWrap = css`
+  display: flex;
   flex-direction: row;
+  flex: 3;
+  transition: all 0.3s ease;
 `;
 const itemWrap = css`
   display: flex;
@@ -133,6 +118,7 @@ const headContainer = css`
   flex: 1;
   animation: ${fadein} 0.4s ease;
 `;
+
 const summaryValue = css`
   font-family: number-500;
   font-size: 24px;

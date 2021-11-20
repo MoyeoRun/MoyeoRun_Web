@@ -8,6 +8,7 @@ import { ReactComponent as CalendarIcon } from '../../assets/svgs/CalendarIcon.s
 import CalenderPicker from './CalenderPicker';
 
 const Filtering = ({ filteringProps, getSelectedWeekRecords }) => {
+  // console.log(filteringProps);
   const { startDate, showOneRecord } = filteringProps;
   const [modalOpen, setModalOpen] = useState(false);
   const handleClose = () => {

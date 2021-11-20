@@ -49,36 +49,6 @@ const RecordTab = () => {
     };
   }, []);
 
-  const handlePostMessage = (type, value = '') => {
-    window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'type', value: value }));
-    setLoading(true);
-  };
-
-  const getSelectedDayRecords = (day) => {
-    // console.log('하루 찍은 날짜 기록 보여주기 , 날짜 : ' + day);
-    const currentDate = new Date();
-    setShowOneRecord(!showOneRecord);
-    // setStartDate(currentDate);
-    // handlePostMessage('weekRecord', startDay);
-    //이미 있는 상세기록 데이터에서 하나만 남기고 다시 랜더링 해주는 식으로,
-    //term기록 바꾸면 안됌
-    //같은 날짜 한번 더 누르면 다시 원상복구
-    // summary 값도 같이 바꿔줘야한다
-    //
-  };
-
-  const getSelectedWeekRecords = (startDay) => {
-    console.log('찍은 날로부터 1주일 기록 보여주기 , 날짜 : ' + startDay);
-    handlePostMessage('weekRecord', startDay);
-    setStartDate(startDay);
-    //불러와서 리랜더링
-  };
-
-  // useEffect(() => {
-  //   let graphObj = {}
-
-  //  })
-
   useEffect(() => {
     if (props) {
       let filteringData = {};
@@ -98,25 +68,53 @@ const RecordTab = () => {
             key === 'type' ||
             key === 'id' ||
             key === 'targetTime' ||
-            key === 'targetDistance'
+            key === 'targetDistance' ||
+            key === 'createdAt'
           ) {
             summaryData[key] = props.runHistory.runningList[0][key];
           }
         }
-        graphData = props.runHistory.analysisRunningListBetweenTerm;
+        const headInfo = summaryData.id && {
+          type: summaryData.type,
+          target: summaryData.targetDistance || summaryData.targetTime || '',
+        };
+        const typeValue = { free: '자유', time: '목표시간', distance: '목표거리' };
+        const tempData = [];
+        if (headInfo) {
+          tempData.push({ value: typeValue[headInfo.type], keyword: '종류' });
+          headInfo.type !== 'free' &&
+            headInfo.target !== '' &&
+            tempData.push(
+              headInfo.type === 'time'
+                ? { value: secondToTimeString(headInfo.target), keyword: '목표' }
+                : headInfo.type === 'distance' && {
+                    value: getDistanceString(headInfo.target),
+                    keyword: '목표',
+                  },
+            );
+        }
+        summaryData.headData = tempData;
+        graphData = props.runHistory.analysisRunningListBetweenTerm.map((day) =>
+          new Date(day.date).getDate() === selectedDay.getDate()
+            ? { ...day, active: true }
+            : { ...day },
+        );
         detailRecordData =
-          props.runHistory.runningList.find(
-            (item) => new Date(item.createdAt).getDate() === selectedDay.getDate(),
-          ) || [];
+          props.runHistory.runningList.find((item) => new Date(item.createdAt) === selectedDay) ||
+          [];
       }
 
       // 모든 기록 보여주는 경우
       else {
         console.log('여러개');
-
         filteringData = { startDate: selectedDay, showOneRecord: showOneRecord };
         for (let key in props.runHistory) {
-          if (key === 'totalTime' || key === 'totalDistance' || key === 'totalAveragePace')
+          if (
+            key === 'totalTime' ||
+            key === 'totalDistance' ||
+            key === 'totalAveragePace' ||
+            key === 'runningList'
+          )
             summaryData[key] = props.runHistory[key];
         }
         graphData = props.runHistory.analysisRunningListBetweenTerm;
@@ -128,26 +126,48 @@ const RecordTab = () => {
       setGraphProps(graphData);
       setDetailRecordProps(detailRecordData);
     }
-  }, [props]);
+  }, [props, selectedDay]);
 
-  // useEffect(() => {
-  //   if (menu === 1) {
-  //     if (showOneRecord) {
-  //       setFilteringProps()
-  //       setSummaryProps()
-  //       // setGraphProps();
-  //       setDetailRecordProps();
-  //     }
-  //     else {
-  //       setFilteringProps()
-  //       setSummaryProps()
-  //       setGraphProps();
-  //       setDetailRecordProps();
-  //     }
-  //   }
+  const handlePostMessage = (type, value = '') => {
+    window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'type', value: value }));
+    setLoading(true);
+  };
 
-  // },[])
-  console.log(filteringProps, summaryProps, graphProps, detailRecordProps);
+  const [a, setA] = useState(false);
+  useEffect(() => {
+    console.log(showOneRecord);
+    if (a) {
+      setShowOneRecord(!showOneRecord);
+      setA(false);
+    }
+  }, [a, showOneRecord]);
+
+  const getPickedDayRecords = (day) => {
+    console.log('하루 찍은 날짜 기록 보여주기 , 날짜 : ' + day);
+    const pickedDate = summaryProps.runningList.find(
+      (item) => new Date(item.createdAt).getDate() === day,
+    ).createdAt;
+    setA(true);
+    if (showOneRecord) {
+      handlePostMessage('refresh');
+    } else {
+      setSelectedDay(new Date(pickedDate));
+    }
+    //이미 있는 상세기록 데이터에서 하나만 남기고 다시 랜더링 해주는 식으로,```````````````````````````````````````````````````````````````
+    //term기록 바꾸면 안됌
+    //같은 날짜 한번 더 누르면 다시 원상복구
+    // summary 값도 같이 바꿔줘야한다
+    //
+  };
+
+  const getSelectedWeekRecords = (startDay) => {
+    console.log('찍은 날로부터 1주일 기록 보여주기 , 날짜 : ' + startDay);
+    // handlePostMessage('weekRecord', startDay);
+    setSelectedDay(startDay);
+    //불러와서 리랜더링
+  };
+
+  // console.log(filteringProps, summaryProps, graphProps, detailRecordProps);
   if (!(filteringProps && summaryProps && graphProps && detailRecordProps))
     return <Box>로딩중</Box>;
   if (filteringProps && summaryProps && graphProps && detailRecordProps) {
@@ -191,10 +211,7 @@ const RecordTab = () => {
               />
 
               <Summary summaryProps={summaryProps} />
-              <RecordBarGraph
-                graphProps={graphProps}
-                getSelectedDayRecords={getSelectedDayRecords}
-              />
+              <RecordBarGraph graphProps={graphProps} getPickedDayRecords={getPickedDayRecords} />
             </>
           ) : (
             <>

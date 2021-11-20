@@ -2,7 +2,7 @@
 import { css } from '@emotion/react';
 import { Box } from '@mui/material';
 import Chart from 'chart.js/auto';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import externalTooltipHandler from '../BarGraphToolTip';
 
 // type RunStatistics = Array<{
@@ -12,8 +12,11 @@ import externalTooltipHandler from '../BarGraphToolTip';
 //   totalTimeOfTerm: number;
 //   averagePaceOfTerm: number;
 // }>;
-
-const RecordBarGraph = ({ graphProps, getSelectedDayRecords }) => {
+const RecordBarGraph = ({ graphProps, getPickedDayRecords, index }) => {
+  console.log(graphProps);
+  // let barGraph = new Chart();
+  // const [backgroundData, setBackground] = useState();
+  const [graph, setGraph] = useState();
   useEffect(() => {
     const barGraphCtx = document.getElementById('barGraph');
     const barGraph = new Chart(barGraphCtx, {
@@ -29,8 +32,23 @@ const RecordBarGraph = ({ graphProps, getSelectedDayRecords }) => {
           },
         ],
       },
-
       options: {
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                fontColor: '#fff',
+              },
+            },
+          ],
+          xAxes: [
+            {
+              ticks: {
+                fontColor: '#fff',
+              },
+            },
+          ],
+        },
         scales: {
           x: {
             grid: {
@@ -64,37 +82,53 @@ const RecordBarGraph = ({ graphProps, getSelectedDayRecords }) => {
         barThickness: '10',
       },
     });
-
+    console.log(barGraph);
     barGraphCtx.addEventListener(
       'click',
-      function (evt) {
+      function (evt, elem) {
         const points = barGraph.getElementsAtEventForMode(
           evt,
           'nearest',
           { intersect: true },
           true,
         );
-
         if (points.length) {
           const firstPoint = points[0];
           const label = barGraph.data.labels[firstPoint.index];
           const value = barGraph.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
-          // console.log(label, value);
-          getSelectedDayRecords(label);
+          getPickedDayRecords(label);
         }
       },
       false,
     );
+    setGraph(barGraph);
     return () => {
       barGraph.reset();
     };
   }, []);
 
+  useEffect(() => {
+    // console.log(graphState);
+    // const barGraph = document.getElementById('barGraph');
+
+    if (graph) {
+      console.log(graph);
+      graph.reset();
+      graph.data.labels = graphProps.map((item) => new Date(item.date).getDate());
+      (graph.data.datasets.data = graphProps.map((item) => item.totalDistanceOfTerm)),
+        (graph.data.datasets[0].backgroundColor = graphProps.map((item) =>
+          item.active ? '#1126ff' : '#C4C4C4',
+        ));
+      graph.options.animation = false;
+      graph.update();
+    }
+  }, [graphProps, graph]);
+
   return (
     <Box css={barGraphWrapper}>
       <Box css={graphBorder} />
-      <div>
-        <canvas css={barGraph()} id="barGraph"></canvas>
+      <div id={'barGraphDiv'}>
+        <canvas css={barGraphStyle()} id="barGraph"></canvas>
       </div>
       <Box css={axis()}>
         <Box>km</Box>
@@ -112,7 +146,7 @@ const barGraphWrapper = css`
   padding: 0px 9px 0px 9px;
 `;
 
-const barGraph = () => css`
+const barGraphStyle = () => css`
   box-sizing: border-box;
   width: 100%;
   height: 100%;
