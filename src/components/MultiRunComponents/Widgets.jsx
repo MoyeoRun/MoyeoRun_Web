@@ -8,7 +8,6 @@ const MoveToIndividualMapView = ({ onHandelViewState, userId }) => {
   return (
     <ButtonBase
       onClick={() => {
-        console.log('individualMapView로 이동');
         onHandelViewState('individualMapView', userId);
       }}
       css={buttonIcon}

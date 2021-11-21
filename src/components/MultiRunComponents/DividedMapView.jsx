@@ -77,32 +77,25 @@ const Map = ({ userId, runData, center, rank, index, onHandelViewState }) => {
 };
 
 const DividedMapView = ({ mapViewProps, onHandelViewState }) => {
-  const { userPoints, disPlayUserId } = mapViewProps;
+  const { userPoints } = mapViewProps;
 
-  if (!userPoints) {
-    console.log('랜더링 노노');
-    return null;
-  }
-  if (userPoints) {
-    console.log('랜더링 고고');
-    return (
-      <Box css={dividedMapViewWrapper}>
-        <Box css={mapWrapper}>
-          {userPoints.map((user, i) => (
-            <Map
-              index={i}
-              key={i}
-              userId={user.userId}
-              center={user.center}
-              runData={user.runData}
-              rank={user.rank}
-              onHandelViewState={onHandelViewState}
-            />
-          ))}
-        </Box>
+  return (
+    <Box css={dividedMapViewWrapper}>
+      <Box css={mapWrapper}>
+        {userPoints.map((user, i) => (
+          <Map
+            index={i}
+            key={i}
+            userId={user.userId}
+            center={user.center}
+            runData={user.runData}
+            rank={user.rank}
+            onHandelViewState={onHandelViewState}
+          />
+        ))}
       </Box>
-    );
-  }
+    </Box>
+  );
 };
 
 export default DividedMapView;

@@ -2,7 +2,7 @@
 import { css } from '@emotion/react';
 import { Avatar } from '@mui/material';
 
-const AccountImage = ({ image, size = 48, isMe }) => {
+const AccountImage = ({ image, size = 48 }) => {
   return (
     <Avatar
       src={image}

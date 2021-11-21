@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { Box } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { NaverMap, Polyline, Marker } from 'react-naver-maps';
 
 const IndividualMapView = ({ mapViewProps, userId, children }) => {
