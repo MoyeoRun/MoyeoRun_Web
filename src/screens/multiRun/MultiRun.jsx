@@ -248,22 +248,6 @@ const MultiRun = () => {
       // console.log(userImage);
       const userRankState = props.othersRunData
         .sort((a, b) => b.distance - a.distance)
-<<<<<<< Updated upstream
-        .map((member, index) => {
-          // console.log(member);
-          return {
-            ...member,
-            rank: index + 1,
-            isMe: props.user.id === member.userId,
-            image: userImage.find((user) => user.userId === member.userId).image,
-            displayUserId: displayUserId,
-            color: userColor.find((user) => user.userId === member.userId).color,
-          };
-        });
-      // console.log(userRankState);
-      const otherMapData = props.othersRunData.map((member) => ({
-        userId: member.userId,
-=======
         .map((member, index) => ({
           ...member,
           rank: index + 1,
@@ -275,7 +259,6 @@ const MultiRun = () => {
 
       const userMapData = props.userRunData.map((member) => ({
         userId: member.user.id,
->>>>>>> Stashed changes
         runData: member.runData,
         center: {
           lat:
@@ -291,13 +274,9 @@ const MultiRun = () => {
       }));
 
       const otherDistance = new Object();
-<<<<<<< Updated upstream
-      props.othersRunData.forEach((member) => (otherDistance[member.userId] = member.distance));
-=======
       props.userRunData.forEach(
         (member) => (otherDistance[member.user.id] = member.runStatus.distance),
       );
->>>>>>> Stashed changes
 
       const markerData = props.room.multiRoomMember.map((member) => ({
         ...member,
@@ -332,40 +311,6 @@ const MultiRun = () => {
     setDisplayUserId(userId);
   };
 
-<<<<<<< Updated upstream
-  // console.log(timerProps, userRankProps, displayUserId, mapViewProps, runStatusProps, lineUpProps);
-  if (
-    !(timerProps && userRankProps && displayUserId && mapViewProps && runStatusProps && lineUpProps)
-  ) {
-    return <Box>로딩중</Box>;
-  }
-
-  if (
-    timerProps &&
-    userRankProps &&
-    displayUserId &&
-    mapViewProps &&
-    runStatusProps &&
-    lineUpProps
-  ) {
-    return (
-      <Box css={multiRunWrapper}>
-        <Box css={indiVidualWrapper} ref={individualMapViewRef}>
-          <ExitWindow timerProps={timerProps}>
-            <IndividualMapView mapViewProps={mapViewProps} />
-
-            <Widgets onHandelViewState={onHandelViewState} userId={props.user.id} />
-            <Timer timerProps={timerProps} fixed />
-            <UserRank userRankProps={userRankProps} />
-          </ExitWindow>
-
-          <RunStatus runStatusProps={runStatusProps} />
-
-          <CurrentRankStatus>
-            <LineUp lineUpProps={lineUpProps} />
-          </CurrentRankStatus>
-        </Box>
-=======
   if (!props || !displayUserId || !userRankProps || !mapViewProps || !lineUpProps) return null;
   return (
     <Box css={multiRunWrapper}>
@@ -386,21 +331,19 @@ const MultiRun = () => {
           <LineUp lineUpProps={lineUpProps} />
         </CurrentRankStatus>
       </Box>
->>>>>>> Stashed changes
 
-        <Box css={dividedWrapper} ref={dividedMapViewRef}>
-          <ExitWindow timerProps={timerProps}>
-            <DividedMapView mapViewProps={mapViewProps} onHandelViewState={onHandelViewState} />
-          </ExitWindow>
+      <Box css={dividedWrapper} ref={dividedMapViewRef}>
+        <ExitWindow timerProps={timerProps}>
+          <DividedMapView mapViewProps={mapViewProps} onHandelViewState={onHandelViewState} />
+        </ExitWindow>
 
-          <Box css={dividedlineUp}>
-            <LineUp lineUpProps={lineUpProps} />
-          </Box>
+        <Box css={dividedlineUp}>
+          <LineUp lineUpProps={lineUpProps} />
         </Box>
-        <NetworkError error={error} />
       </Box>
-    );
-  } else return <Box>오류오류</Box>;
+      <NetworkError error={error} />
+    </Box>
+  );
 };
 
 export default MultiRun;
