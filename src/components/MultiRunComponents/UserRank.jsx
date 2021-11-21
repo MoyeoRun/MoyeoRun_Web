@@ -8,14 +8,12 @@ const UserRank = ({ userRankProps }) => {
   const { rank } = userRankProps;
   const user = rank.find((user) => user.displayUserId === user.user.id);
   return (
-    <>
-      <Box css={userWrap}>
-        <AccountImage isMe={user.isMe} image={user.image} />
-        <Box css={rankingBadgeMargin}>
-          <RankingBadge rank={user.rank} />
-        </Box>
+    <Box css={userWrap}>
+      <AccountImage isMe={user.isMe} image={user.image} />
+      <Box css={rankingBadgeMargin}>
+        <RankingBadge rank={user.rank} />
       </Box>
-    </>
+    </Box>
   );
 };
 export default UserRank;

@@ -4,13 +4,12 @@ import { Box } from '@mui/material';
 import { ReactComponent as ClockIcon_blue } from '../../assets/svgs/ClockIcon_Blue.svg';
 import { secondToTimeString } from '../../lib/util/strFormat';
 
-const Timer = ({ timerProps, fixed }) => {
-  const { remainTime } = timerProps;
+const Timer = ({ time, fixed }) => {
   return (
     <Box css={fixed ? fixedTimer : timer}>
       <ClockIcon_blue />
       <Box sx={{ marginLeft: '8px', transform: `translate(0, 1px)` }}>
-        {secondToTimeString(remainTime) || `00:00`}
+        {secondToTimeString(time) || `00:00`}
       </Box>
     </Box>
   );

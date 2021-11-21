@@ -3,9 +3,8 @@ import { css } from '@emotion/react';
 import { Box } from '@mui/material';
 import { getDistanceString, getPaceString, secondToTimeString } from '../../lib/util/strFormat';
 
-const RunStatus = ({ runStatusProps }) => {
-  // console.log(runStatusProps);
-  const { distance, pace, time } = runStatusProps.runStatus;
+const RunStatus = ({ runStatus }) => {
+  const { distance, pace, time } = runStatus;
   return (
     <Box css={RunStatusWrapper}>
       <Box css={topDataBox}>
