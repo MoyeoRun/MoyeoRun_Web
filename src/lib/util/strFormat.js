@@ -45,3 +45,15 @@ export const getModifiedDateString = (dateString) => {
   const minute = date.getMinutes();
   return year + '. ' + month + '. ' + day + ' - ' + AMorPM + ' ' + hour + ':' + minute;
 };
+
+export const getSelectedWeekNumber = (date) => {
+  const getNumberOfWeek = (selected) => {
+    const selectedDate = new Date(selected);
+    const firstDayOfYear = new Date(selectedDate.getFullYear(), 0, 1);
+    const pastDaysOfYear = (selectedDate - firstDayOfYear) / 86400000;
+    return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+  };
+  const translateToDate = new Date(date);
+  const firstDayOfmonth = new Date(translateToDate.getFullYear(), translateToDate.getMonth(), 1);
+  return getNumberOfWeek(date) - getNumberOfWeek(firstDayOfmonth) + 1;
+};

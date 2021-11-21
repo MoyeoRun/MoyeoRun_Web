@@ -5,25 +5,35 @@ import { Box } from '@mui/system';
 import React, { useState } from 'react';
 
 import { ReactComponent as CalendarIcon } from '../../assets/svgs/CalendarIcon.svg';
+import { getSelectedWeekNumber } from '../../lib/util/strFormat';
 import CalenderPicker from './CalenderPicker';
 
-const Filtering = ({ startDate, endDate }) => {
+const Filtering = ({ filteringProps, getSelectedWeekRecords }) => {
+  // console.log(filteringProps);
+  const { startDate, showOneRecord } = filteringProps;
   const [modalOpen, setModalOpen] = useState(false);
   const handleClose = () => {
     setModalOpen(false);
   };
+
   const date = new Date(startDate);
-  const week = Math.floor(date.getDate() / 7 + 1);
+  // const week = Math.floor(date.getDate() / 7 + 1);
+  const week = getSelectedWeekNumber(date);
 
   return (
     <>
       <ButtonUnstyled css={Button} onClick={() => setModalOpen(true)}>
         <Box css={flexWrap}>
           <CalendarIcon />
-          {`${date.getFullYear()}년 ${date.getMonth()}월 ${week}째주`}
+          <Box css={typo}>{`${date.getFullYear()}년 ${date.getMonth()}월 ${week}째주`}</Box>
         </Box>
       </ButtonUnstyled>
-      <CalenderPicker open={modalOpen} handleClose={handleClose} />
+      <CalenderPicker
+        open={modalOpen}
+        handleClose={handleClose}
+        getSelectedWeekRecords={getSelectedWeekRecords}
+        selectedDay={startDate}
+      />
     </>
   );
 };
@@ -41,7 +51,7 @@ const flexWrap = css`
   flex-direction: row;
   margin-top: 11px;
 `;
-const Typo = css`
+const typo = css`
   font-family: number-500;
   font-size: 20px;
   font-style: normal;

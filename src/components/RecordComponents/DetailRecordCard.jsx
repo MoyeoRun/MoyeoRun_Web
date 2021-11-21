@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { ButtonBase } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import {
@@ -22,6 +23,17 @@ const Thumbnail = ({ src, ...props }) => {
   );
 };
 
+const DetailHead = ({ value, keyword, ...props }) => {
+  return (
+    <Box {...props}>
+      <Box css={detailRecordWrap}>
+        <Box css={summaryValue}>{value}</Box>
+        <Box css={summaryKeyword}>{keyword}</Box>
+      </Box>
+    </Box>
+  );
+};
+
 const DetailRecord = ({ value, keyword, ...props }) => {
   return (
     <Box {...props}>
@@ -33,28 +45,46 @@ const DetailRecord = ({ value, keyword, ...props }) => {
   );
 };
 
-const DetailRecordCard = ({ detailRecord }) => {
-  const { runDistance, runPace, runTime, createdAt, title, image } = detailRecord;
+const DetailRecordCard = ({ runningList }) => {
+  const {
+    id,
+    type,
+    targetDistance,
+    targetTime,
+    runDistance,
+    runPace,
+    runTime,
+    createdAt,
+    title,
+    image,
+    multiRunIncompleted = false,
+  } = runningList;
   const detailDistance = getDistanceString(runDistance);
   const detailPace = getPaceString(runPace);
   const detailTime = secondToTimeString(runTime);
   const detailDate = getModifiedDateString(createdAt);
   const detailImage = image || 'https://source.unsplash.com/random/90x90';
   const detailTitle = title || '제목도 받아와야 합니다';
+
+  const placeholder = { type: '종류', target: '목표' };
+
   return (
     <>
-      <Box css={cardWrap}>
+      <ButtonBase css={cardWrap}>
+        {multiRunIncompleted && <Box css={incompletedRecord}>아직 완료되지 않은 모여런입니다</Box>}
+
         <Thumbnail src={detailImage} />
         <Box css={recordWrap}>
           <Box css={cardDate}>{detailDate}</Box>
           <Box css={cardTitle}>{detailTitle}</Box>
           <Box css={cardRecordWrap}>
+            <DetailHead value={detailDistance} keyword="거리" />
             <DetailRecord value={detailDistance} keyword="거리" />
             <DetailRecord value={detailPace} keyword="평균 페이스" sx={{ margin: 'auto' }} />
             <DetailRecord value={detailTime} keyword="시간" />
           </Box>
         </Box>
-      </Box>
+      </ButtonBase>
     </>
   );
 };
@@ -65,12 +95,14 @@ const cardWrap = css`
   box-sizing: border-box;
   width: 100%;
   display: flex;
+  justify-content: center;
   flex-direction: row;
   align-items: flex-start;
   margin-top: 12px;
   padding: 15px;
   background-color: #ffffff;
   border-radius: 4px;
+  position: relative;
 `;
 
 const recordWrap = css`
@@ -78,6 +110,7 @@ const recordWrap = css`
   flex-direction: column;
   align-items: flex-start;
   margin-left: 11px;
+  margin-right: auto;
 `;
 const detailRecordWrap = css`
   display: flex;
@@ -131,4 +164,22 @@ const summaryKeyword = css`
   text-align: left;
   margin-top: 3px;
   color: #aaaaaa;
+`;
+
+const incompletedRecord = css`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  background: rgba(231, 239, 255, 0.9);
+  box-sizing: border-box;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: text-500;
+  font-size: 18px;
+  font-weight: 500;
+  color: #1162ff;
 `;
