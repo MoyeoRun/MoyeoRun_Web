@@ -11,7 +11,6 @@ import { useLocation } from 'react-router';
 import multiRoomProps from '../../testData/MultiRoomProps';
 import CustomButton from '../../components/CustomButton';
 import ReactPullToRefresh from 'react-pull-to-refresh';
-import ReactLoading from 'react-loading';
 
 const MultiRoom = () => {
   const [props, setProps] = useState({

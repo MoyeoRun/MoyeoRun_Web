@@ -1,14 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { Box, ButtonBase } from '@mui/material';
-import { useEffect, useRef } from 'react';
-import { Timer } from '.';
+import { useEffect, useRef, useState } from 'react';
+import { ExitModal, Timer } from '.';
 
 const ExitWindow = ({ title, children, timerProps }) => {
   const ref = useRef();
   const exitWindowRef = useRef();
   const mouseEventRef = { type: '', change: 'false' };
-
+  const [open, setOpen] = useState(false);
   const onMouseDown = () => {
     mouseEventRef.type = 'click';
   };
@@ -18,7 +18,7 @@ const ExitWindow = ({ title, children, timerProps }) => {
   };
 
   const onOnlyClick = (e) => {
-    console.log(e.target.tagName, e.currentTarget.tagName);
+    // console.log(e.target.tagName, e.currentTarget.tagName);
     const [startLine, endLine] = [-200, 0];
     if (
       e.target.tagName !== 'BUTTON' &&
@@ -61,7 +61,8 @@ const ExitWindow = ({ title, children, timerProps }) => {
             <ButtonBase
               css={exitButton}
               onClick={() => {
-                console.log('나가기');
+                console.log(123123);
+                setOpen(true);
               }}
             >
               나가기
@@ -70,6 +71,7 @@ const ExitWindow = ({ title, children, timerProps }) => {
           <Timer timerProps={timerProps} />
         </Box>
       </Box>
+      <ExitModal open={open} setOpen={setOpen} />
     </>
   );
 };

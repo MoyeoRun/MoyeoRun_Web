@@ -9,6 +9,84 @@ import CustomButton from '../../components/CustomButton';
 import Text from '../../components/Text';
 import { secondToTimeString } from '../../lib/util/strFormat';
 import { NaverMap } from 'react-naver-maps';
+import DialogSelect from '../../components/MakeRoomComponents/DialogSelect';
+
+const numberSelectItems = (numRange, increProp = 1) => {
+  let { min, max } = numRange;
+  const numList = [];
+  let itemValue = 0;
+
+  if (min > max) {
+    [min, max] = [max, min];
+  }
+  const [cMin, cMax] = [Math.floor(min), Math.floor(max)];
+
+  let steps = 0;
+  if (increProp === 1) {
+    steps = cMax - cMin + 1;
+  } else {
+    steps = Math.floor((cMax - cMin) / increProp) + 1;
+  }
+
+  itemValue = min;
+  for (let i = 0; i < steps; i++) {
+    numList.push({ label: `${itemValue}`, value: itemValue });
+    itemValue += increProp;
+  }
+
+  return numList;
+};
+
+const stringSelectItems = (strRange) => {
+  const strList = [];
+
+  let steps = strRange.length;
+
+  for (let i = 0; i < steps; i++) {
+    let itemValue = strRange[i];
+    strList.push({ label: `${itemValue}`, value: itemValue });
+  }
+
+  return strList;
+};
+
+const getSelectItems = (pickOption) => {
+  let selectList = [];
+  if (pickOption.strRange) {
+    selectList = stringSelectItems(pickOption.strRange);
+  } else if (pickOption.numRange) {
+    selectList = numberSelectItems(pickOption.numRange, pickOption.increProp);
+  }
+  return selectList;
+};
+
+const getShowingValue = (value) => {
+  return value.map(
+    (item) => `${item.value || ''}${item.inputLabel && item.value ? item.inputLabel : ''}`,
+  );
+};
+
+const InitValue = {
+  distance: [
+    { id: 'distance/km', value: '1', inputLabel: '.' },
+    { id: 'distance/m', value: '0', inputLabel: ' km' },
+  ],
+  targetTime: [
+    { id: 'limit/hour', value: '1', inputLabel: '시간 ' },
+    { id: 'limit/minute', value: '30', inputLabel: '분' },
+  ],
+};
+
+const InitpickOptions = {
+  distance: [
+    { id: 'distance/km', placeholder: '.', numRange: { min: 0, max: 50 } },
+    { id: 'distance/m', placeholder: 'km', numRange: { min: 0, max: 9 } },
+  ],
+  targetTime: [
+    { id: 'limit/hour', placeholder: '시간', numRange: { min: 0, max: 5 } },
+    { id: 'limit/minute', placeholder: '분', increProp: 5, numRange: { min: 0, max: 59 } },
+  ],
+};
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -16,9 +94,23 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 const ReadySingleRun = () => {
   const [props, setProps] = useState(null);
+  const [distance, setDistance] = useState(InitValue.distance);
+  const [targetTime, setTargetTime] = useState(InitValue.targetTime);
+  const [selectItem, setSelectItem] = useState({
+    targetTime: [],
+    distance: [],
+  });
+  const selectItems = {
+    targetTime: [],
+    distance: [],
+  };
+
   const [select, setSelect] = useState(0);
-  const [selectData, setSelectData] = useState(5);
   const [open, setOpen] = useState(false);
+  const [selectOpen, setSelectOpen] = useState({
+    targetTime: false,
+    distance: false,
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -35,6 +127,67 @@ const ReadySingleRun = () => {
       setProps(propsData.value);
     }
   };
+
+  const handleStart = () => {
+    switch (select) {
+      case 0:
+        window.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            key: 'goSingleRun',
+            value: {
+              type: 'free',
+              targetTime: null,
+              targetDistance: null,
+            },
+          }),
+        );
+        break;
+      case 1:
+        window.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            key: 'goSingleRun',
+            value: {
+              type: 'time',
+              targetTime:
+                (parseInt(targetTime[0].value) * 60 + parseInt(targetTime[1].value)) * 60 * 1000,
+              targetDistance: null,
+            },
+          }),
+        );
+        break;
+      case 2:
+        window.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            key: 'goSingleRun',
+            value: {
+              type: 'distance',
+              targetTime: null,
+              targetDistance: parseInt(distance[0].value) + parseInt(distance[1].value) * 0.1,
+            },
+          }),
+        );
+        break;
+    }
+  };
+
+  const handleSelectOpen = (type) => {
+    setSelectOpen({ ...selectOpen, [type]: true });
+  };
+  const handleSelectClose = (type) => {
+    setSelectOpen({ ...selectOpen, [type]: false });
+  };
+
+  useEffect(() => {
+    let temp = [];
+    for (let type of Object.keys(InitpickOptions)) {
+      temp = InitpickOptions[type].map((option) => ({
+        id: option.id,
+        ...getSelectItems(option),
+      }));
+      selectItems[type] = temp;
+    }
+    setSelectItem(selectItems);
+  }, []);
 
   useEffect(() => {
     document.addEventListener('message', listener);
@@ -96,14 +249,48 @@ const ReadySingleRun = () => {
       )}
       {select === 1 && (
         <>
-          <Text css={distanceData}>{secondToTimeString(91233)}</Text>
-          <Text css={distancetitle}>분</Text>
+          <CustomButton
+            css={inputForm}
+            onClick={() => {
+              handleSelectOpen('targetTime');
+            }}
+          >
+            {getShowingValue(targetTime)}
+          </CustomButton>
+          {selectOpen.targetTime && (
+            <DialogSelect
+              type="targetTime"
+              open={selectOpen.targetTime}
+              value={targetTime}
+              setValue={setTargetTime}
+              selectItems={selectItem.targetTime}
+              handleClose={handleSelectClose}
+            />
+          )}
+          <Text css={description}>시간</Text>
         </>
       )}
       {select === 2 && (
         <>
-          <Text css={distanceData}>{(Math.floor(selectData * 100) / 100).toFixed(2)}</Text>
-          <Text css={distancetitle}>킬로미터</Text>
+          <CustomButton
+            css={inputForm}
+            onClick={() => {
+              handleSelectOpen('distance');
+            }}
+          >
+            {getShowingValue(distance)}
+          </CustomButton>
+          {selectOpen.distance && (
+            <DialogSelect
+              type="distance"
+              open={selectOpen.distance}
+              value={distance}
+              setValue={setDistance}
+              selectItems={selectItem.distance}
+              handleClose={handleSelectClose}
+            />
+          )}
+          <Text css={description}>킬로미터</Text>
         </>
       )}
 
@@ -148,12 +335,7 @@ const ReadySingleRun = () => {
         </MenuList>
       </Dialog>
       <Box css={{ flex: 1 }}></Box>
-      <IconButton
-        css={operationButton}
-        onClick={() => {
-          window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'startFreeRun' }));
-        }}
-      >
+      <IconButton css={operationButton} onClick={handleStart}>
         시작
       </IconButton>
       <Box css={{ flex: 1 }}></Box>
@@ -195,14 +377,20 @@ const topWrapper = css`
   }
 `;
 
-const distanceData = css`
+const inputForm = css`
   margin-top: 78px;
-  font-family: number-500;
-  font-size: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 2px;
+  width: 100%;
+  font-family: text-500;
+  font-size: 69px;
   color: #111111;
 `;
 
-const distancetitle = css`
+const description = css`
   margin-top: 18px;
   font-family: text-500;
   font-size: 20px;

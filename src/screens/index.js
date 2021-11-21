@@ -3,8 +3,11 @@ import HomeTab from './bottomTab/HomeTab';
 import MissionTab from './bottomTab/MissionTab';
 import RecordTab from './bottomTab/RecordTab';
 import RunningTab from './bottomTab/RunningTab';
+import CommingSoon from './common/CommingSoon';
 import CreateMultiRoom from './multiRun/CreateMultiRoom';
 import MultiRoom from './multiRun/MultiRoom';
+import MultiRun from './multiRun/MultiRun';
+import ReadyMultiRun from './multiRun/ReadyMultiRun';
 import Mypage from './profile/MyPage';
 import UploadBodyInfo from './profile/UploadBodyInfo';
 import UploadNickName from './profile/UploadNickName';
@@ -32,13 +35,18 @@ const index = [
 
   //멀티런
   { url: 'createMultiRoom', title: '멀티 런 만들기 스크린', component: <CreateMultiRoom /> },
+  { url: 'readyMultiRun', title: '멀티 런 대기 스크린', component: <ReadyMultiRun /> },
   { url: 'multiRoom', title: '멀티 런 방 스크린', component: <MultiRoom /> },
+  { url: 'multiRun', title: '멀티 런 스크린', component: <MultiRun /> },
 
   //프로필
   { url: 'uploadProfile', title: '프로필 등록 스크린', component: <UploadProfile /> },
   { url: 'uploadBodyInfo', title: '신체정보 입력 스크린', component: <UploadBodyInfo /> },
   { url: 'uploadNickName', title: '닉네임 입력 스크린', component: <UploadNickName /> },
   { url: 'myPage', title: '마이페이지 스크린', component: <Mypage /> },
+
+  //준비중
+  { url: 'commingSoon', title: '준비중 스크린', component: <CommingSoon /> },
 ];
 
 export default index;

@@ -13,185 +13,24 @@ import {
   UserRank,
   Widgets,
   ExitWindow,
+  NetworkError,
 } from '../../components/MultiRunComponents';
+import multiRunProps from '../../testData/multiRunProps';
 
-// {type MultiRunProps = {
-// 	user: User,
-//  point:point
-// 	room: Room,
-//  runStatus:RunStatus,
-// 	myRunData: RunData,
-// 	othersRunData: OthersRunData;
-// }
-
-const InitValue = {
-  none: {
-    remainTime: 10000,
-    rank: 1,
-    image: 'https://source.unsplash.com/random/90x90',
-  },
-  point: {
-    latitude: 37.659187827620975,
-    longitude: 127.0514252126567,
-    currentAltitude: 30,
-    currentTime: 1234567,
-    currentDistance: 3.23,
-    currentPace: 612,
-  },
-  runStatus: {
-    pace: 1000,
-    distance: 1000,
-    time: 1000,
-  },
-  user: {
-    id: 1,
-    name: '황인서',
-    nickName: 'sjsjsj1246',
-    email: 'test@gmail.com',
-    token: null,
-    weight: 50,
-    height: 190,
-    image: 'https://source.unsplash.com/random/90x90',
-  },
-  room: {
-    id: 1,
-    roomImage: '',
-    title: '바람 부는 날 5Km 함께 뛰어요',
-    statue: 'open',
-    description: 'ㅎㅇ',
-    startDate: '2021-11-14T12:31:04.672Z',
-    targetDistance: 3,
-    targetTime: 30,
-    roomImage: '',
-    limitMember: 4,
-    // userAmount: 3,
-    // roomId: 1,
-    // userId: 2,
-    // runId: 1,
-    // isOwner: true,
-    // isReady: false,
-    multiRoomMember: [
-      {
-        userId: 1,
-        isOwer: true,
-        isReady: false,
-        roomId: 1,
-        runId: null,
-        multiRoomUser: {
-          id: 1,
-          name: '황인서',
-          nickName: 'sjsjs…',
-          image: 'https://source.unsplash.com/random/90x90',
-          token: null,
-          height: null,
-          weight: null,
-        },
-      },
-      {
-        userId: 2,
-        isOwer: false,
-        isReady: false,
-        roomId: 1,
-        runId: null,
-        multiRoomUser: {
-          id: 2,
-          name: '김건훈',
-          nickName: 'sjsjs…',
-          image: 'https://source.unsplash.com/random/90x90',
-          token: null,
-          height: null,
-          weight: null,
-        },
-      },
-      {
-        userId: 3,
-        isOwer: false,
-        isReady: false,
-        roomId: 1,
-        runId: null,
-        multiRoomUser: {
-          id: 3,
-          name: '조인혁',
-          nickName: 'ㅁㄴㄹㅁㄴㅇㄹ',
-          image: 'https://source.unsplash.com/random/90x90',
-          token: null,
-          height: null,
-          weight: null,
-        },
-      },
-    ],
-  },
-  othersRunData: [
-    {
-      userId: 1,
-      time: 1234,
-      distance: 1.232,
-      pace: 3.12,
-      runData: [
-        {
-          latitude: 37.659187827620975,
-          longitude: 127.0514252126567,
-          currentAltitude: 30,
-          currentTime: 1234567,
-          currentDistance: 3.23,
-          momentPace: 6.12,
-        },
-      ],
-    },
-
-    {
-      userId: 2,
-      time: 1234,
-      distance: 1.5552,
-      pace: 3.12,
-      runData: [
-        {
-          latitude: 37.6812312312323,
-          longitude: 127.0514242126567,
-          currentAltitude: 28,
-          currentTime: 1234657,
-          currentDistance: 3.12,
-          momentPace: 6.01,
-        },
-      ],
-    },
-    {
-      userId: 3,
-      time: 2334,
-      distance: 2.232,
-      pace: 5.12,
-      runData: [
-        {
-          latitude: 37.692342342343434,
-          longitude: 127.0514252126567,
-          currentAltitude: 30,
-          currentTime: 1234567,
-          currentDistance: 3.23,
-          momentPace: 6.12,
-        },
-      ],
-    },
-  ],
-  runData: [
-    {
-      latitude: 37.659232320975,
-      longitude: 127.0514252126567,
-      currentAltitude: 30,
-      currentTime: 1234567,
-      currentDistance: 3.23,
-      currentPace: 612,
-    },
-  ],
-};
+// type MultiRunProps = {
+//   time: number;
+//   user: User;
+//   room: Room;
+//   userRunData: UserRunData;
+// };
 
 const MultiRun = () => {
-  const [props, setProps] = useState(InitValue);
-  const [timerProps, setTimerProps] = useState();
+  const [props, setProps] = useState();
+  const [displayUserId, setDisplayUserId] = useState();
   const [userRankProps, setUserRankProps] = useState();
   const [mapViewProps, setMapViewProps] = useState();
-  const [runStatusProps, setRunStatusProps] = useState();
   const [lineUpProps, setLineUpProps] = useState();
-  const [displayUserId, setDisplayUserId] = useState(props.user.id);
+  const [error, setError] = useState();
 
   const individualMapViewRef = useRef();
   const dividedMapViewRef = useRef();
@@ -204,13 +43,13 @@ const MultiRun = () => {
   const listener = ({ data }) => {
     if (typeof data !== 'string') return;
     const propsData = JSON.parse(data);
-    if (propsData.type === 'MultiRun') {
+    if (propsData.type === 'multiRun') {
       setProps(propsData.value);
     }
   };
 
   useEffect(() => {
-    if (pathname === '/test/MultiRun') setProps(tempProps);
+    if (pathname === '/test/multiRun') setProps(multiRunProps);
     document.addEventListener('message', listener);
     window.addEventListener('message', listener);
     return () => {
@@ -220,41 +59,31 @@ const MultiRun = () => {
   }, []);
 
   useEffect(() => {
-    setProps(InitValue);
-  }, []);
-
-  useEffect(() => {
     if (props) {
-      console.log('useEffect');
-
-      //multiRun에서 사용하는 데이터는 여기서 다 설정해준다
-
+      if (!displayUserId) setDisplayUserId(props.user.id);
+      console.log(props);
       const userColor = props.room.multiRoomMember.map((member, index) => ({
         userId: member.userId,
         color: colorData[index] || '#E5E5E5',
       }));
 
-      // console.log(props.room.multiRoomMember);
       const userImage = props.room.multiRoomMember.map((member) => ({
         userId: member.userId,
         image: member.multiRoomUser.image || 'https://source.unsplash.com/random/90x90',
       }));
-      console.log(userImage);
-      const userRankState = props.othersRunData
+
+      const userRankState = props.userRunData
         .sort((a, b) => b.distance - a.distance)
-        .map((member, index) => {
-          console.log(member);
-          return {
-            ...member,
-            rank: index + 1,
-            isMe: props.user.id === member.userId,
-            image: userImage.find((user) => user.userId === member.userId).image,
-            displayUserId: displayUserId,
-            color: userColor.find((user) => user.userId === member.userId).color,
-          };
-        });
-      console.log(userRankState);
-      const otherMapData = props.othersRunData.map((member) => ({
+        .map((member, index) => ({
+          ...member,
+          rank: index + 1,
+          isMe: props.user.id === member.userId,
+          image: userImage.find((user) => user.userId === member.userId).image,
+          color: userColor.find((user) => user.userId === member.userId).color,
+          displayUserId: displayUserId || props.user.id,
+        }));
+
+      const userMapData = props.userRunData.map((member) => ({
         userId: member.userId,
         runData: member.runData,
         center: {
@@ -265,7 +94,7 @@ const MultiRun = () => {
       }));
 
       const otherDistance = new Object();
-      props.othersRunData.forEach((member) => (otherDistance[member.userId] = member.distance));
+      props.userRunData.forEach((member) => (otherDistance[member.userId] = member.distance));
 
       const markerData = props.room.multiRoomMember.map((member) => ({
         ...member,
@@ -273,78 +102,57 @@ const MultiRun = () => {
         color: userColor.find((user) => user.userId === member.userId).color,
       }));
 
-      setTimerProps({ remainTime: props.none.remainTime });
       setUserRankProps({ rank: userRankState });
       setMapViewProps({
-        displayUserId: displayUserId,
-        userPoints: [...otherMapData],
+        displayUserId,
+        userPoints: userMapData,
       });
-      setRunStatusProps({ runStatus: props.runStatus });
       setLineUpProps({ markerData: markerData });
+      console.log(displayUserId);
     }
   }, [props, displayUserId]);
 
-  const onHandelViewState = (type, userId = displayUserId, e = null) => {
-    console.log(2);
-    console.log(displayUserId);
+  const onHandelViewState = (type, userId = props.user.id) => {
     if (type === 'individualMapView') {
       refs.individualMapView.current.style.left = '0px';
       refs.dividedMapView.current.style.left = `${window.innerWidth}px`;
     } else if (type === 'dividedMapView') {
       refs.individualMapView.current.style.left = `-${window.innerWidth}px`;
       refs.dividedMapView.current.style.left = `0px`;
-    } else {
-      console.log('오류오류');
     }
-    console.log(userId);
     setDisplayUserId(userId);
   };
 
-  console.log(timerProps, userRankProps, displayUserId, mapViewProps, runStatusProps, lineUpProps);
-  if (
-    !(timerProps && userRankProps && displayUserId && mapViewProps && runStatusProps && lineUpProps)
-  ) {
-    return <Box>로딩중</Box>;
-  }
+  if (!props || !displayUserId || !userRankProps || !mapViewProps || !lineUpProps) return null;
+  return (
+    <Box css={multiRunWrapper}>
+      <Box css={indiVidualWrapper} ref={individualMapViewRef}>
+        <ExitWindow remainTime={new Date(props.room.targetTime).getSeconds() - props.time}>
+          <IndividualMapView mapViewProps={mapViewProps} userId={props.user.id} />
+          <Widgets onHandelViewState={onHandelViewState} userId={props.user.id} />
+          <Timer remainTime={new Date(props.room.targetTime).getSeconds() - props.time} fixed />
+          <UserRank userRankProps={userRankProps} />
+        </ExitWindow>
 
-  if (
-    timerProps &&
-    userRankProps &&
-    displayUserId &&
-    mapViewProps &&
-    runStatusProps &&
-    lineUpProps
-  ) {
-    return (
-      <Box css={multiRunWrapper}>
-        <Box css={indiVidualWrapper} ref={individualMapViewRef}>
-          <ExitWindow timerProps={timerProps}>
-            <IndividualMapView mapViewProps={mapViewProps} />
+        <RunStatus runStatus={props.userRunData.find((data) => data.userId === displayUserId)} />
 
-            <Widgets onHandelViewState={onHandelViewState} userId={props.user.id} />
-            <Timer timerProps={timerProps} fixed />
-            <UserRank userRankProps={userRankProps} />
-          </ExitWindow>
+        <CurrentRankStatus>
+          <LineUp lineUpProps={lineUpProps} />
+        </CurrentRankStatus>
+      </Box>
 
-          <RunStatus runStatusProps={runStatusProps} />
+      <Box css={dividedWrapper} ref={dividedMapViewRef}>
+        <ExitWindow remainTime={new Date(props.room.targetTime).getSeconds() - props.time}>
+          <DividedMapView mapViewProps={mapViewProps} onHandelViewState={onHandelViewState} />
+        </ExitWindow>
 
-          <CurrentRankStatus>
-            <LineUp lineUpProps={lineUpProps} />
-          </CurrentRankStatus>
-        </Box>
-
-        <Box css={dividedWrapper} ref={dividedMapViewRef}>
-          <ExitWindow timerProps={timerProps}>
-            <DividedMapView mapViewProps={mapViewProps} onHandelViewState={onHandelViewState} />
-          </ExitWindow>
-
-          <Box css={dividedlineUp}>
-            <LineUp lineUpProps={lineUpProps} />
-          </Box>
+        <Box css={dividedlineUp}>
+          <LineUp lineUpProps={lineUpProps} />
         </Box>
       </Box>
-    );
-  } else return <Box>오류오류</Box>;
+      <NetworkError error={error} />
+    </Box>
+  );
 };
 
 export default MultiRun;
