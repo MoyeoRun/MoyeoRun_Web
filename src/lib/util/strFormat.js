@@ -48,7 +48,7 @@ export const getModifiedDateString = (dateString) => {
 
 export const getSelectedWeekNumber = (date) => {
   const getNumberOfWeek = (selected) => {
-    const selectedDate = new Date();
+    const selectedDate = new Date(selected);
     const firstDayOfYear = new Date(selectedDate.getFullYear(), 0, 1);
     const pastDaysOfYear = (selectedDate - firstDayOfYear) / 86400000;
     return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);

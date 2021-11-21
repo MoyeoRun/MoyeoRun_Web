@@ -5,6 +5,7 @@ import { Box } from '@mui/system';
 import React, { useState } from 'react';
 
 import { ReactComponent as CalendarIcon } from '../../assets/svgs/CalendarIcon.svg';
+import { getSelectedWeekNumber } from '../../lib/util/strFormat';
 import CalenderPicker from './CalenderPicker';
 
 const Filtering = ({ filteringProps, getSelectedWeekRecords }) => {
@@ -16,7 +17,8 @@ const Filtering = ({ filteringProps, getSelectedWeekRecords }) => {
   };
 
   const date = new Date(startDate);
-  const week = Math.floor(date.getDate() / 7 + 1);
+  // const week = Math.floor(date.getDate() / 7 + 1);
+  const week = getSelectedWeekNumber(date);
 
   return (
     <>
@@ -30,6 +32,7 @@ const Filtering = ({ filteringProps, getSelectedWeekRecords }) => {
         open={modalOpen}
         handleClose={handleClose}
         getSelectedWeekRecords={getSelectedWeekRecords}
+        selectedDay={startDate}
       />
     </>
   );

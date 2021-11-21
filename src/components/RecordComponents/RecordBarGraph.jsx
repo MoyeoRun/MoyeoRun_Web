@@ -13,9 +13,6 @@ import externalTooltipHandler from '../BarGraphToolTip';
 //   averagePaceOfTerm: number;
 // }>;
 const RecordBarGraph = ({ graphProps, getPickedDayRecords, index }) => {
-  console.log(graphProps);
-  // let barGraph = new Chart();
-  // const [backgroundData, setBackground] = useState();
   const [graph, setGraph] = useState();
   useEffect(() => {
     const barGraphCtx = document.getElementById('barGraph');
@@ -82,7 +79,6 @@ const RecordBarGraph = ({ graphProps, getPickedDayRecords, index }) => {
         barThickness: '10',
       },
     });
-    console.log(barGraph);
     barGraphCtx.addEventListener(
       'click',
       function (evt, elem) {
@@ -95,7 +91,7 @@ const RecordBarGraph = ({ graphProps, getPickedDayRecords, index }) => {
         if (points.length) {
           const firstPoint = points[0];
           const label = barGraph.data.labels[firstPoint.index];
-          const value = barGraph.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
+          // const value = barGraph.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
           getPickedDayRecords(label);
         }
       },
@@ -108,11 +104,7 @@ const RecordBarGraph = ({ graphProps, getPickedDayRecords, index }) => {
   }, []);
 
   useEffect(() => {
-    // console.log(graphState);
-    // const barGraph = document.getElementById('barGraph');
-
     if (graph) {
-      console.log(graph);
       graph.reset();
       graph.data.labels = graphProps.map((item) => new Date(item.date).getDate());
       (graph.data.datasets.data = graphProps.map((item) => item.totalDistanceOfTerm)),

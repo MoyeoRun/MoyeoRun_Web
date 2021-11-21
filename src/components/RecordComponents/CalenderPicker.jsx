@@ -11,17 +11,14 @@ import isSameDay from 'date-fns/isSameDay';
 import isWithinInterval from 'date-fns/isWithinInterval';
 import { add, sub } from 'date-fns';
 
-const CustomCalendar = ({ getSelectedWeekRecords }) => {
-  const [value, setValue] = useState(new Date());
+const CustomCalendar = ({ getSelectedWeekRecords, selectedDay }) => {
+  console.log(selectedDay);
+  const [value, setValue] = useState(new Date(selectedDay));
   const renderWeekPickerDay = (date, selectedDates, pickersDayProps) => {
     if (!value) {
       return <PickersDay {...pickersDayProps} />;
     }
 
-    // const start = value || new Date();
-    // const end = add(new Date(value), {
-    //   days: 6,
-    // });
     const start = sub(new Date(value), { days: 6 });
     const end = value || new Date();
 
@@ -71,10 +68,10 @@ const CustomCalendar = ({ getSelectedWeekRecords }) => {
   );
 };
 
-const CalenderPicker = ({ open, handleClose, getSelectedWeekRecords }) => {
+const CalenderPicker = ({ open, handleClose, getSelectedWeekRecords, selectedDay }) => {
   return (
     <Dialog open={open} onClose={handleClose}>
-      <CustomCalendar getSelectedWeekRecords={getSelectedWeekRecords} />
+      <CustomCalendar getSelectedWeekRecords={getSelectedWeekRecords} selectedDay={selectedDay} />
     </Dialog>
   );
 };
@@ -86,12 +83,6 @@ const CustomPickersDay = styled(PickersDay, {
   shouldForwardProp: (prop) =>
     prop !== 'dayIsBetween' && prop !== 'isFirstDay' && prop !== 'isLastDay',
 })(({ dayIsBetween, isFirstDay, isLastDay, selected }) => ({
-  // ...(selected && {
-  //   borderTopRightRadius: '50%',
-  //   borderBottomRightRadius: '50%',
-  //   backgroundColor: '#0047D0',
-  //   color: 'white',
-  // }),
   ...(dayIsBetween && {
     borderRadius: 0,
     backgroundColor: `rgba(17, 98, 255, 0.1)`,
@@ -101,12 +92,7 @@ const CustomPickersDay = styled(PickersDay, {
       color: 'white',
     },
   }),
-  // ...(isLastDay && {
-  //   borderTopRightRadius: '50%',
-  //   borderBottomRightRadius: '50%',
-  //   backgroundColor: '#0047D0',
-  //   color: 'white',
-  // }),
+
   ...(isFirstDay && {
     borderRadius: 0,
     borderTopLeftRadius: '50%',

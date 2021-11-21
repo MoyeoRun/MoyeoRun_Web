@@ -59,7 +59,7 @@ const Summary = ({ summaryProps }) => {
     id,
     headData,
   } = summaryProps;
-
+  // console.log(summaryProps);
   const summaryDistance = getDistanceString(totalDistance || runDistance);
   const summaryPace = getPaceString(totalAveragePace || runPace);
   const summaryTime = secondToTimeString(totalTime || runTime);

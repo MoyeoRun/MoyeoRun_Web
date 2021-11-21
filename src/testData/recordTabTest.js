@@ -263,6 +263,38 @@ const recordTabProps = {
       },
     ],
   },
+  runRecord: {
+    id: '618be10273992d01acf89a21',
+    user: {
+      email: 'sjsjsj1246@naver.com',
+      id: 1,
+    },
+    type: 'free',
+    targetDistance: null,
+    targetTime: null,
+    runPace: 16.840367337799158,
+    runTime: 14502,
+    runDistance: 0.01096274582159999,
+    createdAt: '2021-11-10T15:10:58.729Z',
+    runData: [
+      [
+        {
+          latitude: 37.62945804676241,
+          longitude: 127.08118446407582,
+          currentTime: 5083,
+          currentDistance: 0,
+          currentPace: 0,
+        },
+        {
+          latitude: 37.62941607807142,
+          longitude: 127.0810718199398,
+          currentTime: 11077,
+          currentDistance: 0.01096274582159999,
+          currentPace: 9.112680493163145,
+        },
+      ],
+    ],
+  },
 };
 
 export default recordTabProps;
