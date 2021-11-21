@@ -33,7 +33,7 @@ const RecordTab = () => {
 
   const getISOstartEndDays = ({ startDay, endDay, type }) => {
     console.log('날짜 범위로 보여주기');
-    console.log(startDay, endDay, type);
+    // console.log(startDay, endDay, type);
     return {
       startDay: new Date(startDay).toISOString(),
       endDay: new Date(endDay).toISOString(),
@@ -42,7 +42,7 @@ const RecordTab = () => {
   };
   const getIdValue = ({ day, type }) => {
     console.log('날짜 한개만 보여주기');
-    console.log(day, type);
+    // console.log(day, type);
     return {
       id: props.runHistory.runningList.find((item) => new Date(item.createdAt).getDate() === day)
         .id,
@@ -84,7 +84,7 @@ const RecordTab = () => {
 
   //chart.js 이벤트리스너에 등록되는 함수, 막대그래프 클릭시 작동
   const getPickedDayRecords = (day) => {
-    console.log(menu, menuChecker);
+    // console.log(menu, menuChecker);
     // console.log(showOneRecord);
     console.log('하루 찍은 날짜 기록 보여주기 , 날짜 : ' + day);
     const pickedDate = summaryProps.runningList.find(
@@ -211,7 +211,7 @@ const RecordTab = () => {
 
   //막대그래프 클릭시에 showOneRecord 상태 변경,
 
-  console.log(filteringProps, summaryProps, graphProps, detailRecordProps);
+  // console.log(filteringProps, summaryProps, graphProps, detailRecordProps);
   if (!(filteringProps && summaryProps && graphProps && detailRecordProps))
     return <Box>로딩중</Box>;
   if (filteringProps && summaryProps && graphProps && detailRecordProps) {
