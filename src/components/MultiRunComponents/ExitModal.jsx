@@ -56,7 +56,7 @@ const head = css`
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 22px;
   padding-bottom: 16px;
   font-style: normal;
@@ -72,7 +72,7 @@ const content = css`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
@@ -95,7 +95,7 @@ const cancleButton = css`
   border: 1px solid #bdbec1;
   box-sizing: border-box;
   border-radius: 4px;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -111,7 +111,7 @@ const exitButton = css`
   margin-left: 9px;
   background: #1162ff;
   border-radius: 4px;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;

@@ -54,7 +54,7 @@ const topDataBox = css`
 `;
 
 const topData = css`
-  font-family: SF Compact Display;
+  font-family: number-500;
   font-size: 28px;
   font-style: normal;
   font-weight: 500;
@@ -65,7 +65,7 @@ const topData = css`
 `;
 
 const topDataTitle = css`
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;

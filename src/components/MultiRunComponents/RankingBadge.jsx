@@ -45,7 +45,7 @@ const indrankingBadge = css`
   box-sizing: border-box;
   color: #ffffff;
   background-color: #1162ff;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 20px;
   font-style: normal;
   font-weight: 500;
@@ -60,7 +60,7 @@ const divrankingBadge = (rank) => css`
   box-sizing: border-box;
   color: ${rank > 1 ? '#1162ff' : '#ffffff'};
   background-color: ${rank > 1 ? '#ffffff' : '#1162ff'};
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;

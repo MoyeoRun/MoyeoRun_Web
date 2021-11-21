@@ -105,7 +105,7 @@ const titleStyle = css`
   width: 100%;
   height: 100%;
   padding-bottom: 13px;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
@@ -116,7 +116,7 @@ const titleStyle = css`
 `;
 const exitButton = css`
   padding: 8px;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 18px;
   font-style: normal;
   font-weight: 500;

@@ -33,7 +33,7 @@ const fixedTimer = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 20px;
   font-style: normal;
   font-weight: 500;
@@ -50,7 +50,7 @@ const timer = css`
   padding-top: 8px;
   justify-content: center;
   align-items: center;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 20px;
   font-style: normal;
   font-weight: 500;

@@ -6,8 +6,12 @@ import AccountImage from '../AccountImage';
 
 const UserRank = ({ userRankProps }) => {
   const { rank } = userRankProps;
+<<<<<<< Updated upstream
   const user = rank.find((user) => user.displayUserId === user.userId);
 
+=======
+  const user = rank.find((user) => user.displayUserId === user.user.id);
+>>>>>>> Stashed changes
   return (
     <>
       <Box css={userWrap}>
