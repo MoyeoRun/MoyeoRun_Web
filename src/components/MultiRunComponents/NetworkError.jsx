@@ -35,7 +35,7 @@ const networkError = css`
   justify-content: center;
   align-items: center;
   background: #ef635b;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;

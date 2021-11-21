@@ -114,7 +114,7 @@ const xAxisValue = (position) => css`
   transform: translate(-50%, 4px);
   display: flex;
   justify-content: space-between;
-  font-family: SF Compact Display;
+  font-family: number-500;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -129,7 +129,7 @@ const xAxisBase = (location) => css`
   transform: translate(-50%, 4px);
   display: flex;
   justify-content: space-between;
-  font-family: SF Compact Display;
+  font-family: number-500;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
@@ -144,7 +144,7 @@ const xAxisUnit = css`
   left: 100%;
   top: -55px;
   transform: translate(-60%);
-  font-family: SF Compact Display;
+  font-family: number-500;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;

@@ -6,7 +6,7 @@ import AccountImage from '../AccountImage';
 
 const UserRank = ({ userRankProps }) => {
   const { rank } = userRankProps;
-  const user = rank.find((user) => user.displayUserId === user.userId);
+  const user = rank.find((user) => user.displayUserId === user.user.id);
   return (
     <Box css={userWrap}>
       <AccountImage isMe={user.isMe} image={user.image} />

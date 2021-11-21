@@ -77,24 +77,32 @@ const MultiRun = () => {
         .map((member, index) => ({
           ...member,
           rank: index + 1,
-          isMe: props.user.id === member.userId,
-          image: userImage.find((user) => user.userId === member.userId).image,
-          color: userColor.find((user) => user.userId === member.userId).color,
+          isMe: props.user.id === member.user.id,
+          image: userImage.find((user) => user.userId === member.user.id).image,
+          color: userColor.find((user) => user.userId === member.user.id).color,
           displayUserId: displayUserId || props.user.id,
         }));
 
       const userMapData = props.userRunData.map((member) => ({
-        userId: member.userId,
+        userId: member.user.id,
         runData: member.runData,
         center: {
-          lat: member.runData[member.runData.length - 1].latitude,
-          lng: member.runData[member.runData.length - 1].longitude,
+          lat:
+            member.runData.length > 0
+              ? member.runData[member.runData.length - 1].latitude
+              : 37.51977586326575,
+          lng:
+            member.runData.length > 0
+              ? member.runData[member.runData.length - 1].longitude
+              : 127.06283169005788,
         },
-        rank: userRankState.find((user) => user.userId === member.userId),
+        rank: userRankState.find((user) => user.user.id === member.user.id),
       }));
 
       const otherDistance = new Object();
-      props.userRunData.forEach((member) => (otherDistance[member.userId] = member.distance));
+      props.userRunData.forEach(
+        (member) => (otherDistance[member.user.id] = member.runStatus.distance),
+      );
 
       const markerData = props.room.multiRoomMember.map((member) => ({
         ...member,
@@ -134,7 +142,9 @@ const MultiRun = () => {
           <UserRank userRankProps={userRankProps} />
         </ExitWindow>
 
-        <RunStatus runStatus={props.userRunData.find((data) => data.userId === displayUserId)} />
+        <RunStatus
+          runStatus={props.userRunData.find((data) => data.user.id === displayUserId).runStatus}
+        />
 
         <CurrentRankStatus>
           <LineUp lineUpProps={lineUpProps} />

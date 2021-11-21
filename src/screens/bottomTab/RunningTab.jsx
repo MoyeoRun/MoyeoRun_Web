@@ -73,6 +73,7 @@ const RunningTab = () => {
           <ReactLoading type="bars" color="#1160ffde" width="50px" height="50px" />
         </Box>
       )}
+
       <Box css={runningTabWrapper}>
         <Box css={headWrapper}>
           {props.user ? (
@@ -89,6 +90,7 @@ const RunningTab = () => {
               <PlusIcon />
             </IconButton>
           )}
+
           <Dialog TransitionComponent={Transition} open={open} onClose={handleClose}>
             <Box css={makeRoomWrapper}>
               <Box className="header">
@@ -111,6 +113,8 @@ const RunningTab = () => {
             </Box>
           </Dialog>
         </Box>
+        {/* HeadWrapper  - modal, 유저정보, 방만들기*/}
+
         <Tabs
           value={menu}
           onChange={(event, newValue) => {

@@ -50,7 +50,7 @@ const head = css`
   display: flex;
   justify-content: space-between;
   box-sizing: border-box;
-  font-family: Apple SD Gothic Neo;
+  font-family: text-500;
   font-size: 16px;
   font-style: normal;
   font-weight: 600;

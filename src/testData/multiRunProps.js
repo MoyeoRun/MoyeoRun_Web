@@ -226,10 +226,20 @@ const multiRunProps = {
   },
   userRunData: [
     {
-      userId: 1,
-      time: 1234,
-      distance: 1.232,
-      pace: 3.12,
+      user: {
+        id: 1,
+        name: '조인혁',
+        nickName: 'ㅁㄴㄹㅁㄴㅇㄹ',
+        image: 'https://source.unsplash.com/random/90x90',
+        token: null,
+        height: null,
+        weight: null,
+      },
+      runStatus: {
+        time: 1234,
+        distance: 1.232,
+        pace: 3.12,
+      },
       runData: [
         {
           latitude: 37.659187827620975,
@@ -242,10 +252,20 @@ const multiRunProps = {
       ],
     },
     {
-      userId: 2,
-      time: 1234,
-      distance: 1.5552,
-      pace: 3.12,
+      user: {
+        id: 2,
+        name: '조인혁',
+        nickName: 'ㅁㄴㄹㅁㄴㅇㄹ',
+        image: 'https://source.unsplash.com/random/90x90',
+        token: null,
+        height: null,
+        weight: null,
+      },
+      runStatus: {
+        time: 1234,
+        distance: 1.5552,
+        pace: 3.12,
+      },
       runData: [
         {
           latitude: 37.6812312312323,
@@ -258,10 +278,20 @@ const multiRunProps = {
       ],
     },
     {
-      userId: 3,
-      time: 2334,
-      distance: 2.232,
-      pace: 5.12,
+      user: {
+        id: 3,
+        name: '조인혁',
+        nickName: 'ㅁㄴㄹㅁㄴㅇㄹ',
+        image: 'https://source.unsplash.com/random/90x90',
+        token: null,
+        height: null,
+        weight: null,
+      },
+      runStatus: {
+        time: 2334,
+        distance: 2.232,
+        pace: 5.12,
+      },
       runData: [
         {
           latitude: 37.692342342343434,
