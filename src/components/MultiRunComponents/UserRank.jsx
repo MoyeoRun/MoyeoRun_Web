@@ -7,16 +7,13 @@ import AccountImage from '../AccountImage';
 const UserRank = ({ userRankProps }) => {
   const { rank } = userRankProps;
   const user = rank.find((user) => user.displayUserId === user.userId);
-
   return (
-    <>
-      <Box css={userWrap}>
-        <AccountImage isMe={user.isMe} image={user.image} />
-        <Box css={rankingBadgeMargin}>
-          <RankingBadge rank={user.rank} />
-        </Box>
+    <Box css={userWrap}>
+      <AccountImage isMe={user.isMe} image={user.image} />
+      <Box css={rankingBadgeMargin}>
+        <RankingBadge rank={user.rank} />
       </Box>
-    </>
+    </Box>
   );
 };
 export default UserRank;
