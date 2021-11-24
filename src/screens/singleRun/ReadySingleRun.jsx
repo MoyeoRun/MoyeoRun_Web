@@ -133,7 +133,7 @@ const ReadySingleRun = () => {
       case 0:
         window.ReactNativeWebView.postMessage(
           JSON.stringify({
-            key: 'goSingleRun',
+            type: 'goSingleRun',
             value: {
               type: 'free',
               targetTime: null,
@@ -145,7 +145,7 @@ const ReadySingleRun = () => {
       case 1:
         window.ReactNativeWebView.postMessage(
           JSON.stringify({
-            key: 'goSingleRun',
+            type: 'goSingleRun',
             value: {
               type: 'time',
               targetTime:
@@ -158,7 +158,7 @@ const ReadySingleRun = () => {
       case 2:
         window.ReactNativeWebView.postMessage(
           JSON.stringify({
-            key: 'goSingleRun',
+            type: 'goSingleRun',
             value: {
               type: 'distance',
               targetTime: null,

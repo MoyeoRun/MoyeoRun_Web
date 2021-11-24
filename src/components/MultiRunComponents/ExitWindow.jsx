@@ -43,11 +43,6 @@ const ExitWindow = ({ title, children, timerProps }) => {
       ref.current.addEventListener('mousemove', onMouseMove);
       ref.current.addEventListener('mouseup', onOnlyClick, true);
     }
-    return () => {
-      ref.current.removeEventListener('mousedown', onMouseDown);
-      ref.current.removeEventListener('mousemove', onMouseMove);
-      ref.current.removeEventListener('mouseup', onOnlyClick, true);
-    };
   }, []);
 
   return (
