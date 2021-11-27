@@ -22,12 +22,13 @@ const RecordTab = () => {
   const [loading, setLoading] = useState(false);
   const [showOneRecord, setShowOneRecord] = useState(false); //전체 기록 보여주는건지, 하나의 기록 보여주는건지
   const [menu, setMenu] = useState(0); // 모여런 뷰, 개인런 뷰 구분
-  const menuChecker = useRef();
   const [selectedDay, setSelectedDay] = useState(new Date());
   const [filteringProps, setFilteringProps] = useState();
   const [summaryProps, setSummaryProps] = useState();
   const [graphProps, setGraphProps] = useState();
   const [detailRecordProps, setDetailRecordProps] = useState();
+
+  const menuChecker = useRef();
 
   const { pathname } = useLocation();
 
@@ -78,7 +79,7 @@ const RecordTab = () => {
 
   // rn으로 message 보낼때 쓰는 함수
   const handlePostMessage = (type, value = {}) => {
-    // window.ReactNativeWebView.postMessage(JSON.stringify({ type: type, value: value }));
+    window.ReactNativeWebView.postMessage(JSON.stringify({ type: type, value: value }));
     setLoading(true);
   };
 
@@ -211,7 +212,7 @@ const RecordTab = () => {
 
   //막대그래프 클릭시에 showOneRecord 상태 변경,
 
-  // console.log(filteringProps, summaryProps, graphProps, detailRecordProps);
+  alert(filteringProps, summaryProps, graphProps, detailRecordProps);
   if (!(filteringProps && summaryProps && graphProps && detailRecordProps))
     return <Box>로딩중</Box>;
   if (filteringProps && summaryProps && graphProps && detailRecordProps) {
@@ -231,7 +232,7 @@ const RecordTab = () => {
               label="모여런"
               css={menuItem}
               onClick={() => {
-                // getSelectedWeekRecords(new Date());
+                getSelectedWeekRecords(new Date());
                 setShowOneRecord(false);
                 setMenu(0);
                 menuChecker.current = 0;
@@ -241,7 +242,7 @@ const RecordTab = () => {
               label="개인런"
               css={menuItem}
               onClick={() => {
-                // getSelectedWeekRecords(new Date());
+                getSelectedWeekRecords(new Date());
                 setShowOneRecord(false);
                 setMenu(1);
                 menuChecker.current = 1;
