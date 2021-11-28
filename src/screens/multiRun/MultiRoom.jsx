@@ -86,79 +86,77 @@ const MultiRoom = () => {
   };
 
   return (
-    <ReactPullToRefresh onRefresh={handleRefresh} css={pullDown}>
-      <Box css={multiRoomWrapper}>
-        <Box css={cardWrapper}>
+    <Box css={multiRoomWrapper}>
+      <Box css={cardWrapper}>
+        {props.room ? (
+          <RoomCard statusBarHeight={props.statusBarHeight} room={props.room} />
+        ) : (
+          <Skeleton variant="rectangular" css={{ width: '100%', height: '100%' }} />
+        )}
+      </Box>
+      <Box css={contentWrapper}>
+        <Box css={informationTypo}>
+          <Box>정보</Box>
           {props.room ? (
-            <RoomCard statusBarHeight={props.statusBarHeight} room={props.room} />
+            <RoomInfo room={props.room} />
           ) : (
-            <Skeleton variant="rectangular" css={{ width: '100%', height: '100%' }} />
+            <Skeleton
+              variant="rectangular"
+              css={{ width: '100%', height: '95px', marginTop: '9px', marginBottom: '24px' }}
+            />
           )}
-        </Box>
-        <Box css={contentWrapper}>
-          <Box css={informationTypo}>
-            <Box>정보</Box>
-            {props.room ? (
-              <RoomInfo room={props.room} />
+
+          <Box css={host}>
+            <Box>호스트</Box>
+            {props.roomOwner ? (
+              <Host
+                image={props.roomOwner.image}
+                host={props.roomOwner.nickName}
+                message={props.room.title}
+              />
             ) : (
               <Skeleton
-                variant="rectangular"
-                css={{ width: '100%', height: '95px', marginTop: '9px', marginBottom: '24px' }}
+                variant="circular"
+                css={{ width: '48px', height: '48px', marginBottom: '37px', marginTop: '20px' }}
               />
-            )}
-
-            <Box css={host}>
-              <Box>호스트</Box>
-              {props.roomOwner ? (
-                <Host
-                  image={props.roomOwner.image}
-                  host={props.roomOwner.nickName}
-                  message={props.room.title}
-                />
-              ) : (
-                <Skeleton
-                  variant="circular"
-                  css={{ width: '48px', height: '48px', marginBottom: '37px', marginTop: '20px' }}
-                />
-              )}
-            </Box>
-          </Box>
-          <Box css={splitLine} />
-          <Box>
-            <Box css={recruitmentTypo}>참가자 모집중입니다</Box>
-            {props.room ? (
-              <>
-                <ParticipationGraph
-                  limitMember={props.room.limitMember}
-                  userAmount={props.room.multiRoomMember.length}
-                />
-                <Box css={restPeopletypo}>
-                  {props.room.limitMember - props.room.multiRoomMember.length}명 더 참여하면 방 마감
-                </Box>
-              </>
-            ) : (
-              <>
-                <Skeleton variant="rectangular" css={{ width: '100%', height: '8px' }} />
-              </>
-            )}
-          </Box>
-          <Box>
-            {props.room ? (
-              <>
-                <MemberList
-                  member={props.room.multiRoomMember}
-                  limitMember={props.room.limitMember}
-                  userAmount={props.room.multiRoomMember.length}
-                />
-                <ActionButton />
-              </>
-            ) : (
-              <MemberList member={[0, 0, 0]} limitMember={0} userAmount={0} />
             )}
           </Box>
         </Box>
+        <Box css={splitLine} />
+        <Box>
+          <Box css={recruitmentTypo}>참가자 모집중입니다</Box>
+          {props.room ? (
+            <>
+              <ParticipationGraph
+                limitMember={props.room.limitMember}
+                userAmount={props.room.multiRoomMember.length}
+              />
+              <Box css={restPeopletypo}>
+                {props.room.limitMember - props.room.multiRoomMember.length}명 더 참여하면 방 마감
+              </Box>
+            </>
+          ) : (
+            <>
+              <Skeleton variant="rectangular" css={{ width: '100%', height: '8px' }} />
+            </>
+          )}
+        </Box>
+        <Box>
+          {props.room ? (
+            <>
+              <MemberList
+                member={props.room.multiRoomMember}
+                limitMember={props.room.limitMember}
+                userAmount={props.room.multiRoomMember.length}
+              />
+              <ActionButton />
+            </>
+          ) : (
+            <MemberList member={[0, 0, 0]} limitMember={0} userAmount={0} />
+          )}
+        </Box>
       </Box>
-    </ReactPullToRefresh>
+    </Box>
   );
 };
 
