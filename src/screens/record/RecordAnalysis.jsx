@@ -2,133 +2,180 @@
 import { css } from '@emotion/react';
 import { Box } from '@mui/material';
 import Chart from 'chart.js/auto';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 import Text from '../../components/Text';
 import { getPaceString } from '../../lib/util/strFormat';
 import runData from '../../testData/recordDetailServerData.json';
 
-const RecordAnalysis = (props) => {
-  useEffect(() => {
-    const paceCtx = document.getElementById('paceChart');
-    const paceChart = new Chart(paceCtx, {
-      type: 'line',
-      data: {
-        labels: runData.runData
-          .reduce((acc, item) => acc.concat(...item))
-          .filter((item) => item.currentPace > 2)
-          .map((x, i) => i + 1 + 'km'),
-        datasets: [
-          {
-            label: '페이스',
-            data: runData.runData
-              .reduce((acc, item) => acc.concat(...item))
-              .filter((item) => item.currentPace > 2)
-              .map((point) => point.currentPace),
-            borderColor: '#1162FF',
-            backgroundColor: function ({ chart: { ctx, chartArea } }) {
-              if (!chartArea) return;
-              let gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-              gradient.addColorStop(0, 'rgba(237,243,255,1)');
-              gradient.addColorStop(1, 'rgba(17,98,255,0.3)');
-              return gradient;
-            },
-            fill: 'start',
-          },
-        ],
-      },
-      options: {
-        elements: {
-          line: {
-            tension: 0.4,
-          },
-        },
-        scales: {
-          y: {
-            max: 20,
-            reverse: true,
-            ticks: {
-              stepSize: 0.5,
-            },
-          },
-        },
-        plugins: {
-          legend: {
-            display: false,
-          },
-          filler: {
-            propagate: false,
-          },
-          title: {
-            display: false,
-          },
-        },
-        interaction: {
-          intersect: false,
-        },
-      },
-    });
+const RecordAnalysis = () => {
+  const [props, setProps] = useState(null);
+  const { pathname } = useLocation();
 
-    const ctx = document.getElementById('altitudeChart');
-    const altitudeChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: runData.runData
-          .reduce((acc, item) => acc.concat(...item))
-          .map((x, i) => i + 1 + 'km'),
-        datasets: [
-          {
-            label: '페이스',
-            data: runData.runData
-              .reduce((acc, item) => acc.concat(...item))
-              .map((point) => point.altitude),
-            borderColor: '#1162FF',
-            backgroundColor: function ({ chart: { ctx, chartArea } }) {
-              if (!chartArea) return;
-              let gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-              gradient.addColorStop(0, 'rgba(237,243,255,1)');
-              gradient.addColorStop(1, 'rgba(17,98,255,0.3)');
-              return gradient;
-            },
-            fill: 'start',
-          },
-        ],
-      },
-      options: {
-        elements: {
-          line: {
-            tension: 0.4,
-          },
-        },
-        scales: {
-          y: {
-            suggestedMin: 0,
-            ticks: {
-              stepSize: 2,
-            },
-          },
-        },
-        plugins: {
-          legend: {
-            display: false,
-          },
-          filler: {
-            propagate: false,
-          },
-          title: {
-            display: false,
-          },
-        },
-        interaction: {
-          intersect: false,
-        },
-      },
-    });
+  const listener = ({ data }) => {
+    if (typeof data !== 'string') return;
+    const propsData = JSON.parse(data);
+    if (propsData.type === 'recordAnalysis') {
+      setProps(propsData.value);
+    }
+  };
+
+  useEffect(() => {
+    if (pathname === '/test/recordAnalysis') {
+      setProps(runData.runData);
+    }
+    document.addEventListener('message', listener);
+    window.addEventListener('message', listener);
 
     return () => {
-      paceChart.reset();
-      altitudeChart.reset();
+      document.removeEventListener('message', listener);
+      window.removeEventListener('message', listener);
     };
   }, []);
+
+  useEffect(() => {
+    if (props) {
+      const paceCtx = document.getElementById('paceChart');
+      const paceChart = new Chart(paceCtx, {
+        type: 'line',
+        data: {
+          labels: props
+            .reduce((acc, item) => acc.concat(...item))
+            .filter((item) => item.currentPace > 2)
+            .map((x, i) => i + 1 + 'km'),
+          datasets: [
+            {
+              label: '페이스',
+              data: props
+                .reduce((acc, item) => acc.concat(...item))
+                .filter((item) => item.currentPace > 2)
+                .map((point) => point.currentPace),
+              borderColor: '#1162FF',
+              backgroundColor: function ({ chart: { ctx, chartArea } }) {
+                if (!chartArea) return;
+                let gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+                gradient.addColorStop(0, 'rgba(237,243,255,1)');
+                gradient.addColorStop(1, 'rgba(17,98,255,0.3)');
+                return gradient;
+              },
+              fill: 'start',
+            },
+          ],
+        },
+        options: {
+          elements: {
+            line: {
+              tension: 0.4,
+            },
+          },
+          scales: {
+            y: {
+              max: 20,
+              reverse: true,
+              ticks: {
+                stepSize: 0.5,
+              },
+            },
+          },
+          plugins: {
+            legend: {
+              display: false,
+            },
+            filler: {
+              propagate: false,
+            },
+            title: {
+              display: false,
+            },
+          },
+          interaction: {
+            intersect: false,
+          },
+        },
+      });
+      const ctx = document.getElementById('altitudeChart');
+      const altitudeChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: props.reduce((acc, item) => acc.concat(...item)).map((x, i) => i + 1 + 'km'),
+          datasets: [
+            {
+              label: '페이스',
+              data: props.reduce((acc, item) => acc.concat(...item)).map((point) => point.altitude),
+              borderColor: '#1162FF',
+              backgroundColor: function ({ chart: { ctx, chartArea } }) {
+                if (!chartArea) return;
+                let gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+                gradient.addColorStop(0, 'rgba(237,243,255,1)');
+                gradient.addColorStop(1, 'rgba(17,98,255,0.3)');
+                return gradient;
+              },
+              fill: 'start',
+            },
+          ],
+        },
+        options: {
+          elements: {
+            line: {
+              tension: 0.4,
+            },
+          },
+          scales: {
+            y: {
+              suggestedMin: 0,
+              ticks: {
+                stepSize: 2,
+              },
+            },
+          },
+          plugins: {
+            legend: {
+              display: false,
+            },
+            filler: {
+              propagate: false,
+            },
+            title: {
+              display: false,
+            },
+          },
+          interaction: {
+            intersect: false,
+          },
+        },
+      });
+    }
+  }, [props]);
+
+  // useEffect(() => {
+  //   if (props) {
+  //     console.log(props);
+  //     if (paceGraph) {
+  //       paceGraph.reset();
+  //       paceGraph.data.labels = props
+  //         .reduce((acc, item) => acc.concat(...item))
+  //         .filter((item) => item.currentPace > 2)
+  //         .map((x, i) => i + 1 + 'km');
+  //       paceGraph.data.datasets.data = props
+  //         .reduce((acc, item) => acc.concat(...item))
+  //         .filter((item) => item.currentPace > 2)
+  //         .map((point) => point.currentPace);
+  //       paceGraph.options.animation = false;
+  //       paceGraph.update();
+  //     }
+  //     if (altitudeGraph) {
+  //       altitudeGraph.reset();
+  //       altitudeGraph.data.labels = props
+  //         .reduce((acc, item) => acc.concat(...item))
+  //         .map((x, i) => i + 1 + 'km');
+  //       altitudeGraph.data.datasets.data = props
+  //         .reduce((acc, item) => acc.concat(...item))
+  //         .map((point) => point.altitude);
+  //       altitudeGraph.options.animation = false;
+  //       altitudeGraph.update();
+  //     }
+  //   }
+  // }, [props, paceGraph, altitudeGraph]);
 
   return (
     <Box css={recordAnalysisWrapper}>

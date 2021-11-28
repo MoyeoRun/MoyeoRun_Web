@@ -10,10 +10,10 @@ import { useEffect, useState } from 'react';
 import recordDetailData from '../../testData/recordDetailData.json';
 import { NaverMap, Polyline, Marker } from 'react-naver-maps';
 import { useLocation } from 'react-router';
+import ReactLoading from 'react-loading';
 
 const SingleRecordDetail = () => {
   const [props, setProps] = useState(null);
-  const [buffer, setBuffer] = useState(null);
   const { pathname } = useLocation();
   const placeholder = { free: '자유', distance: '목표거리', time: '목표시간', multi: '모여런' };
 
@@ -38,7 +38,14 @@ const SingleRecordDetail = () => {
     };
   }, []);
 
-  if (!props) return null;
+  if (!props)
+    return (
+      <Box
+        css={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+      >
+        <ReactLoading type="bars" color="#1160ffde" width="50px" height="50px" />
+      </Box>
+    );
 
   return (
     <Box css={RecordDetailWrapper}>
@@ -66,8 +73,12 @@ const SingleRecordDetail = () => {
         }
         defaultZoom={15}
         defaultCenter={{
-          lat: 37.659187827620975,
-          lng: 127.0514252126567,
+          lat: props.runData[props.runData.length - 1][
+            props.runData[props.runData.length - 1].length - 1
+          ].latitude,
+          lng: props.runData[props.runData.length - 1][
+            props.runData[props.runData.length - 1].length - 1
+          ].longitude,
         }}
       >
         {props.runData.map((points, section) => {
@@ -158,6 +169,7 @@ const SingleRecordDetail = () => {
 
 const RecordDetailWrapper = css`
   padding: 0 18px;
+  padding-bottom: 100px;
 `;
 
 const recordDate = css`
