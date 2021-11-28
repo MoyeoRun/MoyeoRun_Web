@@ -108,6 +108,10 @@ const xAxisValue = (position) => css`
   font-size: 14px;
   font-weight: 400;
   color: #1162ff;
+  border-radius: 5px;
+  box-shadow: 0px 0px 3px 0px #1160ff2f;
+  padding: 0 2px;
+  background: white;
 `;
 
 const xAxisBase = (isLeft) => css`
