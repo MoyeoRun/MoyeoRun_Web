@@ -63,11 +63,15 @@ const MultiRun = () => {
   };
 
   useEffect(() => {
-    setUser(testProps.user);
-    setDisplayUserId(testProps.user.id);
-    setTime(testProps.time);
-    setRoom(testProps.room);
-    setUserRank(testProps.userRunData.sort((a, b) => b.runStatus.distance - a.runStatus.distance));
+    if (pathname === '/test/multiRun') {
+      setUser(testProps.user);
+      setDisplayUserId(testProps.user.id);
+      setTime(testProps.time);
+      setRoom(testProps.room);
+      setUserRank(
+        testProps.userRunData.sort((a, b) => b.runStatus.distance - a.runStatus.distance),
+      );
+    }
 
     document.addEventListener('message', listener);
     window.addEventListener('message', listener);
@@ -149,7 +153,7 @@ const line = (lineOpen) => css`
   background: white;
   z-index: 999;
   transition: all 0.3s ease;
-  border: ${open ? '1px solid #adadad4e' : 0};
+  border: ${lineOpen ? '1px solid #adadad4e' : 0};
 `;
 
 const title = (titleOpen) => css`
