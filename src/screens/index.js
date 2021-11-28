@@ -14,7 +14,8 @@ import UploadBodyInfo from './profile/UploadBodyInfo';
 import UploadNickName from './profile/UploadNickName';
 import UploadProfile from './profile/UploadProfile';
 import RecordAnalysis from './record/RecordAnalysis';
-import RecordDetail from './record/RecordDetail';
+import RecordMultiDetail from './record/RecordMultiDetail';
+import RecordSingleDetail from './record/RecordSingleDetail';
 import ReadySingleRun from './singleRun/ReadySingleRun';
 import SingleRunOnlyMap from './singleRun/SingleRunOnlyMap';
 
@@ -28,7 +29,8 @@ const index = [
 
   //기록
   { url: 'recordAnalysis', title: '기록 상세 분석 스크린', component: <RecordAnalysis /> },
-  { url: 'recordDetail', title: '기록 상세 스크린', component: <RecordDetail /> },
+  { url: 'recordSingleDetail', title: '기록 상세 스크린', component: <RecordSingleDetail /> },
+  { url: 'recordMultiDetail', title: '기록 상세 스크린', component: <RecordMultiDetail /> },
 
   //개인런
   { url: 'readySingleRun', title: '개인런 준비 스크린', component: <ReadySingleRun /> },

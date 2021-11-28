@@ -10,13 +10,17 @@ export const getPaceString = (pace) => {
 };
 
 export const secondToTimeString = (secondNumber) => {
-  const minute = Math.floor((secondNumber / 60) % 60)
+  const hour = parseInt(secondNumber / 60 / 60 + '', 10)
+    .toString()
+    .padStart(2, '0');
+  const minute = parseInt(((secondNumber / 60) % 60) + '', 10)
     .toString()
     .padStart(2, '0');
   const second = Math.floor(secondNumber % 60)
     .toString()
     .padStart(2, '0');
-  return minute + ':' + second;
+  if (secondNumber > 60 * 60) return hour + ':' + minute;
+  else return minute + ':' + second;
 };
 
 export const recordTimeString = (secondNumber) => {
@@ -35,8 +39,8 @@ export const recordTimeString = (secondNumber) => {
 
 export const getModifiedDateString = (dateString) => {
   const date = new Date(dateString);
-  const year = date.getYear();
-  const month = date.getMonth();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
   const day = date.getDate();
   const beforeHour = date.getHours();
   const AMorPM = beforeHour < 12 ? '오전' : '오후';

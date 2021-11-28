@@ -3,27 +3,24 @@ import { css } from '@emotion/react';
 import { Box } from '@mui/material';
 import Chart from 'chart.js/auto';
 import { useEffect, useState } from 'react';
-import externalTooltipHandler from '../BarGraphToolTip';
 
-// type RunStatistics = Array<{
-//   count: number;
-//   date: string;
-//   totalDistanceOfTerm: number;
-//   totalTimeOfTerm: number;
-//   averagePaceOfTerm: number;
-// }>;
-const RecordBarGraph = ({ graphProps, getPickedDayRecords, index }) => {
+const RecordBarGraph = ({ graphData, selectDay }) => {
   const [graph, setGraph] = useState();
+  const labels = graphData.map((item) => new Date(item.date).getDate());
+  const labelsRawData = graphData.map((item) => item.date);
+  const data = graphData.map((item) => item.totalDistanceOfTerm);
+
   useEffect(() => {
     const barGraphCtx = document.getElementById('barGraph');
     const barGraph = new Chart(barGraphCtx, {
       type: 'bar',
       data: {
-        labels: graphProps.map((item) => new Date(item.date).getDate()),
+        labels,
+        labelsRawData,
         datasets: [
           {
             label: '',
-            data: graphProps.map((item) => item.totalDistanceOfTerm),
+            data,
             backgroundColor: '#C4C4C4',
             fill: true,
           },
@@ -67,7 +64,6 @@ const RecordBarGraph = ({ graphProps, getPickedDayRecords, index }) => {
           },
           tooltip: {
             enabled: false,
-            external: externalTooltipHandler,
           },
         },
         responsive: true,
@@ -75,8 +71,7 @@ const RecordBarGraph = ({ graphProps, getPickedDayRecords, index }) => {
           display: true,
           text: '막대 차트 테스트',
         },
-        hoverBackgroundColor: '#1162FF',
-        barThickness: '10',
+        barThickness: '20',
       },
     });
     barGraphCtx.addEventListener(
@@ -90,13 +85,13 @@ const RecordBarGraph = ({ graphProps, getPickedDayRecords, index }) => {
         );
         if (points.length) {
           const firstPoint = points[0];
-          const label = barGraph.data.labels[firstPoint.index];
-          // const value = barGraph.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
-          getPickedDayRecords(label);
+          const labelRawData = barGraph.data.labelsRawData[firstPoint.index];
+          selectDay(labelRawData);
         }
       },
       false,
     );
+
     setGraph(barGraph);
     return () => {
       barGraph.reset();
@@ -106,19 +101,19 @@ const RecordBarGraph = ({ graphProps, getPickedDayRecords, index }) => {
   useEffect(() => {
     if (graph) {
       graph.reset();
-      graph.data.labels = graphProps.map((item) => new Date(item.date).getDate());
-      (graph.data.datasets.data = graphProps.map((item) => item.totalDistanceOfTerm)),
-        (graph.data.datasets[0].backgroundColor = graphProps.map((item) =>
+      graph.data.labels = graphData.map((item) => new Date(item.date).getDate());
+      graph.data.labelsRawData = graphData.map((item) => item.date);
+      (graph.data.datasets.data = graphData.map((item) => item.totalDistanceOfTerm)),
+        (graph.data.datasets[0].backgroundColor = graphData.map((item) =>
           item.active ? '#1126ff' : '#C4C4C4',
         ));
       graph.options.animation = false;
       graph.update();
     }
-  }, [graphProps, graph]);
+  }, [graphData, graph]);
 
   return (
     <Box css={barGraphWrapper}>
-      <Box css={graphBorder} />
       <div id={'barGraphDiv'}>
         <canvas css={barGraphStyle()} id="barGraph"></canvas>
       </div>
@@ -155,9 +150,4 @@ const axis = () => css`
   top: -16px;
   font-size: 12px;
   color: #848484;
-`;
-const graphBorder = css`
-  width: 100%;
-  border: 1px solid #dddddd;
-  margin-bottom: 32px;
 `;

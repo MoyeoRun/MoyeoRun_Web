@@ -1,99 +1,45 @@
 const recordTabProps = {
-  startDate: new Date().toISOString(),
-  endDate: new Date().toISOString(),
-  runHistory: {
-    totalTime: 61435,
-    totalDistance: 0.014777005689231924,
-    totalAveragePace: 62.30574918775294,
+  singleRecordList: {
+    totalTime: 10140500,
+    totalDistance: 21.014777005689231924,
+    totalAveragePace: 6.60574918775294,
     analysisRunningListBetweenTerm: [
       {
         count: 1,
         date: '2021-11-10T15:10:58.729Z',
-        totalDistanceOfTerm: 0.01096274582159999,
-        totalTimeOfTerm: 14502,
-        averagePaceOfTerm: 16.840367337799158,
+        totalDistanceOfTerm: 8.11096274582159999,
+        totalTimeOfTerm: 3140500,
+        averagePaceOfTerm: 6.440367337799158,
       },
       {
-        count: 6,
+        count: 1,
+        date: '2021-11-12T20:11:00.158Z',
+        totalDistanceOfTerm: 13.1038142598676319346,
+        totalTimeOfTerm: 7140500,
+        averagePaceOfTerm: 6.77113103770671,
+      },
+      {
+        count: 1,
         date: '2021-11-13T20:11:00.158Z',
-        totalDistanceOfTerm: 0.0038142598676319346,
-        totalTimeOfTerm: 46933,
-        averagePaceOfTerm: 107.77113103770671,
+        totalDistanceOfTerm: 13.1038142598676319346,
+        totalTimeOfTerm: 7140500,
+        averagePaceOfTerm: 6.77113103770671,
       },
     ],
     runningList: [
-      {
-        id: '618be10273992d01acf89a21',
-        user: {
-          email: 'sjsjsj1246@naver.com',
-          id: 1,
-        },
-        type: 'free',
-        targetDistance: null,
-        targetTime: null,
-        runPace: 16.840367337799158,
-        runTime: 14502,
-        runDistance: 0.01096274582159999,
-        createdAt: '2021-11-10T15:10:58.729Z',
-        runData: [
-          [
-            {
-              latitude: 37.62945804676241,
-              longitude: 127.08118446407582,
-              currentTime: 5083,
-              currentDistance: 0,
-              currentPace: 0,
-            },
-            {
-              latitude: 37.62941607807142,
-              longitude: 127.0810718199398,
-              currentTime: 11077,
-              currentDistance: 0.01096274582159999,
-              currentPace: 9.112680493163145,
-            },
-          ],
-        ],
-      },
-
-      {
-        id: '61901bdf551be501ace25840',
-        user: {
-          email: 'sjsjsj1246@naver.com',
-          id: 1,
-        },
-        type: 'free',
-        targetDistance: null,
-        targetTime: null,
-        runPace: 0,
-        runTime: 618,
-        runDistance: 0,
-        createdAt: '2021-11-13T20:11:00.158Z',
-        runData: [
-          [
-            {
-              latitude: 37.62943452205549,
-              longitude: 127.08126667741556,
-              currentAltitude: 40.23147392272949,
-              currentTime: 547,
-              currentDistance: 0,
-              currentPace: 0,
-            },
-          ],
-        ],
-      },
       {
         id: '6190237c551be501ace25846',
         user: {
           email: 'sjsjsj1246@naver.com',
           id: 1,
         },
-        type: 'free',
+        type: 'distance',
         targetDistance: null,
         targetTime: null,
         runPace: 0,
         runTime: 2649,
         runDistance: 0,
-        createdAt: '2021-11-13T20:43:37.230Z',
+        createdAt: '2021-11-10T15:10:58.729Z',
         runData: [
           [
             {
@@ -108,86 +54,18 @@ const recordTabProps = {
         ],
       },
       {
-        id: '619037fb551be501ace2584a',
-        user: {
-          email: 'sjsjsj1246@naver.com',
-          id: 1,
-        },
-        type: 'free',
-        targetDistance: null,
-        targetTime: null,
-        runPace: 0,
-        runTime: 6843,
-        runDistance: 0,
-        createdAt: '2021-11-13T22:10:59.149Z',
-        runData: [
-          [
-            {
-              latitude: 37.6292359,
-              longitude: 127.0815491,
-              currentAltitude: 67.93308145302541,
-              currentTime: 4818,
-              currentDistance: 0,
-              currentPace: 0,
-            },
-          ],
-        ],
-      },
-      {
-        id: '61904408551be501ace25850',
-        user: {
-          email: 'sjsjsj1246@naver.com',
-          id: 1,
-        },
-        type: 'free',
-        targetDistance: null,
-        targetTime: null,
-        runPace: 152.19198060512176,
-        runTime: 16638,
-        runDistance: 0.001609151803046831,
-        createdAt: '2021-11-13T23:02:08.023Z',
-        runData: [
-          [
-            {
-              latitude: 37.6292403,
-              longitude: 127.0815311,
-              currentAltitude: 68.13264478306263,
-              currentTime: 4229,
-              currentDistance: 0,
-              currentPace: 0,
-            },
-            {
-              latitude: 37.6292369,
-              longitude: 127.0815362,
-              currentAltitude: 67.93686474413074,
-              currentTime: 9788,
-              currentDistance: 0.0005870653807228972,
-              currentPace: 157.8188785138602,
-            },
-            {
-              latitude: 37.6292366,
-              longitude: 127.0815478,
-              currentAltitude: 67.90296752315969,
-              currentTime: 14694,
-              currentDistance: 0.001609151803046831,
-              currentPace: 79.99975822078973,
-            },
-          ],
-        ],
-      },
-      {
         id: '61904420551be501ace25854',
         user: {
           email: 'sjsjsj1246@naver.com',
           id: 1,
         },
-        type: 'free',
+        type: 'time',
         targetDistance: null,
         targetTime: null,
         runPace: 409.79795127093143,
         runTime: 10899,
         runDistance: 0.0004432672233637034,
-        createdAt: '2021-11-13T23:02:43.522Z',
+        createdAt: '2021-11-12T20:11:00.158Z',
         runData: [
           [
             {
@@ -229,7 +107,7 @@ const recordTabProps = {
         runPace: 84.63685435018705,
         runTime: 9286,
         runDistance: 0.0017618408412214002,
-        createdAt: '2021-11-13T23:09:33.410Z',
+        createdAt: '2021-11-13T20:11:00.158Z',
         runData: [
           [
             {
@@ -263,36 +141,61 @@ const recordTabProps = {
       },
     ],
   },
-  runRecord: {
-    id: '618be10273992d01acf89a21',
-    user: {
-      email: 'sjsjsj1246@naver.com',
-      id: 1,
-    },
-    type: 'free',
-    targetDistance: null,
-    targetTime: null,
-    runPace: 16.840367337799158,
-    runTime: 14502,
-    runDistance: 0.01096274582159999,
-    createdAt: '2021-11-10T15:10:58.729Z',
-    runData: [
-      [
-        {
-          latitude: 37.62945804676241,
-          longitude: 127.08118446407582,
-          currentTime: 5083,
-          currentDistance: 0,
-          currentPace: 0,
+  multiRecordList: {
+    totalTime: 10170869,
+    totalDistance: 21.4948360000001,
+    totalAveragePace: 7.335090205541217,
+    analysisRunningListBetweenTerm: [
+      {
+        count: 1,
+        date: '2021-11-12T17:11:43.749Z',
+        totalDistanceOfTerm: 9.213548,
+        totalTimeOfTerm: 3170869,
+        averagePaceOfTerm: 7.231213545312,
+      },
+      {
+        count: 7,
+        date: '2021-11-13T23:37:55.754Z',
+        totalDistanceOfTerm: 12.281288,
+        totalTimeOfTerm: 6170869,
+        averagePaceOfTerm: 7.438966865770432,
+      },
+    ],
+    runningList: [
+      {
+        multiRoom: {
+          id: 9,
+          roomImage: null,
+          title: '방 제목',
+          status: 'Close',
+          description: '같이 뛰아요',
+          startDate: '2021-11-12T17:11:43.749Z',
+          targetDistance: 5,
+          targetTime: 500000,
+          limitMember: 4,
+          distance: 3.5,
+          time: 400000,
+          pace: 7.1,
         },
-        {
-          latitude: 37.62941607807142,
-          longitude: 127.0810718199398,
-          currentTime: 11077,
-          currentDistance: 0.01096274582159999,
-          currentPace: 9.112680493163145,
+        rank: 1,
+      },
+      {
+        multiRoom: {
+          id: 10,
+          roomImage: null,
+          title: '방 제목',
+          status: 'Close',
+          description: '같이 뛰아요',
+          startDate: '2021-11-13T23:37:55.754Z',
+          targetDistance: 5,
+          targetTime: 500000,
+          limitMember: 4,
+          distance: 3.5,
+          time: 400000,
+          pace: 7.1,
         },
-      ],
+        rank: 1,
+      },
     ],
   },
 };
