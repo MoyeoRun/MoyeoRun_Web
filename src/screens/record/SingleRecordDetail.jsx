@@ -9,19 +9,26 @@ import { ReactComponent as EditIcon } from '../../assets/svgs/EditIcon.svg';
 import { useEffect, useState } from 'react';
 import recordDetailData from '../../testData/recordDetailData.json';
 import { NaverMap, Polyline, Marker } from 'react-naver-maps';
+import { useLocation } from 'react-router';
 
-const RecordMultiDetail = () => {
-  const [data, setData] = useState(null);
+const SingleRecordDetail = () => {
+  const [props, setProps] = useState(null);
   const [buffer, setBuffer] = useState(null);
+  const { pathname } = useLocation();
+  const placeholder = { free: '자유', distance: '목표거리', time: '목표시간', multi: '모여런' };
 
   const listener = ({ data }) => {
     if (typeof data !== 'string') return;
-    const { latitude, longitude } = JSON.parse(data);
-    setBuffer({ latitude, longitude });
+    const propsData = JSON.parse(data);
+    if (propsData.type === 'singleRecordDetail') {
+      setProps(propsData.value);
+    }
   };
 
   useEffect(() => {
-    setData(recordDetailData);
+    if (pathname === '/test/singleRecordDetail') {
+      setProps(recordDetailData);
+    }
     document.addEventListener('message', listener);
     window.addEventListener('message', listener);
 
@@ -31,25 +38,16 @@ const RecordMultiDetail = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (buffer) {
-      setData({
-        ...data,
-        runData: data.runData.concat({
-          latitude: buffer.latitude,
-          longitude: buffer.longitude,
-        }),
-      });
-    }
-  }, [buffer]);
-
-  if (!data) return null;
+  if (!props) return null;
 
   return (
     <Box css={RecordDetailWrapper}>
-      <Text css={recordDate}>{new Date(data.date).toLocaleString()}</Text>
+      <Text css={recordDate}>{new Date(props.createdAt).toLocaleString()}</Text>
       <Box css={recordTitleWrapper}>
-        <Text>{data.title}</Text>
+        <Text>
+          {props.title ||
+            `${new Date(props.createdAt).getDate()}일 ${placeholder[props.type]} 달리기`}
+        </Text>
         <EditIcon />
       </Box>
       <NaverMap
@@ -72,50 +70,87 @@ const RecordMultiDetail = () => {
           lng: 127.0514252126567,
         }}
       >
-        {data && (
-          <>
-            <Polyline
-              path={data.runData.map((point) => ({
-                lat: point.latitude,
-                lng: point.longitude,
-              }))}
-              strokeColor={'#1162FF'}
-              strokeStyle={'solid'}
-              strokeLineCap={'round'}
-              strokeLineJoin={'round'}
-              line
-              strokeOpacity={0.8}
-              strokeWeight={7}
-            />
-            <Marker position={{ lat: data.runData[0].latitude, lng: data.runData[0].longitude }} />
-            <Marker
-              position={{
-                lat: data.runData[data.runData.length - 1].latitude,
-                lng: data.runData[data.runData.length - 1].longitude,
-              }}
-            />
-          </>
-        )}
+        {props.runData.map((points, section) => {
+          let lastPoint = null;
+          if (section > 0)
+            lastPoint = props.runData[section - 1][props.runData[section - 1].length - 1];
+          return (
+            <>
+              {lastPoint && (
+                <Polyline
+                  key={section}
+                  path={[
+                    { lat: lastPoint.latitude, lng: lastPoint.longitude },
+                    { lat: points[0].latitude, lng: points[0].longitude },
+                  ]}
+                  strokeColor={'#767676'}
+                  strokeStyle={'shortdot'}
+                  strokeLineCap={'round'}
+                  strokeLineJoin={'round'}
+                  strokeOpacity={0.8}
+                  strokeWeight={5}
+                />
+              )}
+              <Polyline
+                key={section}
+                path={points.map((point) => ({
+                  lat: point.latitude,
+                  lng: point.longitude,
+                }))}
+                strokeColor={'#1162FF'}
+                strokeStyle={'solid'}
+                strokeLineCap={'round'}
+                strokeLineJoin={'round'}
+                line
+                strokeOpacity={0.8}
+                strokeWeight={7}
+              />
+            </>
+          );
+        })}
+
+        <Marker
+          position={{ lat: props.runData[0][0].latitude, lng: props.runData[0][0].longitude }}
+        />
+        <Marker
+          position={{
+            lat: props.runData[props.runData.length - 1][
+              props.runData[props.runData.length - 1].length - 1
+            ].latitude,
+            lng: props.runData[props.runData.length - 1][
+              props.runData[props.runData.length - 1].length - 1
+            ].longitude,
+          }}
+        />
       </NaverMap>
 
       <Box css={recordStatusWrapper}>
         <Box css={recordStatusItem}>
-          <Text className="value">{getDistanceString(data.distance)}</Text>
+          <Text className="value">{getDistanceString(props.runDistance)}</Text>
           <Text className="key">거리</Text>
         </Box>
         <Box css={recordStatusItem}>
-          <Text className="value">{getPaceString(data.pace)}</Text>
+          <Text className="value">{getPaceString(props.runPace)}</Text>
           <Text className="key">평균 페이스</Text>
         </Box>
         <Box css={recordStatusItem}>
-          <Text className="value">{recordTimeString(data.time)}</Text>
+          <Text className="value">{recordTimeString(props.runTime / 1000)}</Text>
           <Text className="key">시간</Text>
         </Box>
       </Box>
-      <CustomButton css={recordAnalysisButton}>상세 분석 보기</CustomButton>
+      <CustomButton
+        css={recordAnalysisButton}
+        onClick={() => {
+          window.ReactNativeWebView.postMessage(
+            JSON.stringify({ type: 'goAnalysis', value: props.id }),
+          );
+        }}
+      >
+        상세 분석 보기
+      </CustomButton>
       <Box>
         <Text css={{ fontFamily: 'text-500', fontSize: '22px' }}>구간</Text>
-        <RecordDetailTable data={data.runSummaryData} />
+        <RecordDetailTable data={props.runSummary} />
       </Box>
     </Box>
   );
@@ -180,4 +215,4 @@ const recordAnalysisButton = css`
   font-size: 20px;
 `;
 
-export default RecordMultiDetail;
+export default SingleRecordDetail;

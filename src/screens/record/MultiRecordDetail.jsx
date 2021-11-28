@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import recordDetailData from '../../testData/recordDetailData.json';
 import { NaverMap, Polyline, Marker } from 'react-naver-maps';
 
-const RecordSingleDetail = () => {
+const MultiRecordDetail = () => {
   const [data, setData] = useState(null);
   const [buffer, setBuffer] = useState(null);
 
@@ -180,4 +180,4 @@ const recordAnalysisButton = css`
   font-size: 20px;
 `;
 
-export default RecordSingleDetail;
+export default MultiRecordDetail;

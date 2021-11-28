@@ -113,7 +113,6 @@ const RunningTab = () => {
             </Box>
           </Dialog>
         </Box>
-        {/* HeadWrapper  - modal, 유저정보, 방만들기*/}
 
         <Tabs
           value={menu}
