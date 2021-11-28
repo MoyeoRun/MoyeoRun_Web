@@ -2,6 +2,7 @@ import FriendTab from './bottomTab/FriendTab';
 import HomeTab from './bottomTab/HomeTab';
 import MissionTab from './bottomTab/MissionTab';
 import RecordTab from './bottomTab/RecordTab';
+import RecordTab2 from './bottomTab/RecordTab2';
 import RunningTab from './bottomTab/RunningTab';
 import CommingSoon from './common/CommingSoon';
 import CreateMultiRoom from './multiRun/CreateMultiRoom';
@@ -13,7 +14,8 @@ import UploadBodyInfo from './profile/UploadBodyInfo';
 import UploadNickName from './profile/UploadNickName';
 import UploadProfile from './profile/UploadProfile';
 import RecordAnalysis from './record/RecordAnalysis';
-import RecordDetail from './record/RecordDetail';
+import RecordMultiDetail from './record/RecordMultiDetail';
+import RecordSingleDetail from './record/RecordSingleDetail';
 import ReadySingleRun from './singleRun/ReadySingleRun';
 import SingleRunOnlyMap from './singleRun/SingleRunOnlyMap';
 
@@ -21,13 +23,15 @@ const index = [
   //바텀 탭
   { url: 'homeTab', title: '홈 탭 스크린', component: <HomeTab /> },
   { url: 'recordTab', title: '기록 탭 스크린', component: <RecordTab /> },
+  { url: 'recordTab2', title: '기록 탭2 스크린', component: <RecordTab2 /> },
   { url: 'runningTab', title: '러닝 탭 스크린', component: <RunningTab /> },
   { url: 'missionTab', title: '미션 탭 스크린', component: <MissionTab /> },
   { url: 'friendTab', title: '친구 탭 스크린', component: <FriendTab /> },
 
   //기록
   { url: 'recordAnalysis', title: '기록 상세 분석 스크린', component: <RecordAnalysis /> },
-  { url: 'recordDetail', title: '기록 상세 스크린', component: <RecordDetail /> },
+  { url: 'recordSingleDetail', title: '기록 상세 스크린', component: <RecordSingleDetail /> },
+  { url: 'recordMultiDetail', title: '기록 상세 스크린', component: <RecordMultiDetail /> },
 
   //개인런
   { url: 'readySingleRun', title: '개인런 준비 스크린', component: <ReadySingleRun /> },

@@ -9,21 +9,13 @@ import Summary from '../../components/RecordComponents/Summary';
 import tempProps from '../../testData/recordTabTest';
 import { useLocation } from 'react-router';
 
-// type RunHistory = {
-//   totalDistance: number;
-//   totalAveragePace: number;
-//   totalTime: number;
-//   analysisRunningListBetweenTerm: RunStatistics;
-//   runningList: Array<RunRecord>;
-// };
-
 const RecordTab = () => {
   const [props, setProps] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [showOneRecord, setShowOneRecord] = useState(false); //전체 기록 보여주는건지, 하나의 기록 보여주는건지
   const [barTouch, setBarTouch] = useState();
   const [menu, setMenu] = useState(0); // 모여런 뷰, 개인런 뷰 구분
   const [selectedDay, setSelectedDay] = useState(new Date());
+  const [showOneRecord, setShowOneRecord] = useState(false); //전체 기록 보여주는건지, 하나의 기록 보여주는건지
   const [filteringProps, setFilteringProps] = useState();
   const [summaryProps, setSummaryProps] = useState();
   const [graphProps, setGraphProps] = useState();
@@ -84,11 +76,9 @@ const RecordTab = () => {
     setBarTouch(true);
   };
 
-  //선택날짜 1주일 전 데이터 불러오는 함수, 캘린더. 모여런개인런 메뉴 변경시 작동
   const getSelectedWeekRecords = (selected) => {
     console.log(selected);
     const endDay = new Date(selected ? selected : '');
-    // console.log('찍은 날로부터 1주일 기록 보여주기 , 날짜 : ' + endDay);
     const startDay = new Date(endDay.getFullYear(), endDay.getMonth(), endDay.getDate() - 6);
     handlePostMessage(
       'recordList',
@@ -103,58 +93,6 @@ const RecordTab = () => {
     setSelectedDay(endDay);
     setShowOneRecord(false);
   };
-
-  //날짜 선택 시 summaryprops 정리해주는 함수, 너무 길어서 따로 뻈음,
-  // const setSummaryDataProps = (runRecord, menu) => {
-  //   // console.log(runRecord);
-  //   let summaryData = {};
-  //   //summaryData props에 들어갈 데이터 설정
-  //   for (let key in runRecord) {
-  //     if (
-  //       key === 'runPace' ||
-  //       key === 'runTime' ||
-  //       key === 'runDistance' ||
-  //       key === 'type' ||
-  //       key === 'id' ||
-  //       key === 'targetTime' ||
-  //       key === 'targetDistance' ||
-  //       key === 'createdAt' ||
-  //       key === 'rank' ||
-  //       key === 'startDate' ||
-  //       key === 'roomImage' ||
-  //       key === 'title'
-  //     ) {
-  //       summaryData[key] = runRecord[key];
-  //     }
-  //   }
-
-  //   const headInfo = summaryData.id && {
-  //     type: summaryData.type,
-  //     target: summaryData.targetDistance || summaryData.targetTime || summaryData.rank || '',
-  //   };
-  //   const typeValue = { free: '자유', time: '목표시간', distance: '목표거리', rank: '순위' };
-  //   const tempData = [];
-
-  //   //summaryData 맨 앞에 파란글씨 값 설정해주는곳
-  //   if (headInfo) {
-  //     //{value : 실제 값, keyword: 타입에대한 텍스트}
-
-  //     tempData.push({ value: typeValue[headInfo.type], keyword: '종류' });
-
-  //     headInfo.type !== 'free' &&
-  //       headInfo.target !== '' &&
-  //       tempData.push(
-  //         headInfo.type === 'time'
-  //           ? { value: secondToTimeString(headInfo.target), keyword: '목표' }
-  //           : headInfo.type === 'distance' && {
-  //               value: getDistanceString(headInfo.target),
-  //               keyword: '목표',
-  //             },
-  //       );
-  //   }
-  //   summaryData.headData = tempData;
-  //   return summaryData;
-  // };
 
   const setSummaryDataProps = (analysisRunningListBetweenTerm) => {
     let summaryData = {};
@@ -337,10 +275,10 @@ const RecordTab = () => {
 
   handlePostMessage('console', [
     '선수입장',
-    filteringProps,
-    summaryProps,
+    filteringProps, //endDay
+    summaryProps, //single & multi 둘다
     graphProps,
-    detailRecordProps,
+    detailRecordProps, // mode에 따라 single | multi
   ]);
 
   if (!(filteringProps && summaryProps && graphProps && detailRecordProps))
