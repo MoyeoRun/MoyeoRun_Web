@@ -8,7 +8,8 @@ import CreateMultiRoom from './multiRun/CreateMultiRoom';
 import MultiRoom from './multiRun/MultiRoom';
 import MultiRun from './multiRun/MultiRun';
 import ReadyMultiRun from './multiRun/ReadyMultiRun';
-import Mypage from './profile/MyPage';
+import EditMyPage from './profile/EditMyPage';
+import MyPage from './profile/MyPage';
 import UploadBodyInfo from './profile/UploadBodyInfo';
 import UploadNickName from './profile/UploadNickName';
 import UploadProfile from './profile/UploadProfile';
@@ -45,7 +46,8 @@ const index = [
   { url: 'uploadProfile', title: '프로필 등록 스크린', component: <UploadProfile /> },
   { url: 'uploadBodyInfo', title: '신체정보 입력 스크린', component: <UploadBodyInfo /> },
   { url: 'uploadNickName', title: '닉네임 입력 스크린', component: <UploadNickName /> },
-  { url: 'myPage', title: '마이페이지 스크린', component: <Mypage /> },
+  { url: 'myPage', title: '마이페이지 스크린', component: <MyPage /> },
+  { url: 'editMyPage', title: '마이페이지 수정 스크린', component: <EditMyPage /> },
 
   //준비중
   { url: 'commingSoon', title: '준비중 스크린', component: <CommingSoon /> },

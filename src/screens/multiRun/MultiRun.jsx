@@ -1,391 +1,206 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Box } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import { Box, ButtonBase } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
-import {
-  CurrentRankStatus,
-  DividedMapView,
-  IndividualMapView,
-  LineUp,
-  RunStatus,
-  Timer,
-  UserRank,
-  Widgets,
-  ExitWindow,
-  NetworkError,
-} from '../../components/MultiRunComponents';
-
-// {type MultiRunProps = {
-// 	user: User,
-//  point:point
-// 	room: Room,
-//  runStatus:RunStatus,
-// 	myRunData: RunData,
-// 	othersRunData: OthersRunData;
-// }
-
-const InitValue = {
-  none: {
-    remainTime: 10000,
-    rank: 1,
-    image: 'https://source.unsplash.com/random/90x90',
-  },
-  point: {
-    latitude: 37.659187827620975,
-    longitude: 127.0514252126567,
-    currentAltitude: 30,
-    currentTime: 1234567,
-    currentDistance: 3.23,
-    currentPace: 612,
-  },
-  runStatus: {
-    pace: 1000,
-    distance: 1000,
-    time: 1000,
-  },
-  user: {
-    id: 1,
-    name: '황인서',
-    nickName: 'sjsjsj1246',
-    email: 'test@gmail.com',
-    token: null,
-    weight: 50,
-    height: 190,
-    image: 'https://source.unsplash.com/random/90x90',
-  },
-  room: {
-    id: 1,
-    roomImage: '',
-    title: '바람 부는 날 5Km 함께 뛰어요',
-    statue: 'open',
-    description: 'ㅎㅇ',
-    startDate: '2021-11-14T12:31:04.672Z',
-    targetDistance: 3,
-    targetTime: 30,
-    roomImage: '',
-    limitMember: 4,
-    // userAmount: 3,
-    // roomId: 1,
-    // userId: 2,
-    // runId: 1,
-    // isOwner: true,
-    // isReady: false,
-    multiRoomMember: [
-      {
-        userId: 1,
-        isOwer: true,
-        isReady: false,
-        roomId: 1,
-        runId: null,
-        multiRoomUser: {
-          id: 1,
-          name: '황인서',
-          nickName: 'sjsjs…',
-          image: 'https://source.unsplash.com/random/90x90',
-          token: null,
-          height: null,
-          weight: null,
-        },
-      },
-      {
-        userId: 2,
-        isOwer: false,
-        isReady: false,
-        roomId: 1,
-        runId: null,
-        multiRoomUser: {
-          id: 2,
-          name: '김건훈',
-          nickName: 'sjsjs…',
-          image: 'https://source.unsplash.com/random/90x90',
-          token: null,
-          height: null,
-          weight: null,
-        },
-      },
-      {
-        userId: 3,
-        isOwer: false,
-        isReady: false,
-        roomId: 1,
-        runId: null,
-        multiRoomUser: {
-          id: 3,
-          name: '조인혁',
-          nickName: 'ㅁㄴㄹㅁㄴㅇㄹ',
-          image: 'https://source.unsplash.com/random/90x90',
-          token: null,
-          height: null,
-          weight: null,
-        },
-      },
-    ],
-  },
-  othersRunData: [
-    {
-      userId: 1,
-      time: 1234,
-      distance: 1.232,
-      pace: 3.12,
-      runData: [
-        {
-          latitude: 37.659187827620975,
-          longitude: 127.0514252126567,
-          currentAltitude: 30,
-          currentTime: 1234567,
-          currentDistance: 3.23,
-          momentPace: 6.12,
-        },
-      ],
-    },
-
-    {
-      userId: 2,
-      time: 1234,
-      distance: 1.5552,
-      pace: 3.12,
-      runData: [
-        {
-          latitude: 37.6812312312323,
-          longitude: 127.0514242126567,
-          currentAltitude: 28,
-          currentTime: 1234657,
-          currentDistance: 3.12,
-          momentPace: 6.01,
-        },
-      ],
-    },
-    {
-      userId: 3,
-      time: 2334,
-      distance: 2.232,
-      pace: 5.12,
-      runData: [
-        {
-          latitude: 37.692342342343434,
-          longitude: 127.0514252126567,
-          currentAltitude: 30,
-          currentTime: 1234567,
-          currentDistance: 3.23,
-          momentPace: 6.12,
-        },
-      ],
-    },
-  ],
-  runData: [
-    {
-      latitude: 37.659232320975,
-      longitude: 127.0514252126567,
-      currentAltitude: 30,
-      currentTime: 1234567,
-      currentDistance: 3.23,
-      currentPace: 612,
-    },
-  ],
-};
+import testProps from '../../testData/multiRun2Props';
+import { OneMap, AllMap, Loading } from '../../components/MultiRun';
+import { ClockIcon_blue } from '../../assets/svgs';
+import { secondToTimeString } from '../../lib/util/strFormat';
+import Text from '../../components/Text';
+import Line from '../../components/MultiRun/Line';
 
 const MultiRun = () => {
-  const [props, setProps] = useState(InitValue);
-  const [timerProps, setTimerProps] = useState();
-  const [userRankProps, setUserRankProps] = useState();
-  const [mapViewProps, setMapViewProps] = useState();
-  const [runStatusProps, setRunStatusProps] = useState();
-  const [lineUpProps, setLineUpProps] = useState();
-  const [displayUserId, setDisplayUserId] = useState(props.user.id);
-  const [error, setError] = useState();
-
-  const individualMapViewRef = useRef();
-  const dividedMapViewRef = useRef();
-  const refs = { individualMapView: individualMapViewRef, dividedMapView: dividedMapViewRef };
-
+  const [user, setUser] = useState(null);
+  const [time, setTime] = useState(0);
+  const [room, setRoom] = useState(null);
+  const [displayUserId, setDisplayUserId] = useState(null);
+  const [userRank, setUserRank] = useState(null);
+  const [lineOpen, setLineOpen] = useState(false);
+  const [titleOpen, setTitleOpen] = useState(false);
+  const [mapMode, setMapMode] = useState('one');
   const { pathname } = useLocation();
-
-  const colorData = ['#1162FF', '#FC6BFF', '#00F2B8', '#FFDD64'];
 
   const listener = ({ data }) => {
     if (typeof data !== 'string') return;
     const propsData = JSON.parse(data);
-    if (propsData.type === 'MultiRun') {
+    switch (propsData.type) {
+      case 'user':
+        setUser(propsData.value);
+        setDisplayUserId(propsData.value.id);
+        break;
+      case 'time':
+        setTime(propsData.value);
+        break;
+      case 'room':
+        setRoom(propsData.value);
+        break;
+      case 'userRunData':
+        setUserRank(propsData.value.sort((a, b) => b.runStatus.distance - a.runStatus.distance));
+        break;
+    }
+    if (propsData.type === 'user') {
       setProps(propsData.value);
     }
   };
 
+  const clickListener = () => {
+    setTitleOpen(false);
+  };
+
+  const handleMoveSelf = () => {
+    setDisplayUserId(user.id);
+  };
+
+  const handleMoveAllMap = () => {
+    setLineOpen(true);
+    setMapMode('all');
+  };
+
+  const handleMoveUserMap = (userId) => {
+    setDisplayUserId(userId);
+    setMapMode('one');
+  };
+
   useEffect(() => {
-    if (pathname === '/test/MultiRun') setProps(tempProps);
+    if (pathname === '/test/multiRun') {
+      setUser(testProps.user);
+      setDisplayUserId(testProps.user.id);
+      setTime(testProps.time);
+      setRoom(testProps.room);
+      setUserRank(
+        testProps.userRunData.sort((a, b) => b.runStatus.distance - a.runStatus.distance),
+      );
+    }
+
     document.addEventListener('message', listener);
     window.addEventListener('message', listener);
+    document.addEventListener('click', clickListener);
+
     return () => {
       document.removeEventListener('message', listener);
       window.removeEventListener('message', listener);
+      document.removeEventListener('click', clickListener);
     };
   }, []);
 
-  useEffect(() => {
-    setProps(InitValue);
-  }, []);
+  if (!user || !time || !room || !userRank || !displayUserId) return <Loading />;
 
-  useEffect(() => {
-    // setError(false);
-  }, []);
+  return (
+    <Box css={MultiRun2Wrapper}>
+      {/* 한명의 지도 */}
+      <OneMap
+        time={time}
+        room={room}
+        lineOpen={lineOpen}
+        setLineOpen={setLineOpen}
+        titleOpen={titleOpen}
+        setTitleOpen={setTitleOpen}
+        handleMoveSelf={handleMoveSelf}
+        handleMoveAllMap={handleMoveAllMap}
+        userRunData={userRank}
+        rank={userRank.findIndex((data) => data.user.id === displayUserId)}
+      />
 
-  useEffect(() => {
-    if (props) {
-      console.log('useEffect');
+      {/* 모든 유저의 지도 */}
+      <AllMap
+        mapMode={mapMode}
+        room={room}
+        time={time}
+        userRank={userRank}
+        handleMoveUserMap={handleMoveUserMap}
+      />
 
-      //multiRun에서 사용하는 데이터는 여기서 다 설정해준다
-
-      const userColor = props.room.multiRoomMember.map((member, index) => ({
-        userId: member.userId,
-        color: colorData[index] || '#E5E5E5',
-      }));
-
-      // console.log(props.room.multiRoomMember);
-      const userImage = props.room.multiRoomMember.map((member) => ({
-        userId: member.userId,
-        image: member.multiRoomUser.image || 'https://source.unsplash.com/random/90x90',
-      }));
-      // console.log(userImage);
-      const userRankState = props.othersRunData
-        .sort((a, b) => b.distance - a.distance)
-        .map((member, index) => {
-          // console.log(member);
-          return {
-            ...member,
-            rank: index + 1,
-            isMe: props.user.id === member.userId,
-            image: userImage.find((user) => user.userId === member.userId).image,
-            displayUserId: displayUserId,
-            color: userColor.find((user) => user.userId === member.userId).color,
-          };
-        });
-      // console.log(userRankState);
-      const otherMapData = props.othersRunData.map((member) => ({
-        userId: member.userId,
-        runData: member.runData,
-        center: {
-          lat: member.runData[member.runData.length - 1].latitude,
-          lng: member.runData[member.runData.length - 1].longitude,
-        },
-        rank: userRankState.find((user) => user.userId === member.userId),
-      }));
-
-      const otherDistance = new Object();
-      props.othersRunData.forEach((member) => (otherDistance[member.userId] = member.distance));
-
-      const markerData = props.room.multiRoomMember.map((member) => ({
-        ...member,
-        distance: otherDistance[member.userId],
-        color: userColor.find((user) => user.userId === member.userId).color,
-      }));
-
-      setTimerProps({ remainTime: props.none.remainTime });
-      setUserRankProps({ rank: userRankState });
-      setMapViewProps({
-        displayUserId: displayUserId,
-        userPoints: [...otherMapData],
-      });
-      setRunStatusProps({ runStatus: props.runStatus });
-      setLineUpProps({ markerData: markerData });
-    }
-  }, [props, displayUserId]);
-
-  const onHandelViewState = (type, userId = displayUserId, e = null) => {
-    // console.log(displayUserId);
-
-    if (type === 'individualMapView') {
-      refs.individualMapView.current.style.left = '0px';
-      refs.dividedMapView.current.style.left = `${window.innerWidth}px`;
-    } else if (type === 'dividedMapView') {
-      refs.individualMapView.current.style.left = `-${window.innerWidth}px`;
-      refs.dividedMapView.current.style.left = `0px`;
-    } else {
-      console.log('오류오류');
-    }
-    // console.log(userId);
-    setDisplayUserId(userId);
-  };
-
-  // console.log(timerProps, userRankProps, displayUserId, mapViewProps, runStatusProps, lineUpProps);
-  if (
-    !(timerProps && userRankProps && displayUserId && mapViewProps && runStatusProps && lineUpProps)
-  ) {
-    return <Box>로딩중</Box>;
-  }
-
-  if (
-    timerProps &&
-    userRankProps &&
-    displayUserId &&
-    mapViewProps &&
-    runStatusProps &&
-    lineUpProps
-  ) {
-    return (
-      <Box css={multiRunWrapper}>
-        <Box css={indiVidualWrapper} ref={individualMapViewRef}>
-          <ExitWindow timerProps={timerProps}>
-            <IndividualMapView mapViewProps={mapViewProps} />
-
-            <Widgets onHandelViewState={onHandelViewState} userId={props.user.id} />
-            <Timer timerProps={timerProps} fixed />
-            <UserRank userRankProps={userRankProps} />
-          </ExitWindow>
-
-          <RunStatus runStatusProps={runStatusProps} />
-
-          <CurrentRankStatus>
-            <LineUp lineUpProps={lineUpProps} />
-          </CurrentRankStatus>
-        </Box>
-
-        <Box css={dividedWrapper} ref={dividedMapViewRef}>
-          <ExitWindow timerProps={timerProps}>
-            <DividedMapView mapViewProps={mapViewProps} onHandelViewState={onHandelViewState} />
-          </ExitWindow>
-
-          <Box css={dividedlineUp}>
-            <LineUp lineUpProps={lineUpProps} />
-          </Box>
-        </Box>
-        <NetworkError error={error} />
+      {/* 실시간 순위 */}
+      <Box css={line(lineOpen)}>
+        <Line userRank={userRank} />
       </Box>
-    );
-  } else return <Box>오류오류</Box>;
+
+      {/* 타이틀 */}
+      <Box css={title(titleOpen)}>
+        <Box className="top">
+          <Box>{room.title}</Box>
+          <ButtonBase
+            className="exitButton"
+            onClick={() => {
+              setOpen(true);
+            }}
+          >
+            나가기
+          </ButtonBase>
+        </Box>
+        <Box className="timer">
+          <ClockIcon_blue />
+          <Text className="text">{secondToTimeString((room.targetTime - time) / 1000)}</Text>
+        </Box>
+      </Box>
+    </Box>
+  );
 };
 
-export default MultiRun;
-
-const multiRunWrapper = css`
-  position: relative;
-`;
-
-const indiVidualWrapper = css`
+const MultiRun2Wrapper = css`
   position: fixed;
-  top: 0px;
-  left: 0px;
+  top: 0;
   width: 100%;
   height: 100%;
-  transition: all 0.5s ease;
-  z-index: 1;
-`;
-const dividedWrapper = css`
-  position: fixed;
-  top: 0px;
-  left: ${window.innerWidth}px;
-  width: 100%;
-  height: 100%;
-  background-color: white;
-  transition: all 0.5s ease;
-  z-index: 3;
 `;
 
-const dividedlineUp = css`
+const line = (lineOpen) => css`
   position: fixed;
-  bottom: 0px;
-  box-sizing: border-box;
+  bottom: ${lineOpen ? 0 : '-102px'};
+  width: 100%;
+  height: 102px;
+  background: white;
+  z-index: 999;
+  transition: all 0.3s ease;
+  border: ${lineOpen ? '1px solid #adadad4e' : 0};
+`;
+
+const title = (titleOpen) => css`
+  position: fixed;
+  padding-top: 45px;
+  top: ${titleOpen ? 0 : '-130px'};
+  width: 100%;
+  height: 85px;
+  background: white;
+  z-index: 1000;
+  transition: all 0.3s ease;
   display: flex;
-  background-color: white;
-  padding: 10px;
-  width: 100%;
+  flex-direction: column;
+
+  & .top {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    width: calc(100% - 40px);
+    font-family: text-500;
+    font-size: 18px;
+    border-bottom: 1px solid #dcdddf;
+  }
+
+  & .exitButton {
+    padding: 8px;
+    font-family: text-500;
+    font-size: 18px;
+    font-weight: 500;
+    color: #1162ff;
+  }
+
+  & .timer {
+    height: 38px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #1162ff;
+    & .text {
+      margin-left: 7px;
+      margin-bottom: 4px;
+      font-family: text-500;
+      font-size: 20px;
+    }
+  }
 `;
+
+export default MultiRun;
