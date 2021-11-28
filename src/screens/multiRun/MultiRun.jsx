@@ -9,6 +9,7 @@ import { ClockIcon_blue } from '../../assets/svgs';
 import { secondToTimeString } from '../../lib/util/strFormat';
 import Text from '../../components/Text';
 import Line from '../../components/MultiRun/Line';
+import ExitModal from './ExitModal';
 
 const MultiRun = () => {
   const [user, setUser] = useState(null);
@@ -19,6 +20,7 @@ const MultiRun = () => {
   const [lineOpen, setLineOpen] = useState(false);
   const [titleOpen, setTitleOpen] = useState(false);
   const [mapMode, setMapMode] = useState('one');
+  const [exitOpen, setExitOpen] = useState(false);
   const { pathname } = useLocation();
 
   const listener = ({ data }) => {
@@ -63,15 +65,13 @@ const MultiRun = () => {
   };
 
   useEffect(() => {
-    if (pathname === '/test/multiRun') {
-      setUser(testProps.user);
-      setDisplayUserId(testProps.user.id);
-      setTime(testProps.time);
-      setRoom(testProps.room);
-      setUserRank(
-        testProps.userRunData.sort((a, b) => b.runStatus.distance - a.runStatus.distance),
-      );
-    }
+    // if (pathname === '/test/multiRun') {
+    setUser(testProps.user);
+    setDisplayUserId(testProps.user.id);
+    setTime(testProps.time);
+    setRoom(testProps.room);
+    setUserRank(testProps.userRunData.sort((a, b) => b.runStatus.distance - a.runStatus.distance));
+    // }
 
     document.addEventListener('message', listener);
     window.addEventListener('message', listener);
@@ -123,7 +123,7 @@ const MultiRun = () => {
           <ButtonBase
             className="exitButton"
             onClick={() => {
-              setOpen(true);
+              setExitOpen(true);
             }}
           >
             나가기
@@ -134,6 +134,9 @@ const MultiRun = () => {
           <Text className="text">{secondToTimeString((room.targetTime - time) / 1000)}</Text>
         </Box>
       </Box>
+
+      {/* 나가기 모달 */}
+      <ExitModal open={exitOpen} setOpen={setExitOpen} />
     </Box>
   );
 };
