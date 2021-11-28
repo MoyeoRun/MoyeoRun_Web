@@ -30,7 +30,7 @@ const AllMap = ({ mapMode, room, time, userRank, handleMoveUserMap }) => {
             <Card
               key={rank}
               css={mapCard(rank === 0)}
-              onClick={(e) => {
+              onClick={() => {
                 handleMoveUserMap(user.id);
               }}
             >
@@ -115,17 +115,18 @@ const mapCardWrapper = css`
 
 const mapCard = (isFirst) => css`
   position: relative;
-  width: 90%;
+  width: 95%;
   height: 156px;
   display: flex;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
+  z-index: 999;
 
   & .userInfo {
-    height: calc(100% - 20px);
+    height: calc(100% - 24px);
     position: absolute;
     left: 0;
     top: 0;
-    padding: 10px 20px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -141,6 +142,7 @@ const mapCard = (isFirst) => css`
       display: flex;
       justify-content: center;
       align-items: center;
+      box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.2);
       & .rankText {
         margin-left: 4px;
         font-family: text-500;
@@ -152,6 +154,7 @@ const mapCard = (isFirst) => css`
     & .avatar {
       width: 55px;
       height: 55px;
+      box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.2);
     }
 
     & .nickName {

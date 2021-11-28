@@ -5,7 +5,6 @@ import { colorData } from '.';
 import { LineUpMarkerIcon } from '../../assets/svgs';
 
 const LineMarker = ({ color, image, distance }) => {
-  console.log(color);
   return (
     <Box css={markerWrap(distance)}>
       <Avatar src={image} css={markerImage} />
