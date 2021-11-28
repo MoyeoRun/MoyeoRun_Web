@@ -105,7 +105,7 @@ const RecordBarGraph = ({ graphData, selectDay }) => {
       graph.data.labelsRawData = graphData.map((item) => item.date);
       (graph.data.datasets.data = graphData.map((item) => item.totalDistanceOfTerm)),
         (graph.data.datasets[0].backgroundColor = graphData.map((item) =>
-          item.active ? '#1126ff' : '#C4C4C4',
+          item.active ? '#1162ff' : '#C4C4C4',
         ));
       graph.options.animation = false;
       graph.update();
