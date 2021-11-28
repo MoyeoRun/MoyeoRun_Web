@@ -34,7 +34,7 @@ const RecordTab = () => {
   const listener = ({ data }) => {
     if (typeof data !== 'string') return;
     const propsData = JSON.parse(data);
-    if (propsData.type === 'RecordTab') {
+    if (propsData.type === 'recordTab') {
       switch (propsData.type) {
         case 'mode':
           setMode(propsData.value);
