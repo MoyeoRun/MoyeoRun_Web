@@ -2,7 +2,6 @@ import FriendTab from './bottomTab/FriendTab';
 import HomeTab from './bottomTab/HomeTab';
 import MissionTab from './bottomTab/MissionTab';
 import RecordTab from './bottomTab/RecordTab';
-import RecordTab2 from './bottomTab/RecordTab2';
 import RunningTab from './bottomTab/RunningTab';
 import CommingSoon from './common/CommingSoon';
 import CreateMultiRoom from './multiRun/CreateMultiRoom';
@@ -23,7 +22,6 @@ const index = [
   //바텀 탭
   { url: 'homeTab', title: '홈 탭 스크린', component: <HomeTab /> },
   { url: 'recordTab', title: '기록 탭 스크린', component: <RecordTab /> },
-  { url: 'recordTab2', title: '기록 탭2 스크린', component: <RecordTab2 /> },
   { url: 'runningTab', title: '러닝 탭 스크린', component: <RunningTab /> },
   { url: 'missionTab', title: '미션 탭 스크린', component: <MissionTab /> },
   { url: 'friendTab', title: '친구 탭 스크린', component: <FriendTab /> },
