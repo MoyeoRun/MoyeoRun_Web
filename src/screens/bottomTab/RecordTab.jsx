@@ -66,6 +66,9 @@ const RecordTab = () => {
     if (pathname === '/test/recordTab') {
       setEndDay(selected.toISOString());
     } else {
+      setGraphData(null);
+      setTotalSummary(null);
+      setRunRecordList(null);
       window.ReactNativeWebView.postMessage(
         JSON.stringify({ type: 'queryChange', value: { type: 'endDay', value: selected } }),
       );
