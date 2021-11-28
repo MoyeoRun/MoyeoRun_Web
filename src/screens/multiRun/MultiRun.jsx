@@ -180,6 +180,7 @@ const indiVidualWrapper = css`
   transition: all 0.5s ease;
   z-index: 1;
 `;
+
 const dividedWrapper = css`
   position: fixed;
   top: 0px;

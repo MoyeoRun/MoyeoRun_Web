@@ -5,8 +5,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ReactComponent as ToggleIcon } from '../../assets/svgs/ToggleIcon.svg';
 
 const CurrentRankStatus = ({ children }) => {
-  // from -> to
-  //  현재값 -> end값
   const ref = useRef();
   const [toggleState, setToggleState] = useState();
   const [startLine, endLine] = [-(200 - 48), 0];
@@ -21,7 +19,6 @@ const CurrentRankStatus = ({ children }) => {
 
   const onPositionChange = () => {
     setToggleState(!toggleState);
-    // falue->true 바뀐상황이면 창이 위로 올라가야함  : true->false 바뀐상황이면 창이 아래로 내려가야함,
   };
 
   return (

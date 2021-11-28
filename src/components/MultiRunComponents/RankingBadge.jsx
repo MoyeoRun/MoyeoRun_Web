@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { Box } from '@mui/material';
-import { ReactComponent as MedalIcon_MoyeoRun } from '../../assets/svgs/MedalIcon_MoyeoRun.svg';
-import { ReactComponent as MedalIconSmallBlue_MoyeoRun } from '../../assets/svgs/MedalIconSmallBlue_MoyeoRun.svg';
-import { ReactComponent as MedalIconSmallWhite_MoyeoRun } from '../../assets/svgs/MedalIconSmallWhite_MoyeoRun.svg';
+import { ReactComponent as MedalIcon } from '../../assets/svgs/MedalIcon.svg';
+import { ReactComponent as MedalIconSmallBlue } from '../../assets/svgs/MedalIconSmallBlue.svg';
+import { ReactComponent as MedalIconSmallWhite } from '../../assets/svgs/MedalIconSmallWhite.svg';
 
 const IndividualRankingBadge = ({ rank }) => (
   <Box css={indrankingBadge}>

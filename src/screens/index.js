@@ -7,6 +7,7 @@ import CommingSoon from './common/CommingSoon';
 import CreateMultiRoom from './multiRun/CreateMultiRoom';
 import MultiRoom from './multiRun/MultiRoom';
 import MultiRun from './multiRun/MultiRun';
+import MultiRun2 from './multiRun/MultiRun2';
 import ReadyMultiRun from './multiRun/ReadyMultiRun';
 import Mypage from './profile/MyPage';
 import UploadBodyInfo from './profile/UploadBodyInfo';
@@ -38,6 +39,7 @@ const index = [
   { url: 'readyMultiRun', title: '멀티 런 대기 스크린', component: <ReadyMultiRun /> },
   { url: 'multiRoom', title: '멀티 런 방 스크린', component: <MultiRoom /> },
   { url: 'multiRun', title: '멀티 런 스크린', component: <MultiRun /> },
+  { url: 'multiRun2', title: '멀티 런 스크린', component: <MultiRun2 /> },
 
   //프로필
   { url: 'uploadProfile', title: '프로필 등록 스크린', component: <UploadProfile /> },

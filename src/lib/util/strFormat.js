@@ -10,10 +10,10 @@ export const getPaceString = (pace) => {
 };
 
 export const secondToTimeString = (secondNumber) => {
-  const minute = parseInt(((secondNumber / 60) % 60) + '', 10)
+  const minute = Math.floor((secondNumber / 60) % 60)
     .toString()
     .padStart(2, '0');
-  const second = parseInt((secondNumber % 60) + '', 10)
+  const second = Math.floor(secondNumber % 60)
     .toString()
     .padStart(2, '0');
   return minute + ':' + second;

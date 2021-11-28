@@ -53,26 +53,19 @@ const IndividualMapView = ({ mapViewProps, userId, children }) => {
         `,
             }}
           />
-          {displayData.runData.map((point, i) => {
-            return (
-              <Polyline
-                key={i}
-                path={[
-                  {
-                    lat: point.latitude,
-                    lng: point.longitude,
-                  },
-                ]}
-                strokeColor={`${color}`}
-                strokeStyle={'solid'}
-                strokeLineCap={'round'}
-                strokeLineJoin={'round'}
-                line
-                strokeOpacity={0.8}
-                strokeWeight={7}
-              />
-            );
-          })}
+          <Polyline
+            path={displayData.runData.map((point) => ({
+              lat: point.latitude,
+              lng: point.longitude,
+            }))}
+            strokeColor={color}
+            strokeStyle="solid"
+            strokeLineCap="round"
+            strokeLineJoin="round"
+            line
+            strokeOpacity={0.8}
+            strokeWeight={7}
+          />
         </NaverMap>
       </Box>
     );

@@ -4,12 +4,14 @@ import { Box } from '@mui/material';
 import { NaverMap, Polyline, Marker } from 'react-naver-maps';
 import { RankingBadge } from '.';
 import AccountImage from '../AccountImage';
+import Text from '../Text';
 
 const Map = ({ userId, runData, center, rank, index, onHandelViewState }) => {
   return (
-    <Box css={mapWrapper} onDoubleClick={(e) => onHandelViewState('individualMapView', userId, e)}>
-      <Box css={accountImage}>
+    <Box css={mapWrapper} onClick={(e) => onHandelViewState('individualMapView', userId, e)}>
+      <Box css={account}>
         <AccountImage isMe={rank.isMe} image={rank.image} />
+        <Text>{rank.user.nickName}</Text>
       </Box>
       <Box css={rankingBadge}>
         <RankingBadge rank={rank.rank} divMap={true} />
@@ -81,7 +83,7 @@ const DividedMapView = ({ mapViewProps, onHandelViewState }) => {
 
   return (
     <Box css={dividedMapViewWrapper}>
-      <Box css={mapWrapper}>
+      <Box css={mapListWrapper}>
         {userPoints.map((user, i) => (
           <Map
             index={i}
@@ -102,15 +104,21 @@ export default DividedMapView;
 
 const dividedMapViewWrapper = css`
   position: relative;
+  height: calc(100% - 162px);
   padding: 14px;
   margin-top: 30px;
+  overflow: auto;
+`;
+
+const mapListWrapper = css`
+  display: flex;
+  flex-direction: column;
 `;
 
 const mapWrapper = css`
   position: relative;
   background-color: white;
   width: 100%;
-  height: 155px;
   z-index: 0;
   margin-top: 12px;
 `;
@@ -125,12 +133,17 @@ const mapStyle = css`
     outline: none;
   }
 `;
-const accountImage = css`
+const account = css`
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   bottom: 12px;
   left: 12px;
   z-index: 2;
 `;
+
 const rankingBadge = css`
   position: absolute;
   top: 12px;

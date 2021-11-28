@@ -4,7 +4,7 @@ import { Box, ButtonBase } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { ExitModal, Timer } from '.';
 
-const ExitWindow = ({ title, children, timerProps }) => {
+const ExitWindow = ({ title, children, remainTime }) => {
   const ref = useRef();
   const exitWindowRef = useRef();
   const mouseEventRef = { type: '', change: 'false' };
@@ -56,14 +56,13 @@ const ExitWindow = ({ title, children, timerProps }) => {
             <ButtonBase
               css={exitButton}
               onClick={() => {
-                console.log(123123);
                 setOpen(true);
               }}
             >
               나가기
             </ButtonBase>
           </Box>
-          <Timer timerProps={timerProps} />
+          <Timer time={remainTime} />
         </Box>
       </Box>
       <ExitModal open={open} setOpen={setOpen} />

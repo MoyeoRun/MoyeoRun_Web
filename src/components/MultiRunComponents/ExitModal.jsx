@@ -32,7 +32,7 @@ const ExitModal = ({ open, setOpen }) => {
             </ButtonBase>
             <ButtonBase
               onClick={() => {
-                console.log('나가기');
+                window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'runEnd' }));
               }}
               css={exitButton}
             >

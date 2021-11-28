@@ -3,8 +3,8 @@ import { css } from '@emotion/react';
 import { Box } from '@mui/material';
 import { getDistanceString, getPaceString, secondToTimeString } from '../../lib/util/strFormat';
 
-const RunStatus = ({ runStatus }) => {
-  const { distance, pace, time } = runStatus;
+const RunStatus = ({ time, runStatus }) => {
+  const { distance, pace } = runStatus;
   return (
     <Box css={RunStatusWrapper}>
       <Box css={topDataBox}>

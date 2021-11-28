@@ -15,7 +15,6 @@ const LineUpMarker = ({ fill, image, distance }) => {
 };
 
 const LineUp = ({ lineUpProps }) => {
-  // console.log(lineUpProps);
   const { markerData } = lineUpProps;
   const runDistanceArr = markerData.map((member) => member.distance.toFixed(1));
   runDistanceArr.sort(function (a, b) {

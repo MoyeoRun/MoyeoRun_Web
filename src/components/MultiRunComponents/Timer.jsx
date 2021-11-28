@@ -5,6 +5,8 @@ import { ReactComponent as ClockIcon_blue } from '../../assets/svgs/ClockIcon_Bl
 import { secondToTimeString } from '../../lib/util/strFormat';
 
 const Timer = ({ time, fixed }) => {
+  console.log('time: ', time);
+  console.log(secondToTimeString(time));
   return (
     <Box css={fixed ? fixedTimer : timer}>
       <ClockIcon_blue />
