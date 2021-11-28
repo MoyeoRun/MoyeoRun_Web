@@ -2,9 +2,7 @@
 import { css } from '@emotion/react';
 import { Box, IconButton } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { ReactComponent as LeftBackArrowIcon } from '../../assets/svgs/LeftBackArrowIcon.svg';
 import { ReactComponent as DefaultImage } from '../../assets/svgs/DefaultImage.svg';
-import { ReactComponent as CameraIcon } from '../../assets/svgs/CameraIcon.svg';
 import CustomButton from '../../components/CustomButton';
 import Text from '../../components/Text';
 import { useLocation } from 'react-router';
