@@ -71,7 +71,7 @@ const RecordBarGraph = ({ graphData, selectDay }) => {
           display: true,
           text: '막대 차트 테스트',
         },
-        barThickness: '20',
+        barThickness: '25',
       },
     });
     barGraphCtx.addEventListener(
@@ -128,9 +128,10 @@ const RecordBarGraph = ({ graphData, selectDay }) => {
 export default RecordBarGraph;
 
 const barGraphWrapper = css`
+  width: calc(100% - 20px);
+  padding: 0 10px;
   box-sizing: border-box;
   margin: auto;
-  padding: 0px 9px 0px 9px;
 `;
 
 const barGraphStyle = () => css`
