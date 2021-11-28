@@ -9,8 +9,11 @@ import { getSelectedWeekNumber } from '../../lib/util/strFormat';
 import CalenderPicker from './CalenderPicker';
 
 const Filtering = ({ filteringProps, getSelectedWeekRecords }) => {
-  // console.log(filteringProps);
-  const { startDate, showOneRecord } = filteringProps;
+  console.log(filteringProps);
+  const { startDate, showOneRecord } = filteringProps || {
+    startDate: new Date(),
+    showOneRecord: false,
+  };
   const [modalOpen, setModalOpen] = useState(false);
   const handleClose = () => {
     setModalOpen(false);
@@ -25,7 +28,7 @@ const Filtering = ({ filteringProps, getSelectedWeekRecords }) => {
       <ButtonUnstyled css={Button} onClick={() => setModalOpen(true)}>
         <Box css={flexWrap}>
           <CalendarIcon />
-          <Box css={typo}>{`${date.getFullYear()}년 ${date.getMonth()}월 ${week}째주`}</Box>
+          <Box css={typo}>{`${date.getFullYear()}년 ${date.getMonth() + 1}월 ${week}째주`}</Box>
         </Box>
       </ButtonUnstyled>
       <CalenderPicker
@@ -60,4 +63,5 @@ const typo = css`
   letter-spacing: 0em;
   text-align: left;
   margin-left: 8px;
+  color: #333333;
 `;

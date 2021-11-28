@@ -46,28 +46,37 @@ const SummaryItem = ({ value, keyword }) => {
 };
 
 const Summary = ({ summaryProps }) => {
+  // const {
+  //   totalDistance = 0,
+  //   totalAveragePace = 0,
+  //   totalTime = 0,
+  //   runDistance = 0,
+  //   runPace = 0,
+  //   runTime = 0,
+  //   type = 0,
+  //   targetDistance = 0,
+  //   targetTime = 0,
+  //   id = 0,
+  //   headData = '',
+  // } = summaryProps;
+
   const {
-    totalAveragePace,
-    runPace,
-    totalDistance,
-    runDistance,
-    totalTime,
-    runTime,
-    type,
-    targetDistance,
-    targetTime,
-    id,
-    headData,
+    count = 0,
+    date = 0,
+    totalDistanceOfTerm = 0,
+    totalTimeOfTerm = 0,
+    averagePaceOfTerm = 0,
   } = summaryProps;
+
   // console.log(summaryProps);
-  const summaryDistance = getDistanceString(totalDistance || runDistance);
-  const summaryPace = getPaceString(totalAveragePace || runPace);
-  const summaryTime = secondToTimeString(totalTime || runTime);
+  const summaryDistance = getDistanceString(totalDistanceOfTerm);
+  const summaryPace = getPaceString(averagePaceOfTerm);
+  const summaryTime = secondToTimeString(totalTimeOfTerm);
 
   return (
     <>
       <Box css={summaryWrap}>
-        {headData && <SummaryHead headData={headData} />}
+        {/* {headData && <SummaryHead headData={headData} />} */}
         <Box css={summaryItemWrap}>
           <SummaryItem value={summaryDistance} keyword="거리" />
           <SummaryItem value={summaryPace} keyword="평균 페이스" sx={{ margin: 'auto' }} />

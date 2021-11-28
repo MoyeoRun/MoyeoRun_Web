@@ -50,33 +50,40 @@ const DetailRecordCard = ({ runningList }) => {
     id,
     type,
     targetDistance,
+    // targetPace,
     targetTime,
     runDistance,
     runPace,
     runTime,
     createdAt,
     title,
-    image,
-    multiRunIncompleted = false,
+    roomImage,
+    status,
+    description,
+    startDate,
+    limitMember,
   } = runningList;
-  const detailDistance = getDistanceString(runDistance);
-  const detailPace = getPaceString(runPace);
-  const detailTime = secondToTimeString(runTime);
-  const detailDate = getModifiedDateString(createdAt);
-  const detailImage = image || 'https://source.unsplash.com/random/90x90';
-  const detailTitle = title || '제목도 받아와야 합니다';
 
-  const placeholder = { type: '종류', target: '목표' };
+  const placeholder = { free: '자유', distance: '목표거리', time: '목표시간' };
+
+  const detailDistance = getDistanceString(runDistance || targetDistance);
+  const detailPace = getPaceString(runPace || '');
+  const detailTime = secondToTimeString(runTime || targetTime);
+  const detailDate = getModifiedDateString(createdAt || startDate);
+  const detailImage = roomImage || '';
+  const detailTitle = title || `${new Date(detailDate).getDate()}일 ${placeholder[type]} 달리기`;
+  const detailDescription = description || '';
 
   return (
     <>
       <ButtonBase css={cardWrap}>
-        {multiRunIncompleted && <Box css={incompletedRecord}>아직 완료되지 않은 모여런입니다</Box>}
+        {status !== 'Close' && <Box css={incompletedRecord}>아직 완료되지 않은 모여런입니다</Box>}
 
         <Thumbnail src={detailImage} />
         <Box css={recordWrap}>
           <Box css={cardDate}>{detailDate}</Box>
           <Box css={cardTitle}>{detailTitle}</Box>
+          {description && <Box css={cardDescription}>{detailDescription}</Box>}
           <Box css={cardRecordWrap}>
             <DetailHead value={detailDistance} keyword="거리" />
             <DetailRecord value={detailDistance} keyword="거리" />
@@ -140,6 +147,18 @@ const cardTitle = css`
   text-align: left;
   margin-top: 4px;
 `;
+const cardDescription = css`
+  font-family: text-500;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: -0.045em;
+  text-align: left;
+  margin-top: 4px;
+  color: #cccccc;
+`;
+
 const cardRecordWrap = css`
   display: flex;
   margin-top: 12px;

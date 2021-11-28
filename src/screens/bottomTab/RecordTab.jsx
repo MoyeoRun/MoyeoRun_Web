@@ -21,6 +21,7 @@ const RecordTab = () => {
   const [props, setProps] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showOneRecord, setShowOneRecord] = useState(false); //전체 기록 보여주는건지, 하나의 기록 보여주는건지
+  const [barTouch, setBarTouch] = useState();
   const [menu, setMenu] = useState(0); // 모여런 뷰, 개인런 뷰 구분
   const [selectedDay, setSelectedDay] = useState(new Date());
   const [filteringProps, setFilteringProps] = useState();
@@ -28,26 +29,15 @@ const RecordTab = () => {
   const [graphProps, setGraphProps] = useState();
   const [detailRecordProps, setDetailRecordProps] = useState();
 
-  const menuChecker = useRef();
+  const menuChecker = useRef(1);
 
   const { pathname } = useLocation();
 
-  const getISOstartEndDays = ({ startDay, endDay, type }) => {
-    console.log('날짜 범위로 보여주기');
-    // console.log(startDay, endDay, type);
+  const getISOstartEndDays = ({ startDay, endDay, runType }) => {
     return {
       startDay: new Date(startDay).toISOString(),
       endDay: new Date(endDay).toISOString(),
-      type: type,
-    };
-  };
-  const getIdValue = ({ day, type }) => {
-    console.log('날짜 한개만 보여주기');
-    // console.log(day, type);
-    return {
-      id: props.runHistory.runningList.find((item) => new Date(item.createdAt).getDate() === day)
-        .id,
-      type: type,
+      runType: runType,
     };
   };
 
@@ -55,6 +45,7 @@ const RecordTab = () => {
     if (typeof data !== 'string') return;
     const propsData = JSON.parse(data);
     if (propsData.type === 'recordTab') {
+      handlePostMessage('console', { '데이터 확인': propsData.value });
       setProps(propsData.value);
     }
   };
@@ -70,149 +61,288 @@ const RecordTab = () => {
   }, []);
 
   useEffect(() => {
-    console.log('기록 1개만 보기 모드? ', loading, showOneRecord);
-    if (loading) {
-      setShowOneRecord(!showOneRecord);
-      setLoading(false);
+    if (barTouch === null || barTouch === undefined) {
+      return () => setBarTouch(false);
     }
-  }, [loading, showOneRecord]);
+
+    if (barTouch) {
+      setShowOneRecord(!showOneRecord);
+      setBarTouch(false);
+    }
+  }, [barTouch]);
 
   // rn으로 message 보낼때 쓰는 함수
   const handlePostMessage = (type, value = {}) => {
-    window.ReactNativeWebView.postMessage(JSON.stringify({ type: type, value: value }));
-    setLoading(true);
+    // window.ReactNativeWebView.postMessage(JSON.stringify({ type: type, value: value }));
+    if (type === 'console') return;
+    else setLoading(true);
   };
 
   //chart.js 이벤트리스너에 등록되는 함수, 막대그래프 클릭시 작동
   const getPickedDayRecords = (day) => {
-    // console.log(menu, menuChecker);
-    // console.log(showOneRecord);
-    console.log('하루 찍은 날짜 기록 보여주기 , 날짜 : ' + day);
-    const pickedDate = summaryProps.runningList.find(
-      (item) => new Date(item.createdAt).getDate() === day,
-    ).createdAt;
-    handlePostMessage(
-      'runRecord',
-      getIdValue({
-        day,
-        type: menuChecker.current === 0 ? 'multi' : menuChecker === 1 ? 'single' : '',
-      }),
-    );
-    setSelectedDay(new Date(pickedDate));
+    setSelectedDay(day);
+    setBarTouch(true);
   };
 
   //선택날짜 1주일 전 데이터 불러오는 함수, 캘린더. 모여런개인런 메뉴 변경시 작동
   const getSelectedWeekRecords = (selected) => {
+    console.log(selected);
     const endDay = new Date(selected ? selected : '');
-    console.log('찍은 날로부터 1주일 기록 보여주기 , 날짜 : ' + endDay);
+    // console.log('찍은 날로부터 1주일 기록 보여주기 , 날짜 : ' + endDay);
     const startDay = new Date(endDay.getFullYear(), endDay.getMonth(), endDay.getDate() - 6);
-
-    console.log(startDay, endDay, menu, menuChecker);
     handlePostMessage(
-      'runHistory',
+      'recordList',
       getISOstartEndDays({
         startDay,
         endDay,
-        type: menuChecker.current === 0 ? 'multi' : menuChecker === 1 ? 'single' : '',
+        runType: menuChecker.current === 1 ? 'multi' : 'single',
       }),
     );
+    console.log(endDay);
+
     setSelectedDay(endDay);
     setShowOneRecord(false);
   };
 
-  //날짜 선택 시 summaryprops 정리해주는 함수, 너무 길어서 따로 뻈음
-  const setSummaryDataProps = (runRecord) => {
-    console.log(runRecord);
+  //날짜 선택 시 summaryprops 정리해주는 함수, 너무 길어서 따로 뻈음,
+  // const setSummaryDataProps = (runRecord, menu) => {
+  //   // console.log(runRecord);
+  //   let summaryData = {};
+  //   //summaryData props에 들어갈 데이터 설정
+  //   for (let key in runRecord) {
+  //     if (
+  //       key === 'runPace' ||
+  //       key === 'runTime' ||
+  //       key === 'runDistance' ||
+  //       key === 'type' ||
+  //       key === 'id' ||
+  //       key === 'targetTime' ||
+  //       key === 'targetDistance' ||
+  //       key === 'createdAt' ||
+  //       key === 'rank' ||
+  //       key === 'startDate' ||
+  //       key === 'roomImage' ||
+  //       key === 'title'
+  //     ) {
+  //       summaryData[key] = runRecord[key];
+  //     }
+  //   }
+
+  //   const headInfo = summaryData.id && {
+  //     type: summaryData.type,
+  //     target: summaryData.targetDistance || summaryData.targetTime || summaryData.rank || '',
+  //   };
+  //   const typeValue = { free: '자유', time: '목표시간', distance: '목표거리', rank: '순위' };
+  //   const tempData = [];
+
+  //   //summaryData 맨 앞에 파란글씨 값 설정해주는곳
+  //   if (headInfo) {
+  //     //{value : 실제 값, keyword: 타입에대한 텍스트}
+
+  //     tempData.push({ value: typeValue[headInfo.type], keyword: '종류' });
+
+  //     headInfo.type !== 'free' &&
+  //       headInfo.target !== '' &&
+  //       tempData.push(
+  //         headInfo.type === 'time'
+  //           ? { value: secondToTimeString(headInfo.target), keyword: '목표' }
+  //           : headInfo.type === 'distance' && {
+  //               value: getDistanceString(headInfo.target),
+  //               keyword: '목표',
+  //             },
+  //       );
+  //   }
+  //   summaryData.headData = tempData;
+  //   return summaryData;
+  // };
+
+  const setSummaryDataProps = (analysisRunningListBetweenTerm) => {
     let summaryData = {};
-    for (let key in runRecord) {
+    //summaryData props에 들어갈 데이터 설정
+    for (let key in analysisRunningListBetweenTerm) {
       if (
-        key === 'runPace' ||
-        key === 'runTime' ||
-        key === 'runDistance' ||
-        key === 'type' ||
-        key === 'id' ||
-        key === 'targetTime' ||
-        key === 'targetDistance' ||
-        key === 'createdAt'
+        key === count ||
+        key === date ||
+        key === totalDistanceOfTerm ||
+        key === totalTimeOfTerm ||
+        key === averagePaceOfTerm
       ) {
         summaryData[key] = runRecord[key];
       }
-    }
 
-    const headInfo = summaryData.id && {
-      type: summaryData.type,
-      target: summaryData.targetDistance || summaryData.targetTime || '',
-    };
-    const typeValue = { free: '자유', time: '목표시간', distance: '목표거리' };
-    const tempData = [];
-    if (headInfo) {
-      tempData.push({ value: typeValue[headInfo.type], keyword: '종류' });
-      headInfo.type !== 'free' &&
-        headInfo.target !== '' &&
-        tempData.push(
-          headInfo.type === 'time'
-            ? { value: secondToTimeString(headInfo.target), keyword: '목표' }
-            : headInfo.type === 'distance' && {
-                value: getDistanceString(headInfo.target),
-                keyword: '목표',
-              },
-        );
+      return summaryData;
     }
-    summaryData.headData = tempData;
-    return summaryData;
   };
 
   //전체 Props 여기서 설정해줌
   useEffect(() => {
+    handlePostMessage('console', { 'props 전달 받음?': props });
+    console.log(props);
+    console.log(menuChecker, showOneRecord, selectedDay);
+    let filteringData = {};
+    let summaryData = {};
+    let graphData = [];
+    let detailRecordData = [];
+
     if (props) {
-      let filteringData = {};
-      let summaryData = {};
-      let graphData = [];
-      let detailRecordData = [];
+      handlePostMessage('console', { '왜 여기로 안넘어올까 props': props });
+      console.log(showOneRecord);
+
+      const { singleRecordList, multiRecordList } = props;
 
       // 한개 기록만 보여주는 경우
       if (showOneRecord) {
-        console.log('한개만');
-        console.log(props.runRecord);
-        filteringData = { startDate: selectedDay, showOneRecord: showOneRecord };
-        summaryData = setSummaryDataProps(props.runRecord);
-        graphData = props.runHistory.analysisRunningListBetweenTerm.map((day) =>
-          new Date(day.date).getDate() === selectedDay.getDate()
-            ? { ...day, active: true }
-            : { ...day },
-        );
-        detailRecordData =
-          props.runHistory.runningList.find((item) => new Date(item.createdAt) === selectedDay) ||
-          [];
+        handlePostMessage('console', [
+          '기록 하나',
+          {
+            showOneRecord,
+          },
+        ]);
+        // console.log('기록 하나 보여주는 경우');
+        const selectedDayDate = new Date(selectedDay).getDate();
+        if (singleRecordList) {
+          // console.log('싱글런인 경우');
+          handlePostMessage('console', [
+            '싱글런 데이터',
+            {
+              showOneRecord,
+            },
+          ]);
+          const { runningList } = singleRecordList;
+          filteringData = { startDate: selectedDay, showOneRecord: showOneRecord };
+          summaryData = setSummaryDataProps(
+            runningList.find((day) => new Date(day.createAt).getDate() === selectedDayDate),
+          );
+          graphData = analysisRunningListBetweenTerm.map((day) =>
+            new Date(day.createAt).getDate() === selectedDayDate
+              ? { ...day, active: true }
+              : { ...day },
+          );
+          detailRecordData = [
+            runningList.find((day) => new Date(day.createdAt).getDate() === selectedDate || []),
+          ];
+          handlePostMessage('console', [filteringData, summaryData, graphData, detailRecordData]);
+        }
+
+        //여기 문제
+        else if (multiRecordList) {
+          // console.log('멀티런인 경우');
+          handlePostMessage('console', [
+            '멀티런 데이터',
+            {
+              showOneRecord,
+            },
+          ]);
+          const { analysisRunningListBetweenTerm, runningList } = multiRecordList;
+          filteringData = { startDate: selectedDay, showOneRecord: showOneRecord };
+          summaryData = setSummaryDataProps(
+            analysisRunningListBetweenTerm.find(
+              (day) => new Date(day.date).getDate() === selectedDayDate,
+            ),
+          );
+          graphData = analysisRunningListBetweenTerm.map((day) =>
+            new Date(day.date).getDate() === selectedDayDate
+              ? { ...day, active: true }
+              : { ...day },
+          );
+          detailRecordData = [
+            runningList.find(
+              (day) => new Date(day.multiroom.startDate).getDate() === selectedDayDate || [],
+            ),
+          ];
+        }
+        handlePostMessage('console', [filteringData, summaryData, graphData, detailRecordData]);
       }
 
       // 모든 기록 보여주는 경우
       else {
-        console.log('여러개');
-        filteringData = { startDate: selectedDay, showOneRecord: showOneRecord };
-        for (let key in props.runHistory) {
-          if (
-            key === 'totalTime' ||
-            key === 'totalDistance' ||
-            key === 'totalAveragePace' ||
-            key === 'runningList'
-          )
-            summaryData[key] = props.runHistory[key];
+        handlePostMessage('console', [
+          '기록 리스트',
+          {
+            showOneRecord,
+          },
+        ]);
+        // console.log('기록 리스트 보여주는 경우');
+        if (singleRecordList && menuChecker.current == 0) {
+          handlePostMessage('console', [
+            '싱글런리스트 데이터',
+            {
+              singleRecordList: singleRecordList,
+              multiRecordList: multiRecordList,
+            },
+          ]);
+
+          // console.log('싱글런인 경우');
+          filteringData = { startDate: selectedDay, showOneRecord: showOneRecord };
+          for (let key in singleRecordList) {
+            if (
+              key === 'totalTime' ||
+              key === 'totalDistance' ||
+              key === 'totalAveragePace' ||
+              key === 'runningList'
+            )
+              summaryData[key] = singleRecordList[key];
+          }
+          graphData = singleRecordList.analysisRunningListBetweenTerm;
+          detailRecordData = singleRecordList.runningList;
+          handlePostMessage('console', [filteringData, summaryData, graphData, detailRecordData]);
         }
-        graphData = props.runHistory.analysisRunningListBetweenTerm;
-        detailRecordData = props.runHistory.runningList;
+
+        //여기 문제
+        else if (multiRecordList && menuChecker.current === 1) {
+          handlePostMessage('console', [
+            '멀티런리스트 데이터',
+            {
+              singleRecordList: singleRecordList,
+              multiRecordList: multiRecordList,
+            },
+          ]);
+
+          console.log('바뀌나?');
+          console.log(selectedDay);
+          filteringData = { startDate: selectedDay, showOneRecord: showOneRecord };
+          for (let key in multiRecordList) {
+            if (
+              key === 'totalTime' ||
+              key === 'totalDistance' ||
+              key === 'totalAveragePace' ||
+              key === 'runningList'
+            )
+              summaryData[key] = multiRecordList[key];
+          }
+          graphData = multiRecordList.analysisRunningListBetweenTerm;
+          detailRecordData = multiRecordList.runningList;
+
+          handlePostMessage('console', [filteringData, summaryData, graphData, detailRecordData]);
+        }
       }
 
-      setFilteringProps(filteringData);
-      setSummaryProps(summaryData);
-      setGraphProps(graphData);
-      setDetailRecordProps(detailRecordData);
+      handlePostMessage('console', [
+        '여기에서 Props 넘어가기 전에 안들어가나?',
+        filteringData,
+        summaryData,
+        graphData,
+        detailRecordData,
+      ]);
     }
-  }, [props, selectedDay, menu]);
+    // console.log(selectedDay);
+    // console.log(filteringData, summaryData, graphData, detailRecordData);
+    setFilteringProps(filteringData);
+    setSummaryProps(summaryData);
+    setGraphProps(graphData);
+    setDetailRecordProps(detailRecordData);
+  }, [props, selectedDay, showOneRecord, menu]);
 
   //막대그래프 클릭시에 showOneRecord 상태 변경,
 
-  alert(filteringProps, summaryProps, graphProps, detailRecordProps);
+  handlePostMessage('console', [
+    '선수입장',
+    filteringProps,
+    summaryProps,
+    graphProps,
+    detailRecordProps,
+  ]);
+
   if (!(filteringProps && summaryProps && graphProps && detailRecordProps))
     return <Box>로딩중</Box>;
   if (filteringProps && summaryProps && graphProps && detailRecordProps) {

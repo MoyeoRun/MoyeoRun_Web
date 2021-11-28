@@ -58,7 +58,7 @@ const CustomCalendar = ({ getSelectedWeekRecords, selectedDay }) => {
         onChange={(newValue) => {
           setValue(newValue);
           getSelectedWeekRecords(newValue);
-          console.log(value, newValue);
+          // console.log(value, newValue);
         }}
         renderDay={renderWeekPickerDay}
         renderInput={(params) => <TextField {...params} />}

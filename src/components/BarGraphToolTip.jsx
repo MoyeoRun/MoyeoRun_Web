@@ -24,39 +24,9 @@ const getOrCreateTooltip = (chart) => {
   return barEl;
 };
 
-// const getOrCreateBackGround = (chart) => {
-//   // console.log(chart);
-//   let barEl = chart.canvas.parentNode.querySelector('div');
-//   // 툴팁 박스 엘레먼트 조절
-//   if (!barEl) {
-//     barEl = document.createElement('div');
-//     barEl.style.background = '#1162FF33';
-//     // barEl.style.borderRadius = '3px';
-//     // barEl.style.color = 'white';
-//     // barEl.style.opacity = 1;
-//     // barEl.style.pointerEvents = 'none';
-//     barEl.style.position = 'absolute';
-//     barEl.style.transform = 'translate(50,0%)';
-//     barEl.style.transition = 'all .1s ease';
-//     barEl.style.width = '24px';
-//     barEl.style.height = '200px';
-//     // const table = document.createElement('table');
-//     // table.style.margin = '0px';
-
-//     // barEl.appendChild(table);
-//     chart.canvas.parentNode.appendChild(barEl);
-//   }
-
-//   return barEl;
-// };
-
 const externalTooltipHandler = (context) => {
-  // Tooltip Element
-  // console.log(context);
-
   const { chart, tooltip } = context;
   const barEl = getOrCreateTooltip(chart);
-  // const barEl = getOrCreateBackGround(chart);
 
   // Hide if no tooltip
   if (tooltip.opacity === 0) {
@@ -77,7 +47,7 @@ const externalTooltipHandler = (context) => {
 
       const th = document.createElement('th');
       th.style.borderWidth = 0;
-      const text = document.createTextNode(title + '일');
+      const text = document.createTextNode(title);
 
       th.appendChild(text);
       tr.appendChild(th);
@@ -86,17 +56,6 @@ const externalTooltipHandler = (context) => {
 
     const tableBody = document.createElement('tbody');
     bodyLines.forEach((body, i) => {
-      //툴팁 색깔박스 보여주는 엘리먼트. 삭제함
-      // const colors = tooltip.labelColors[i];
-      // const span = document.createElement('span');
-      // span.style.background = colors.backgroundColor;
-      // span.style.borderColor = colors.borderColor;
-      // span.style.borderWidth = '2px';
-      // span.style.marginRight = '10px';
-      // span.style.height = '10px';
-      // span.style.width = '10px';
-      // span.style.display = 'inline-block';
-
       const tr = document.createElement('tr');
       tr.style.backgroundColor = 'inherit';
       tr.style.borderWidth = 0;

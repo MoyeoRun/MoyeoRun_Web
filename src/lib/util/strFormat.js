@@ -35,8 +35,8 @@ export const recordTimeString = (secondNumber) => {
 
 export const getModifiedDateString = (dateString) => {
   const date = new Date(dateString);
-  const year = date.getYear();
-  const month = date.getMonth();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
   const day = date.getDate();
   const beforeHour = date.getHours();
   const AMorPM = beforeHour < 12 ? '오전' : '오후';
