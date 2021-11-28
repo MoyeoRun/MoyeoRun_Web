@@ -34,33 +34,31 @@ const RecordTab = () => {
   const listener = ({ data }) => {
     if (typeof data !== 'string') return;
     const propsData = JSON.parse(data);
-    if (propsData.type === 'recordTab') {
-      switch (propsData.type) {
-        case 'mode':
-          setMode(propsData.value);
-          break;
-        case 'endDay':
-          setEndDay(propsData.value);
-          break;
-        case 'singleRecordList':
-          setGraphData(propsData.value.analysisRunningListBetweenTerm);
-          setTotalSummary({
-            time: propsData.value.totalTime,
-            distance: propsData.value.totalDistance,
-            pace: propsData.value.totalAveragePace,
-          });
-          setRunRecordList(propsData.value.runningList);
-          break;
-        case 'multiRecordList':
-          setGraphData(propsData.value.analysisRunningListBetweenTerm);
-          setTotalSummary({
-            time: propsData.value.totalTime,
-            distance: propsData.value.totalDistance,
-            pace: propsData.value.totalAveragePace,
-          });
-          setRunRecordList(propsData.value.runningList);
-          break;
-      }
+    switch (propsData.type) {
+      case 'mode':
+        setMode(propsData.value);
+        break;
+      case 'endDay':
+        setEndDay(propsData.value);
+        break;
+      case 'singleRecordList':
+        setGraphData(propsData.value.analysisRunningListBetweenTerm);
+        setTotalSummary({
+          time: propsData.value.totalTime,
+          distance: propsData.value.totalDistance,
+          pace: propsData.value.totalAveragePace,
+        });
+        setRunRecordList(propsData.value.runningList);
+        break;
+      case 'multiRecordList':
+        setGraphData(propsData.value.analysisRunningListBetweenTerm);
+        setTotalSummary({
+          time: propsData.value.totalTime,
+          distance: propsData.value.totalDistance,
+          pace: propsData.value.totalAveragePace,
+        });
+        setRunRecordList(propsData.value.runningList);
+        break;
     }
   };
 
@@ -148,10 +146,14 @@ const RecordTab = () => {
         value={mode}
         onChange={(event, newValue) => {
           if (pathname === '/test/recordTab') setMode(newValue);
-          else
+          else {
+            setGraphData(null);
+            setTotalSummary(null);
+            setRunRecordList(null);
             window.ReactNativeWebView.postMessage(
               JSON.stringify({ type: 'queryChange', value: { type: 'mode', value: newValue } }),
             );
+          }
         }}
         css={menuWrapper}
         TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }}
