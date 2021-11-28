@@ -113,3 +113,21 @@ const summaryKeyword = css`
   margin-top: 3px;
   color: #aaaaaa;
 `;
+
+const incompletedRecord = css`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  background: rgba(231, 239, 255, 0.9);
+  box-sizing: border-box;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: text-500;
+  font-size: 18px;
+  font-weight: 500;
+  color: #1162ff;
+`;
