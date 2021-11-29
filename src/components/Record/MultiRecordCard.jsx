@@ -30,12 +30,15 @@ const MultiRecordCard = ({ runRecord }) => {
     >
       {status !== 'Close' && <Box css={incompletedRecord}>아직 완료되지 않은 모여런입니다</Box>}
       <div
-        style={{
+        css={{
           width: '90px',
           height: '90px',
           borderRadius: '4px',
-          backgroundImage: `url(${roomImage})`,
           background: '#e8e8e8',
+          backgroundImage: `url(${roomImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
         }}
       ></div>
       <Box css={recordWrap}>
