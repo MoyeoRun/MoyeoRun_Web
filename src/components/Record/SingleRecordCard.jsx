@@ -58,7 +58,7 @@ const SingleRecordCard = ({ runRecord }) => {
                 normal: naver.maps.NaverStyleMapTypeOptions.getVectorMap(),
               })
             }
-            defaultZoom={18}
+            defaultZoom={17}
             defaultCenter={{
               lat: runData[runData.length - 1][runData[runData.length - 1].length - 1].latitude,
               lng: runData[runData.length - 1][runData[runData.length - 1].length - 1].longitude,

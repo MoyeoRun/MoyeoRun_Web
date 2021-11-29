@@ -15,7 +15,8 @@ const LineMarker = ({ color, image, distance }) => {
 
 const Line = ({ userRank }) => {
   const min = Math.floor(userRank[userRank.length - 1].runStatus.distance);
-  const max = Math.ceil(userRank[0].runStatus.distance);
+  const max =
+    Math.ceil(userRank[0].runStatus.distance) === 0 ? 1 : Math.ceil(userRank[0].runStatus.distance);
 
   const getMarkerDistance = (distance) => {
     const markerPositionRatio = ((distance - min) / (max - min)) * 100;
@@ -25,28 +26,29 @@ const Line = ({ userRank }) => {
   return (
     <Box css={lineUpWrapper}>
       <Box css={line} />
-      {userRank.map((data, rank) => (
-        <LineMarker
-          key={rank}
-          color={colorData[rank]}
-          image={data.user.image}
-          distance={getMarkerDistance(data.runStatus.distance)}
-        />
-      ))}
-      <Box>
-        {userRank.map((data, rank) => {
-          const displayDistance = Math.floor(data.runStatus.distance * 10) / 10;
-          return (
-            <Box key={rank} css={xAxisValue(getMarkerDistance(data.runStatus.distance))}>
-              {displayDistance}
-            </Box>
-          );
-        })}
-
-        <Box css={xAxisBase(true)}>{max}</Box>
-        <Box css={xAxisBase(false)}>{min}</Box>
-        <Box css={xAxisUnit}>km</Box>
+      <Box css={markerWrapper}>
+        {userRank.map((data, rank) => (
+          <LineMarker
+            key={rank}
+            color={colorData[rank]}
+            image={data.user.image}
+            distance={getMarkerDistance(data.runStatus.distance)}
+          />
+        ))}
+        <Box>
+          {userRank.map((data, rank) => {
+            const displayDistance = Math.floor(data.runStatus.distance * 10) / 10;
+            return (
+              <Box key={rank} css={xAxisValue(getMarkerDistance(data.runStatus.distance))}>
+                {displayDistance}
+              </Box>
+            );
+          })}
+        </Box>
       </Box>
+      <Box css={xAxisBase(true)}>{max}</Box>
+      <Box css={xAxisBase(false)}>{min}</Box>
+      <Box css={xAxisUnit}>km</Box>
     </Box>
   );
 };
@@ -62,6 +64,11 @@ const lineUpWrapper = css`
   padding: 7px;
   background: rgba(17, 98, 255, 0.05);
   border-radius: 4px;
+`;
+
+const markerWrapper = css`
+  position: relative;
+  width: 100%;
 `;
 
 const line = css`
@@ -99,7 +106,7 @@ const svgIcon = css`
 
 const xAxisValue = (position) => css`
   position: absolute;
-  top: 58px;
+  top: 50px;
   left: calc(${position}%);
   transform: translate(-50%, 4px);
   display: flex;
@@ -112,6 +119,7 @@ const xAxisValue = (position) => css`
   box-shadow: 0px 0px 3px 0px #1160ff2f;
   padding: 0 2px;
   background: white;
+  z-index: 1000;
 `;
 
 const xAxisBase = (isLeft) => css`

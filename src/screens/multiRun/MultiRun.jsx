@@ -65,15 +65,13 @@ const MultiRun = () => {
   };
 
   useEffect(() => {
-    if (pathname === '/test/multiRun') {
-      setUser(testProps.user);
-      setDisplayUserId(testProps.user.id);
-      setTime(testProps.time);
-      setRoom(testProps.room);
-      setUserRank(
-        testProps.userRunData.sort((a, b) => b.runStatus.distance - a.runStatus.distance),
-      );
-    }
+    // if (pathname === '/test/multiRun') {
+    setUser(testProps.user);
+    setDisplayUserId(testProps.user.id);
+    setTime(testProps.time);
+    setRoom(testProps.room);
+    setUserRank(testProps.userRunData.sort((a, b) => b.runStatus.distance - a.runStatus.distance));
+    // }
 
     document.addEventListener('message', listener);
     window.addEventListener('message', listener);

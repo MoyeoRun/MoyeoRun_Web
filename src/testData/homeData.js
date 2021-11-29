@@ -10,8 +10,8 @@ const homeData = {
       waiting: 25,
       limitMember: 9,
       multiRoomMember: [1, 2, 3],
-      startDate: new Date(),
-      image:
+      startDate: null,
+      roomImage:
         'https://images.unsplash.com/photo-1604314923234-5144a466130f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1632&q=80',
     },
     {
@@ -21,8 +21,8 @@ const homeData = {
       waiting: 12,
       limitMember: 9,
       multiRoomMember: [1, 2, 3],
-      startDate: new Date(),
-      image:
+      startDate: null,
+      roomImage:
         'https://images.unsplash.com/photo-1509339022327-1e1e25360a41?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80',
     },
     {
@@ -32,8 +32,8 @@ const homeData = {
       waiting: 4,
       limitMember: 9,
       multiRoomMember: [1, 2, 3],
-      startDate: new Date(),
-      image:
+      startDate: null,
+      roomImage:
         'https://images.unsplash.com/photo-1586987177718-54e088c798b6?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80',
     },
   ],

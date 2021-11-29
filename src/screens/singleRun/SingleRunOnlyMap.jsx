@@ -54,7 +54,7 @@ const SingleRunOnlyMap = () => {
             normal: naver.maps.NaverStyleMapTypeOptions.getVectorMap(),
           })
         }
-        defaultZoom={15}
+        defaultZoom={17}
       >
         <Marker
           position={center}

@@ -76,10 +76,27 @@ const testData = {
       },
       runStatus: {
         time: 1234,
-        distance: 0.1,
+        distance: 1,
         pace: 3.12,
       },
-      runData: [],
+      runData: [
+        {
+          latitude: 37.659187827620975,
+          longitude: 127.0514252126567,
+          currentAltitude: 30,
+          currentTime: 1234567,
+          currentDistance: 3.23,
+          momentPace: 6.12,
+        },
+        {
+          latitude: 37.559187827620975,
+          longitude: 127.1514252126567,
+          currentAltitude: 30,
+          currentTime: 1234567,
+          currentDistance: 3.23,
+          momentPace: 6.12,
+        },
+      ],
     },
     {
       user: {
@@ -89,7 +106,7 @@ const testData = {
       },
       runStatus: {
         time: 1234,
-        distance: 0.2,
+        distance: 1,
         pace: 3.12,
       },
       runData: [
@@ -111,7 +128,7 @@ const testData = {
       },
       runStatus: {
         time: 2334,
-        distance: 0.3,
+        distance: 1,
         pace: 5.12,
       },
       runData: [
@@ -133,7 +150,7 @@ const testData = {
       },
       runStatus: {
         time: 2334,
-        distance: 0.35,
+        distance: 1,
         pace: 5.12,
       },
       runData: [
@@ -155,7 +172,7 @@ const testData = {
       },
       runStatus: {
         time: 2334,
-        distance: 0.11,
+        distance: 1,
         pace: 5.12,
       },
       runData: [
@@ -181,7 +198,7 @@ const testData = {
       },
       runStatus: {
         time: 2334,
-        distance: 0.12,
+        distance: 1,
         pace: 5.12,
       },
       runData: [

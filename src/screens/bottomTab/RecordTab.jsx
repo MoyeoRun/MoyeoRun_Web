@@ -111,26 +111,26 @@ const RecordTab = () => {
   useEffect(() => {
     if (pathname === '/test/recordTab') {
       // 모여런 데이터 주입
-      setMode(0);
-      setEndDay(new Date().toISOString());
-      setGraphData(tempProps.multiRecordList.analysisRunningListBetweenTerm);
-      setTotalSummary({
-        time: tempProps.multiRecordList.totalTime,
-        distance: tempProps.multiRecordList.totalDistance,
-        pace: tempProps.multiRecordList.totalAveragePace,
-      });
-      setRunRecordList(tempProps.multiRecordList.runningList);
+      // setMode(0);
+      // setEndDay(new Date().toISOString());
+      // setGraphData(tempProps.multiRecordList.analysisRunningListBetweenTerm);
+      // setTotalSummary({
+      //   time: tempProps.multiRecordList.totalTime,
+      //   distance: tempProps.multiRecordList.totalDistance,
+      //   pace: tempProps.multiRecordList.totalAveragePace,
+      // });
+      // setRunRecordList(tempProps.multiRecordList.runningList);
 
       // 개인런 데이터 주입
-      // setMode(1);
-      // setEndDay(new Date().toISOString());
-      // setGraphData(tempProps.singleRecordList.analysisRunningListBetweenTerm);
-      // setTotalSummary({
-      //   time: tempProps.singleRecordList.totalTime,
-      //   distance: tempProps.singleRecordList.totalDistance,
-      //   pace: tempProps.singleRecordList.totalAveragePace,
-      // });
-      // setRunRecordList(tempProps.singleRecordList.runningList);
+      setMode(1);
+      setEndDay(new Date().toISOString());
+      setGraphData(tempProps.singleRecordList.analysisRunningListBetweenTerm);
+      setTotalSummary({
+        time: tempProps.singleRecordList.totalTime,
+        distance: tempProps.singleRecordList.totalDistance,
+        pace: tempProps.singleRecordList.totalAveragePace,
+      });
+      setRunRecordList(tempProps.singleRecordList.runningList);
     }
     document.addEventListener('message', listener);
     window.addEventListener('message', listener);
