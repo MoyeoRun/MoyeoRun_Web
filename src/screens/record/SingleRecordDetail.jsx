@@ -149,16 +149,26 @@ const SingleRecordDetail = () => {
           <Text className="key">시간</Text>
         </Box>
       </Box>
-      <CustomButton
-        css={recordAnalysisButton}
-        onClick={() => {
-          window.ReactNativeWebView.postMessage(
-            JSON.stringify({ type: 'goAnalysis', value: props.id }),
-          );
-        }}
-      >
-        상세 분석 보기
-      </CustomButton>
+      <Box css={buttonWrapper}>
+        <CustomButton
+          css={recordAnalysisButton}
+          onClick={() => {
+            window.ReactNativeWebView.postMessage(
+              JSON.stringify({ type: 'goAnalysis', value: props.id }),
+            );
+          }}
+        >
+          상세 분석 보기
+        </CustomButton>
+        <CustomButton
+          css={recordAnalysisButton}
+          onClick={() => {
+            window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'share' }));
+          }}
+        >
+          공유 하기
+        </CustomButton>
+      </Box>
       <Box>
         <Text css={{ fontFamily: 'text-500', fontSize: '22px' }}>구간</Text>
         <RecordDetailTable data={props.runSummary} />
@@ -217,8 +227,13 @@ const recordStatusItem = css`
   }
 `;
 
+const buttonWrapper = css`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const recordAnalysisButton = css`
-  width: 100%;
+  width: 48%;
   height: 70px;
   margin: 30px 0;
   border: 1px solid rgba(17, 98, 255, 0.3);
