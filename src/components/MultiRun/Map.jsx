@@ -5,7 +5,6 @@ import { NaverMap, Polyline, Marker } from 'react-naver-maps';
 
 const Map = ({ center, runData, color, id, ...props }) => (
   <NaverMap
-    {...props}
     id={id || 'react-naver-map'}
     css={mapStyle}
     center={center}
@@ -15,6 +14,7 @@ const Map = ({ center, runData, color, id, ...props }) => (
       })
     }
     defaultZoom={15}
+    {...props}
   >
     <Marker
       position={center}
