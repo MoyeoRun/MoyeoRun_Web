@@ -15,6 +15,7 @@ import { Loading } from '../../components/MultiRun';
 import Text from '../../components/Text';
 import tempProps from '../../testData/multiRecordProps';
 import { NaverMap, Polyline, Marker } from 'react-naver-maps';
+import { getDistanceString, getPaceString, secondToTimeString } from '../../lib/util/strFormat';
 
 // type MultiRecordDetailProps = {
 //   multiRoom: Room;
@@ -41,20 +42,29 @@ const targetTimeString = (second) => {
 
 const MultiRecordDetail = () => {
   const [props, setProps] = useState(null);
+  const [displayUser, setDisplayUser] = useState(null);
   const { pathname } = useLocation();
   const placeholder = { free: '자유', distance: '목표거리', time: '목표시간', multi: '모여런' };
 
   const listener = ({ data }) => {
     if (typeof data !== 'string') return;
     const propsData = JSON.parse(data);
-    if (propsData.type === 'MultiRecordDetail') {
+    if (propsData.type === 'multiRecordDetail') {
       setProps(propsData.value);
+      setDisplayUser(
+        propsData.value.multiRoom.multiRoomMember.find(
+          (user) => user.userId === propsData.value.displayUserId,
+        ),
+      );
     }
   };
 
   useEffect(() => {
     if (pathname === '/test/multiRecordDetail') {
       setProps(tempProps);
+      setDisplayUser(
+        tempProps.multiRoom.multiRoomMember.find((user) => user.userId === tempProps.displayUserId),
+      );
     }
     document.addEventListener('message', listener);
     window.addEventListener('message', listener);
@@ -65,7 +75,7 @@ const MultiRecordDetail = () => {
     };
   }, []);
 
-  if (!props) return <Loading />;
+  if (!props || !displayUser) return <Loading />;
   return (
     <Box css={MultiRecordDetailWrapper}>
       <Box css={title}>
@@ -131,37 +141,71 @@ const MultiRecordDetail = () => {
       </Box>
 
       <Box css={bottom}>
-        {/* 팀원 소개 */}
+        {/* 팀원 리스트 */}
         <Box css={teamWrapper}>
           <Text className="title">팀원</Text>
           <Box className="list">
-            {props.multiRoom.multiRoomMember.map((user) => (
-              <Box css={userWrapper}>
-                <Avatar className="avatar" />
-                <Text className="nickName">유저</Text>
-              </Box>
-            ))}
+            <Box css={userWrapper}>
+              <Avatar
+                src={displayUser.multiRoomUser.image}
+                className="avatar"
+                onClick={() => {
+                  window.ReactNativeWebView.postMessage(
+                    JSON.stringify({
+                      type: 'changeDisplayUser',
+                      value: {
+                        userId: displayUser.userId,
+                        runId: displayUser.runId,
+                      },
+                    }),
+                  );
+                }}
+              />
+              <Text className="nickName">{displayUser.multiRoomUser.nickName}</Text>
+            </Box>
+            {props.multiRoom.multiRoomMember
+              .filter((user) => user.userId !== props.displayUserId)
+              .map((user) => (
+                <Box css={userWrapper}>
+                  <Avatar
+                    src={user.multiRoomUser.image}
+                    className="avatar"
+                    onClick={() => {
+                      window.ReactNativeWebView.postMessage(
+                        JSON.stringify({
+                          type: 'changeDisplayUser',
+                          value: { userId: user.userId, runId: user.runId },
+                        }),
+                      );
+                    }}
+                  />
+                  <Text className="nickName">{user.multiRoomUser.nickName}</Text>
+                </Box>
+              ))}
           </Box>
         </Box>
 
         {/* 런 요약 */}
         <Box css={summaryWrapper}>
-          <Text className="title">지금 유저의 결과</Text>
+          <Text className="title">
+            {displayUser.multiRoomUser.nickName}
+            님의 결과
+          </Text>
           <Box className="list">
             <Box className="item">
-              <Text className="value">몇위</Text>
+              <Text className="value">{displayUser.rank}</Text>
               <Text className="type">순위</Text>
             </Box>
             <Box className="item">
-              <Text className="value">몇km</Text>
+              <Text className="value">{getDistanceString(props.multiRecord.runDistance)}</Text>
               <Text className="type">거리</Text>
             </Box>
             <Box className="item">
-              <Text className="value">페이스값</Text>
+              <Text className="value">{getPaceString(props.multiRecord.runPace)}</Text>
               <Text className="type">평균 페이스</Text>
             </Box>
             <Box className="item">
-              <Text className="value">시간값</Text>
+              <Text className="value">{secondToTimeString(props.multiRecord.runTime)}</Text>
               <Text className="type">시간</Text>
             </Box>
           </Box>
@@ -169,7 +213,7 @@ const MultiRecordDetail = () => {
 
         {/* 지도 */}
         <NaverMap
-          id="naver_map"
+          id={`map_of_${props.displayUserId}`}
           css={css`
             width: 100%;
             height: 432px;
@@ -182,7 +226,7 @@ const MultiRecordDetail = () => {
               normal: naver.maps.NaverStyleMapTypeOptions.getVectorMap(),
             })
           }
-          defaultZoom={15}
+          defaultZoom={18}
           defaultCenter={{
             lat: props.multiRecord.runData[0].latitude,
             lng: props.multiRecord.runData[0].longitude,
@@ -215,6 +259,13 @@ const MultiRecordDetail = () => {
             }}
           />
         </NaverMap>
+
+        {/* 순위 리스트
+        <Box css={rankListWrapper}>
+          {props.multiRoom.multiRoomMember.map((user) => (
+            <Box>{user.rank}</Box>
+          ))}
+        </Box> */}
       </Box>
     </Box>
   );
@@ -224,6 +275,7 @@ const MultiRecordDetailWrapper = css`
   width: 100%;
   height: 100%;
   overflow: auto;
+  padding-bottom: 50px;
 `;
 
 const title = css`
@@ -353,6 +405,7 @@ const userWrapper = css`
 const summaryWrapper = css`
   width: 100%;
   margin-top: 20px;
+  margin-bottom: 30px;
   & .title {
     font-family: text-500;
     font-size: 14px;
@@ -386,6 +439,13 @@ const summaryWrapper = css`
       }
     }
   }
+`;
+
+const rankListWrapper = css`
+  margin-top: 28px;
+  margin-bottom: 22px;
+  border-top: 1px solid #e9e9e9;
+  display: flex;
 `;
 
 export default MultiRecordDetail;
