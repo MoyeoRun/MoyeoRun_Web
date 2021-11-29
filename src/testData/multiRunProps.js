@@ -151,7 +151,7 @@ const temp = {
 };
 
 const multiRunProps = {
-  time: 123,
+  time: 1000,
   user: {
     id: 1,
     name: '황인서',
@@ -170,7 +170,7 @@ const multiRunProps = {
     description: 'ㅎㅇ',
     startDate: '2021-11-14T12:31:04.672Z',
     targetDistance: 3,
-    targetTime: 30,
+    targetTime: 30000,
     roomImage: '',
     limitMember: 4,
     multiRoomMember: [
@@ -183,7 +183,7 @@ const multiRunProps = {
         multiRoomUser: {
           id: 1,
           name: '황인서',
-          nickName: 'sjsjs…',
+          nickName: 'user1',
           image: 'https://source.unsplash.com/random/90x90',
           token: null,
           height: null,
@@ -199,7 +199,7 @@ const multiRunProps = {
         multiRoomUser: {
           id: 2,
           name: '김건훈',
-          nickName: 'sjsjs…',
+          nickName: 'user2',
           image: 'https://source.unsplash.com/random/90x90',
           token: null,
           height: null,
@@ -215,7 +215,55 @@ const multiRunProps = {
         multiRoomUser: {
           id: 3,
           name: '조인혁',
-          nickName: 'ㅁㄴㄹㅁㄴㅇㄹ',
+          nickName: 'user3',
+          image: 'https://source.unsplash.com/random/90x90',
+          token: null,
+          height: null,
+          weight: null,
+        },
+      },
+      {
+        userId: 4,
+        isOwer: false,
+        isReady: false,
+        roomId: 1,
+        runId: null,
+        multiRoomUser: {
+          id: 4,
+          name: '조인혁',
+          nickName: 'user4',
+          image: 'https://source.unsplash.com/random/90x90',
+          token: null,
+          height: null,
+          weight: null,
+        },
+      },
+      {
+        userId: 5,
+        isOwer: false,
+        isReady: false,
+        roomId: 1,
+        runId: null,
+        multiRoomUser: {
+          id: 5,
+          name: '조인혁',
+          nickName: 'user5',
+          image: 'https://source.unsplash.com/random/90x90',
+          token: null,
+          height: null,
+          weight: null,
+        },
+      },
+      {
+        userId: 6,
+        isOwer: false,
+        isReady: false,
+        roomId: 1,
+        runId: null,
+        multiRoomUser: {
+          id: 6,
+          name: '조인혁',
+          nickName: 'user6',
           image: 'https://source.unsplash.com/random/90x90',
           token: null,
           height: null,
@@ -229,7 +277,7 @@ const multiRunProps = {
       user: {
         id: 1,
         name: '조인혁',
-        nickName: 'ㅁㄴㄹㅁㄴㅇㄹ',
+        nickName: 'user1',
         image: 'https://source.unsplash.com/random/90x90',
         token: null,
         height: null,
@@ -249,13 +297,21 @@ const multiRunProps = {
           currentDistance: 3.23,
           momentPace: 6.12,
         },
+        {
+          latitude: 37.759187827620975,
+          longitude: 127.1514252126567,
+          currentAltitude: 30,
+          currentTime: 1234567,
+          currentDistance: 3.23,
+          momentPace: 6.12,
+        },
       ],
     },
     {
       user: {
         id: 2,
         name: '조인혁',
-        nickName: 'ㅁㄴㄹㅁㄴㅇㄹ',
+        nickName: 'user2',
         image: 'https://source.unsplash.com/random/90x90',
         token: null,
         height: null,
@@ -281,7 +337,85 @@ const multiRunProps = {
       user: {
         id: 3,
         name: '조인혁',
-        nickName: 'ㅁㄴㄹㅁㄴㅇㄹ',
+        nickName: 'user3',
+        image: 'https://source.unsplash.com/random/90x90',
+        token: null,
+        height: null,
+        weight: null,
+      },
+      runStatus: {
+        time: 2334,
+        distance: 2.232,
+        pace: 5.12,
+      },
+      runData: [
+        {
+          latitude: 37.692342342343434,
+          longitude: 127.0514252126567,
+          currentAltitude: 30,
+          currentTime: 1234567,
+          currentDistance: 3.23,
+          momentPace: 6.12,
+        },
+      ],
+    },
+    {
+      user: {
+        id: 4,
+        name: '조인혁',
+        nickName: 'user4',
+        image: 'https://source.unsplash.com/random/90x90',
+        token: null,
+        height: null,
+        weight: null,
+      },
+      runStatus: {
+        time: 2334,
+        distance: 2.232,
+        pace: 5.12,
+      },
+      runData: [
+        {
+          latitude: 37.692342342343434,
+          longitude: 127.0514252126567,
+          currentAltitude: 30,
+          currentTime: 1234567,
+          currentDistance: 3.23,
+          momentPace: 6.12,
+        },
+      ],
+    },
+    {
+      user: {
+        id: 5,
+        name: '조인혁',
+        nickName: 'user5',
+        image: 'https://source.unsplash.com/random/90x90',
+        token: null,
+        height: null,
+        weight: null,
+      },
+      runStatus: {
+        time: 2334,
+        distance: 2.232,
+        pace: 5.12,
+      },
+      runData: [
+        {
+          latitude: 37.692342342343434,
+          longitude: 127.0514252126567,
+          currentAltitude: 30,
+          currentTime: 1234567,
+          currentDistance: 3.23,
+          momentPace: 6.12,
+        },
+      ],
+    },
+    {
+      user: {
+        id: 6,
+        name: '조인혁',
+        nickName: 'user6',
         image: 'https://source.unsplash.com/random/90x90',
         token: null,
         height: null,

@@ -1,202 +1,211 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Box } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import { Box, ButtonBase } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
-import {
-  CurrentRankStatus,
-  DividedMapView,
-  IndividualMapView,
-  LineUp,
-  RunStatus,
-  Timer,
-  UserRank,
-  Widgets,
-  ExitWindow,
-  NetworkError,
-} from '../../components/MultiRunComponents';
-import multiRunProps from '../../testData/multiRunProps';
-
-// type MultiRunProps = {
-//   time: number;
-//   user: User;
-//   room: Room;
-//   userRunData: UserRunData;
-// };
+import testProps from '../../testData/multiRun2Props';
+import { OneMap, AllMap, Loading } from '../../components/MultiRun';
+import { ClockIcon_blue } from '../../assets/svgs';
+import { secondToTimeString } from '../../lib/util/strFormat';
+import Text from '../../components/Text';
+import Line from '../../components/MultiRun/Line';
+import ExitModal from './ExitModal';
 
 const MultiRun = () => {
-  const [props, setProps] = useState();
-  const [displayUserId, setDisplayUserId] = useState();
-  const [userRankProps, setUserRankProps] = useState();
-  const [mapViewProps, setMapViewProps] = useState();
-  const [lineUpProps, setLineUpProps] = useState();
-  const [error, setError] = useState();
-
-  const individualMapViewRef = useRef();
-  const dividedMapViewRef = useRef();
-  const refs = { individualMapView: individualMapViewRef, dividedMapView: dividedMapViewRef };
-
+  const [user, setUser] = useState(null);
+  const [time, setTime] = useState(0);
+  const [room, setRoom] = useState(null);
+  const [displayUserId, setDisplayUserId] = useState(null);
+  const [userRank, setUserRank] = useState(null);
+  const [lineOpen, setLineOpen] = useState(false);
+  const [titleOpen, setTitleOpen] = useState(false);
+  const [mapMode, setMapMode] = useState('one');
+  const [exitOpen, setExitOpen] = useState(false);
   const { pathname } = useLocation();
-
-  const colorData = ['#1162FF', '#FC6BFF', '#00F2B8', '#FFDD64'];
 
   const listener = ({ data }) => {
     if (typeof data !== 'string') return;
     const propsData = JSON.parse(data);
-    if (propsData.type === 'multiRun') {
+    switch (propsData.type) {
+      case 'user':
+        setUser(propsData.value);
+        setDisplayUserId(propsData.value.id);
+        break;
+      case 'time':
+        setTime(propsData.value);
+        break;
+      case 'room':
+        setRoom(propsData.value);
+        break;
+      case 'userRunData':
+        setUserRank(propsData.value.sort((a, b) => b.runStatus.distance - a.runStatus.distance));
+        break;
+    }
+    if (propsData.type === 'user') {
       setProps(propsData.value);
     }
   };
 
+  const clickListener = () => {
+    setTitleOpen(false);
+  };
+
+  const handleMoveSelf = () => {
+    setDisplayUserId(user.id);
+  };
+
+  const handleMoveAllMap = () => {
+    setLineOpen(true);
+    setMapMode('all');
+  };
+
+  const handleMoveUserMap = (userId) => {
+    setDisplayUserId(userId);
+    setMapMode('one');
+  };
+
   useEffect(() => {
-    if (pathname === '/test/multiRun') setProps(multiRunProps);
+    if (pathname === '/test/multiRun') {
+      setUser(testProps.user);
+      setDisplayUserId(testProps.user.id);
+      setTime(testProps.time);
+      setRoom(testProps.room);
+      setUserRank(
+        testProps.userRunData.sort((a, b) => b.runStatus.distance - a.runStatus.distance),
+      );
+    }
+
     document.addEventListener('message', listener);
     window.addEventListener('message', listener);
+    document.addEventListener('click', clickListener);
+
     return () => {
       document.removeEventListener('message', listener);
       window.removeEventListener('message', listener);
+      document.removeEventListener('click', clickListener);
     };
   }, []);
 
-  useEffect(() => {
-    if (props) {
-      if (!displayUserId) setDisplayUserId(props.user.id);
-      console.log(props);
-      const userColor = props.room.multiRoomMember.map((member, index) => ({
-        userId: member.userId,
-        color: colorData[index] || '#E5E5E5',
-      }));
+  if (!user || !time || !room || !userRank || !displayUserId) return <Loading />;
 
-      const userImage = props.room.multiRoomMember.map((member) => ({
-        userId: member.userId,
-        image: member.multiRoomUser.image || 'https://source.unsplash.com/random/90x90',
-      }));
-
-      const userRankState = props.userRunData
-        .sort((a, b) => b.distance - a.distance)
-        .map((member, index) => ({
-          ...member,
-          rank: index + 1,
-          isMe: props.user.id === member.user.id,
-          image: userImage.find((user) => user.userId === member.user.id).image,
-          color: userColor.find((user) => user.userId === member.user.id).color,
-          displayUserId: displayUserId || props.user.id,
-        }));
-
-      const userMapData = props.userRunData.map((member) => ({
-        userId: member.user.id,
-        runData: member.runData,
-        center: {
-          lat:
-            member.runData.length > 0
-              ? member.runData[member.runData.length - 1].latitude
-              : 37.51977586326575,
-          lng:
-            member.runData.length > 0
-              ? member.runData[member.runData.length - 1].longitude
-              : 127.06283169005788,
-        },
-        rank: userRankState.find((user) => user.user.id === member.user.id),
-      }));
-
-      const otherDistance = new Object();
-      props.userRunData.forEach(
-        (member) => (otherDistance[member.user.id] = member.runStatus.distance),
-      );
-
-      const markerData = props.room.multiRoomMember.map((member) => ({
-        ...member,
-        distance: otherDistance[member.userId],
-        color: userColor.find((user) => user.userId === member.userId).color,
-      }));
-
-      setUserRankProps({ rank: userRankState });
-      setMapViewProps({
-        displayUserId,
-        userPoints: userMapData,
-      });
-      setLineUpProps({ markerData: markerData });
-      console.log(displayUserId);
-    }
-  }, [props, displayUserId]);
-
-  const onHandelViewState = (type, userId = props.user.id) => {
-    if (type === 'individualMapView') {
-      refs.individualMapView.current.style.left = '0px';
-      refs.dividedMapView.current.style.left = `${window.innerWidth}px`;
-    } else if (type === 'dividedMapView') {
-      refs.individualMapView.current.style.left = `-${window.innerWidth}px`;
-      refs.dividedMapView.current.style.left = `0px`;
-    }
-    setDisplayUserId(userId);
-  };
-
-  if (!props || !displayUserId || !userRankProps || !mapViewProps || !lineUpProps) return null;
   return (
-    <Box css={multiRunWrapper}>
-      <Box css={indiVidualWrapper} ref={individualMapViewRef}>
-        <ExitWindow remainTime={new Date(props.room.targetTime).getSeconds() - props.time}>
-          <IndividualMapView mapViewProps={mapViewProps} userId={props.user.id} />
-          <Widgets onHandelViewState={onHandelViewState} userId={props.user.id} />
-          <Timer remainTime={new Date(props.room.targetTime).getSeconds() - props.time} fixed />
-          <UserRank userRankProps={userRankProps} />
-        </ExitWindow>
+    <Box css={MultiRun2Wrapper}>
+      {/* 한명의 지도 */}
+      <OneMap
+        time={time}
+        room={room}
+        lineOpen={lineOpen}
+        setLineOpen={setLineOpen}
+        titleOpen={titleOpen}
+        setTitleOpen={setTitleOpen}
+        handleMoveSelf={handleMoveSelf}
+        handleMoveAllMap={handleMoveAllMap}
+        userRunData={userRank}
+        rank={userRank.findIndex((data) => data.user.id === displayUserId)}
+      />
 
-        <RunStatus
-          runStatus={props.userRunData.find((data) => data.user.id === displayUserId).runStatus}
-        />
+      {/* 모든 유저의 지도 */}
+      <AllMap
+        mapMode={mapMode}
+        room={room}
+        time={time}
+        userRank={userRank}
+        handleMoveUserMap={handleMoveUserMap}
+      />
 
-        <CurrentRankStatus>
-          <LineUp lineUpProps={lineUpProps} />
-        </CurrentRankStatus>
+      {/* 실시간 순위 */}
+      <Box css={line(lineOpen)}>
+        <Line userRank={userRank} />
       </Box>
 
-      <Box css={dividedWrapper} ref={dividedMapViewRef}>
-        <ExitWindow remainTime={new Date(props.room.targetTime).getSeconds() - props.time}>
-          <DividedMapView mapViewProps={mapViewProps} onHandelViewState={onHandelViewState} />
-        </ExitWindow>
-
-        <Box css={dividedlineUp}>
-          <LineUp lineUpProps={lineUpProps} />
+      {/* 타이틀 */}
+      <Box css={title(titleOpen)}>
+        <Box className="top">
+          <Box>{room.title}</Box>
+          <ButtonBase
+            className="exitButton"
+            onClick={() => {
+              setExitOpen(true);
+            }}
+          >
+            나가기
+          </ButtonBase>
+        </Box>
+        <Box className="timer">
+          <ClockIcon_blue />
+          <Text className="text">{secondToTimeString((room.targetTime - time) / 1000)}</Text>
         </Box>
       </Box>
-      <NetworkError error={error} />
+
+      {/* 나가기 모달 */}
+      <ExitModal open={exitOpen} setOpen={setExitOpen} />
     </Box>
   );
 };
 
-export default MultiRun;
-
-const multiRunWrapper = css`
-  position: relative;
-`;
-
-const indiVidualWrapper = css`
+const MultiRun2Wrapper = css`
   position: fixed;
-  top: 0px;
-  left: 0px;
+  top: 0;
   width: 100%;
   height: 100%;
-  transition: all 0.5s ease;
-  z-index: 1;
-`;
-const dividedWrapper = css`
-  position: fixed;
-  top: 0px;
-  left: ${window.innerWidth}px;
-  width: 100%;
-  height: 100%;
-  background-color: white;
-  transition: all 0.5s ease;
-  z-index: 3;
 `;
 
-const dividedlineUp = css`
+const line = (lineOpen) => css`
   position: fixed;
-  bottom: 0px;
-  box-sizing: border-box;
+  bottom: ${lineOpen ? 0 : '-102px'};
+  width: 100%;
+  height: 102px;
+  background: white;
+  z-index: 999;
+  transition: all 0.3s ease;
+  border: ${lineOpen ? '1px solid #adadad4e' : 0};
+`;
+
+const title = (titleOpen) => css`
+  position: fixed;
+  padding-top: 45px;
+  top: ${titleOpen ? 0 : '-130px'};
+  width: 100%;
+  height: 85px;
+  background: white;
+  z-index: 1000;
+  transition: all 0.3s ease;
   display: flex;
-  background-color: white;
-  padding: 10px;
-  width: 100%;
+  flex-direction: column;
+
+  & .top {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    width: calc(100% - 40px);
+    font-family: text-500;
+    font-size: 18px;
+    border-bottom: 1px solid #dcdddf;
+  }
+
+  & .exitButton {
+    padding: 8px;
+    font-family: text-500;
+    font-size: 18px;
+    font-weight: 500;
+    color: #1162ff;
+  }
+
+  & .timer {
+    height: 38px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #1162ff;
+    & .text {
+      margin-left: 7px;
+      margin-bottom: 4px;
+      font-family: text-500;
+      font-size: 20px;
+    }
+  }
 `;
+
+export default MultiRun;
