@@ -79,24 +79,7 @@ const testData = {
         distance: 0.1,
         pace: 3.12,
       },
-      runData: [
-        {
-          latitude: 37.659187827620975,
-          longitude: 127.0514252126567,
-          currentAltitude: 30,
-          currentTime: 1234567,
-          currentDistance: 3.23,
-          momentPace: 6.12,
-        },
-        {
-          latitude: 37.759187827620975,
-          longitude: 127.1514252126567,
-          currentAltitude: 30,
-          currentTime: 1234567,
-          currentDistance: 3.23,
-          momentPace: 6.12,
-        },
-      ],
+      runData: [],
     },
     {
       user: {
