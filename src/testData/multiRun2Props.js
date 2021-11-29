@@ -89,7 +89,7 @@ const testData = {
           momentPace: 6.12,
         },
         {
-          latitude: 37.759187827620975,
+          latitude: 37.559187827620975,
           longitude: 127.1514252126567,
           currentAltitude: 30,
           currentTime: 1234567,

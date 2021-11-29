@@ -10,15 +10,15 @@ const TimeBadge = ({ runTime, temp }) => {
     <Box css={timeBadgeWrapper}>
       <RunIcon />
       <Text>
-        {temp
-          ? temp
-          : second > 60
-          ? second > 3600
-            ? second > 86400
-              ? Math.floor(second / 86400) + '일 전'
-              : Math.floor(second / 3600) + '시간 전'
-            : Math.floor(second / 60) + '분 전'
-          : Math.floor(second) + '초 전'}
+        {runTime
+          ? second > 60
+            ? second > 3600
+              ? second > 86400
+                ? Math.floor(second / 86400) + '일 전'
+                : Math.floor(second / 3600) + '시간 전'
+              : Math.floor(second / 60) + '분 전'
+            : Math.floor(second) + '초 전'
+          : '30분 전'}
       </Text>
     </Box>
   );

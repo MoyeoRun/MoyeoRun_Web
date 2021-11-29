@@ -36,7 +36,7 @@ const OneMap = ({
   return (
     <Box css={oneMapWrapper}>
       {/* 지도 */}
-      <Map center={center} color={color} runData={runData} />
+      <Map center={center} color={color} runData={runData} defaultZoom={17} />
 
       {/* 위젯 */}
       <Box css={widgetsWrap}>
