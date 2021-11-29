@@ -24,7 +24,10 @@ const AllMap = ({ mapMode, room, time, userRank, handleMoveUserMap }) => {
         {userRank.map((data, rank) => {
           const { user, runStatus, runData } = data;
           const lastPoint = runData[runData.length - 1];
-          const center = { lat: lastPoint.latitude, lng: lastPoint.longitude };
+          const center = {
+            lat: lastPoint ? lastPoint.latitude : 37.6812312312323,
+            lng: lastPoint ? lastPoint.longitude : 127.0514242126567,
+          };
           const color = colorData[rank];
           return (
             <Card
@@ -49,6 +52,7 @@ const AllMap = ({ mapMode, room, time, userRank, handleMoveUserMap }) => {
                   runData={runData}
                   center={center}
                   color={color}
+                  defaultZoom={17}
                   id={`map_of_${user.nickName}`}
                 />
               </Box>

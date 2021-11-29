@@ -27,7 +27,10 @@ const OneMap = ({
 }) => {
   const { user, runStatus, runData } = userRunData[rank];
   const lastPoint = runData[runData.length - 1];
-  const center = { lat: lastPoint.latitude, lng: lastPoint.longitude };
+  const center = {
+    lat: lastPoint ? lastPoint.latitude : 37.6812312312323,
+    lng: lastPoint ? lastPoint.longitude : 127.0514242126567,
+  };
   const color = colorData[rank];
 
   return (
