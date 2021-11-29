@@ -71,7 +71,7 @@ const SingleRecordDetail = () => {
             normal: naver.maps.NaverStyleMapTypeOptions.getVectorMap(),
           })
         }
-        defaultZoom={15}
+        defaultZoom={18}
         defaultCenter={{
           lat: props.runData[props.runData.length - 1][
             props.runData[props.runData.length - 1].length - 1
