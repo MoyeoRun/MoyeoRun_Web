@@ -76,7 +76,7 @@ const testData = {
       },
       runStatus: {
         time: 1234,
-        distance: 0.1,
+        distance: 1,
         pace: 3.12,
       },
       runData: [
@@ -106,7 +106,7 @@ const testData = {
       },
       runStatus: {
         time: 1234,
-        distance: 0.2,
+        distance: 1,
         pace: 3.12,
       },
       runData: [
@@ -128,7 +128,7 @@ const testData = {
       },
       runStatus: {
         time: 2334,
-        distance: 0.3,
+        distance: 1,
         pace: 5.12,
       },
       runData: [
@@ -150,7 +150,7 @@ const testData = {
       },
       runStatus: {
         time: 2334,
-        distance: 0.35,
+        distance: 1,
         pace: 5.12,
       },
       runData: [
@@ -172,7 +172,7 @@ const testData = {
       },
       runStatus: {
         time: 2334,
-        distance: 0.11,
+        distance: 1,
         pace: 5.12,
       },
       runData: [
@@ -198,7 +198,7 @@ const testData = {
       },
       runStatus: {
         time: 2334,
-        distance: 0.12,
+        distance: 1,
         pace: 5.12,
       },
       runData: [
