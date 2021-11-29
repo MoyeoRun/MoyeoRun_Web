@@ -13,7 +13,7 @@ const HotRunCard = ({ runData }) => (
     )}
   >
     <Box css={gradient}>
-      <TimeBadge runTime={runData.startDate} />
+      <TimeBadge temp="1분 전" />
       <Box css={bottomWrapper}>
         <Box css={bottomTitle}>{runData.title}</Box>
         <Box css={people}>

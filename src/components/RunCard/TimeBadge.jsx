@@ -4,13 +4,15 @@ import { Box } from '@mui/material';
 import { ReactComponent as RunIcon } from '../../assets/svgs/RunIcon.svg';
 import Text from '../Text';
 
-const TimeBadge = ({ runTime }) => {
+const TimeBadge = ({ runTime, temp }) => {
   const second = (new Date(runTime) - new Date()) / 1000;
   return (
     <Box css={timeBadgeWrapper}>
       <RunIcon />
       <Text>
-        {second > 60
+        {temp
+          ? temp
+          : second > 60
           ? second > 3600
             ? second > 86400
               ? Math.floor(second / 86400) + '일 전'
