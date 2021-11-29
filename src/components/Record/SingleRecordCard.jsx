@@ -7,6 +7,7 @@ import {
   getPaceString,
   secondToTimeString,
 } from '../../lib/util/strFormat';
+import { NaverMap, Polyline, Marker } from 'react-naver-maps';
 
 const DetailRecord = ({ value, keyword, ...props }) => {
   return (
@@ -20,7 +21,7 @@ const DetailRecord = ({ value, keyword, ...props }) => {
 };
 
 const SingleRecordCard = ({ runRecord }) => {
-  const { id, type, title, createdAt, runPace, runTime, runDistance } = runRecord;
+  const { id, type, title, createdAt, runPace, runTime, runDistance, runData } = runRecord;
   const placeholder = { free: '자유', distance: '목표거리', time: '목표시간' };
 
   return (
@@ -32,14 +33,95 @@ const SingleRecordCard = ({ runRecord }) => {
         );
       }}
     >
-      <div
-        style={{
-          width: '90px',
-          height: '90px',
-          borderRadius: '4px',
-          background: '#e8e8e8',
-        }}
-      ></div>
+      {runData[0].length !== 0 ? (
+        <Box
+          css={{
+            width: '90px',
+            height: '90px',
+            borderRadius: '4px',
+            overflow: 'hidden',
+          }}
+        >
+          <NaverMap
+            scrollWheel={false}
+            draggable={false}
+            id={`single_map_of ${id}`}
+            css={css`
+              width: 90px;
+              height: 130px;
+              &:focus-visible {
+                outline: none;
+              }
+            `}
+            mapTypes={
+              new window.naver.maps.MapTypeRegistry({
+                normal: naver.maps.NaverStyleMapTypeOptions.getVectorMap(),
+              })
+            }
+            defaultZoom={15}
+            defaultCenter={{
+              lat: runData[runData.length - 1][runData[runData.length - 1].length - 1].latitude,
+              lng: runData[runData.length - 1][runData[runData.length - 1].length - 1].longitude,
+            }}
+          >
+            {runData.map((points, section) => {
+              let lastPoint = null;
+              if (section > 0) lastPoint = runData[section - 1][runData[section - 1].length - 1];
+              return (
+                <>
+                  {lastPoint && (
+                    <Polyline
+                      key={section}
+                      path={[
+                        { lat: lastPoint.latitude, lng: lastPoint.longitude },
+                        { lat: points[0].latitude, lng: points[0].longitude },
+                      ]}
+                      strokeColor={'#767676'}
+                      strokeStyle={'shortdot'}
+                      strokeLineCap={'round'}
+                      strokeLineJoin={'round'}
+                      strokeOpacity={0.8}
+                      strokeWeight={5}
+                    />
+                  )}
+                  <Polyline
+                    key={section}
+                    path={points.map((point) => ({
+                      lat: point.latitude,
+                      lng: point.longitude,
+                    }))}
+                    strokeColor={'#1162FF'}
+                    strokeStyle={'solid'}
+                    strokeLineCap={'round'}
+                    strokeLineJoin={'round'}
+                    line
+                    strokeOpacity={0.8}
+                    strokeWeight={7}
+                  />
+                </>
+              );
+            })}
+
+            <Marker position={{ lat: runData[0][0].latitude, lng: runData[0][0].longitude }} />
+            <Marker
+              position={{
+                lat: runData[runData.length - 1][runData[runData.length - 1].length - 1].latitude,
+                lng: runData[runData.length - 1][runData[runData.length - 1].length - 1].longitude,
+              }}
+            />
+          </NaverMap>
+        </Box>
+      ) : (
+        <div
+          style={{
+            width: '90px',
+            height: '90px',
+            borderRadius: '4px',
+            background: '#e8e8e8',
+          }}
+        ></div>
+      )}
+
       <Box css={recordWrap}>
         <Box css={cardDate}>{getModifiedDateString(createdAt)}</Box>
         <Box css={cardTitle}>

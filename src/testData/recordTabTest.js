@@ -66,34 +66,7 @@ const recordTabProps = {
         runTime: 10899,
         runDistance: 0.0004432672233637034,
         createdAt: '2021-11-12T20:11:00.158Z',
-        runData: [
-          [
-            {
-              latitude: 37.6292336,
-              longitude: 127.0815504,
-              currentAltitude: 67.94451150371609,
-              currentTime: 347,
-              currentDistance: 0,
-              currentPace: 0,
-            },
-            {
-              latitude: 37.6292336,
-              longitude: 127.0815504,
-              currentAltitude: 67.94451150371609,
-              currentTime: 5509,
-              currentDistance: 0,
-              currentPace: 0,
-            },
-            {
-              latitude: 37.6292324,
-              longitude: 127.0815552,
-              currentAltitude: 67.93860099457004,
-              currentTime: 10899,
-              currentDistance: 0.0004432672233637034,
-              currentPace: 202.6617999220406,
-            },
-          ],
-        ],
+        runData: [[]],
       },
       {
         id: '619045db551be501ace25858',
@@ -182,7 +155,8 @@ const recordTabProps = {
       {
         multiRoom: {
           id: 10,
-          roomImage: null,
+          roomImage:
+            'https://moyeo-run.s3.ap-northeast-2.amazonaws.com/1638164094097-han-river-g481b2c736_1920.jpg',
           title: '방 제목',
           status: 'Close',
           description: '같이 뛰아요',
